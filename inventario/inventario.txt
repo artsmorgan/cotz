@@ -1,0 +1,4 @@
+Name	Age	Address
+Alex	21	escazu
+Armando	21	escazu
+nuxg	23	escazu
