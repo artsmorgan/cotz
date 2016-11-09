@@ -14,12 +14,27 @@
         <!-- More info https://datatables.net/examples/index -->
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
         <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-        
+
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <style>
             body {
                 padding-top: 50px;
                 padding-bottom: 20px;
+            }
+
+            .f-section-title{
+              margin: 34px 0;
+              font-size: 24px;
+              font-weight: 300;
+              border-left: 3px solid #0877c5;
+              padding-left: 14px;
+            }
+
+            .transactions-list{
+              padding: 0;
+            }
+            .transactions-list li{
+              list-style-type: none;
             }
         </style>
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -31,11 +46,249 @@
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-  
 
-    <div class="container">
-    
+
+    <div class="container-fluid">
+
       <hr>
+
+      <div class="row">
+        <div class="col-sm-6 form-group">
+          <label for="vendedor">Vendedor:</label>
+          <input type="text" name="vendedor" class="form-control" id="vendedor">
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="fechaCotizacion">Fecha de cotización:</label>
+          <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion">
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="fechaVencimiento">Fecha de vencimiento:</label>
+          <input type="text" name="fechaVencimiento" placeholder="dd/mm/aaaa" class="form-control" id="fechaVencimiento">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4 form-group">
+          <label for="marca">Marca:</label>
+          <input type="text" name="marca" class="form-control" id="marca">
+        </div>
+        <div class="col-sm-4 form-group">
+          <label for="fase">Fase:</label>
+          <select name="fase" class="form-control" id="fase">
+            <option value="Comunicación inicial">Comunicación inicial</option>
+            <option value="Cotización">Cotización</option>
+            <option value="Negociación">Negociación</option>
+            <option value="Venta realizada">Venta realizada</option>
+            <option value="Cerrada perdida">Cerrada perdida</option>
+            <option value="Desierta">Desierta</option>
+          </select>
+        </div>
+        <div class="col-sm-4 form-group">
+          <label for="noSolicitud">No. de solicitud:</label>
+          <input type="text" name="noSolicitud" class="form-control" id="noSolicitud">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3 form-group">
+          <label for="tasaImpuestos">Tasa de impuestos:</label>
+          <input type="number" name="tasaImpuestos" class="form-control" id="tasaImpuestos">
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="moneda">Moneda:</label>
+          <select name="moneda" class="form-control" id="moneda">
+            <option value="dolares">Dolares</option>
+            <option value="colones">Colones</option>
+          </select>
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="tasaCambio">Tasa de cambio:</label>
+          <input type="number" name="tasaCambio" class="form-control" id="tasaCambio">
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="redondeo">Factor de redondeo:</label>
+          <input type="number" name="redondeo" class="form-control" id="redondeo">
+        </div>
+      </div>
+      <hr>
+      <h4 class="f-section-title">Datos del cliente</h4>
+      <div class="row">
+        <div class="col-sm-6 form-group">
+          <label for="codigoCliente">Código del cliente:</label>
+          <input type="text" name="codigoCliente" class="form-control" id="codigoCliente">
+        </div>
+        <div class="col-sm-6 form-group">
+          <label for="cedulaJuridica">No. Cédula jurídica:</label>
+          <input type="text" name="cedulaJuridica" class="form-control" id="cedulaJuridica">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 form-group">
+          <label for="nombreCliente">Nombre del cliente:</label>
+          <input type="text" name="nombreCliente" class="form-control" id="nombreCliente">
+        </div>
+        <div class="col-sm-6 form-group">
+          <label for="nombreDivision">Nombre de la división:</label>
+          <input type="text" name="nombreDivision" class="form-control" id="nombreDivision">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="nombreContacto">Nombre del contacto:</label>
+          <input type="text" name="nombreContacto" class="form-control" id="nombreContacto">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4 form-group">
+          <label for="provincia">Provincia:</label>
+          <select name="provincia" class="form-control" id="provincia">
+            <option>----</option>
+          </select>
+        </div>
+        <div class="col-sm-4 form-group">
+          <label for="canton">Cantón:</label>
+          <select name="canton" class="form-control" id="canton">
+            <option>----</option>
+          </select>
+        </div>
+        <div class="col-sm-4 form-group">
+          <label for="distrito">Distrito:</label>
+          <select name="distrito" class="form-control" id="distrito">
+            <option>----</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="direccion">Dirección:</label>
+          <input type="text" name="direccion" class="form-control" id="direccion">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4 form-group">
+          <label for="telefono1">Teléfono 1:</label>
+          <input type="text" name="telefono1" class="form-control" id="telefono1">
+        </div>
+        <div class="col-sm-4 form-group">
+          <label for="telefono2">Teléfono 2:</label>
+          <input type="text" name="telefono2" class="form-control" id="telefono2">
+        </div>
+        <div class="col-sm-4 form-group">
+          <label for="telefono3">Teléfono 3:</label>
+          <input type="text" name="telefono3" class="form-control" id="telefono3">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4 form-group">
+          <label for="Fax">Fax:</label>
+          <input type="text" name="Fax" class="form-control" id="Fax">
+        </div>
+        <div class="col-sm-4 form-group">
+          <label for="apartadoPostal">Apartado postal:</label>
+          <input type="text" name="apartadoPostal" class="form-control" id="apartadoPostal">
+        </div>
+        <div class="col-sm-4 form-group">
+          <label for="codigoPostal">Código postal:</label>
+          <input type="text" name="codigoPostal" class="form-control" id="codigoPostal">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="email">Email:</label>
+          <input type="text" name="email" class="form-control" id="email">
+        </div>
+      </div>
+      <hr>
+      <h4 class="f-section-title">Condiciones</h4>
+      <div class="row">
+          <div class="col-sm-3 form-group">
+            <label for="tiempoEntrega">Tiempo de entrega:</label>
+            <select name="tiempoEntrega" class="form-control" id="tiempoEntrega">
+              <option>----</option>
+            </select>
+          </div>
+          <div class="col-sm-6 form-group">
+            <label for="lugarEntrega">Lugar de entrega:</label>
+            <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega">
+          </div>
+          <div class="col-sm-3 form-group">
+            <label for="formaPago">Forma de pago:</label>
+            <input type="text" name="formaPago" class="form-control" id="formaPago">
+          </div>
+      </div>
+      <hr>
+      <h4 class="f-section-title">Notas</h4>
+      <div class="row">
+        <div class="col-sm-6 form-group">
+          <label for="notas1">Notas 1:</label>
+          <textarea name="notas1" rows="4" class="form-control" id="notas1"></textarea>
+        </div>
+        <div class="col-sm-6 form-group">
+          <label for="notas2">Notas 2:</label>
+          <textarea name="notas2" rows="4" class="form-control" id="notas2"></textarea>
+        </div>
+
+      </div>
+      <hr>
+      <h4 class="f-section-title">Líneas de la transacción</h4>
+      <ul class="transactions-list">
+        <li>
+          <div class="row">
+            <div class="col-sm-3 form-group">
+              <label for="codigoArticulo">Código del artículo:</label>
+              <input type="text" name="codigoArticulo" class="form-control" id="codigoArticulo">
+            </div>
+            <div class="col-sm-9 form-group">
+              <label for="nombreArticulo">Nombre del artículo:</label>
+              <input type="text" name="nombreArticulo" class="form-control" id="nombreArticulo">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 form-group">
+              <label for="descripcionArticulo">Descripción:</label>
+              <textarea name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo"></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-3 form-group">
+              <label for="codigoNombreLinea">Código y nombre de línea</label>
+              <input type="text" name="name" class="form-control" id="codigoNombreLinea">
+            </div>
+            <div class="col-sm-6 col-md-3 form-group">
+              <label for="noParte">No. de parte</label>
+              <input type="text" name="noParte" class="form-control" id="noParte">
+            </div>
+            <div class="col-sm-6 col-md-3 form-group">
+              <label for="marca">Marca</label>
+              <input type="text" name="marca" class="form-control" id="marca">
+            </div>
+            <div class="col-sm-6 col-md-3 form-group">
+              <label for="proveedor">Proveedor</label>
+              <input type="text" name="proveedor" class="form-control" id="proveedor">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 col-md-2 form-group">
+              <label for="cantidad">Cantidad</label>
+              <input type="text" name="cantidad" class="form-control" id="cantidad">
+            </div>
+            <div class="col-sm-4 col-md-2 form-group">
+              <label for="unidadMedida">Unidad de medida</label>
+              <input type="text" name="unidadMedida" class="form-control" id="unidadMedida">
+            </div>
+            <div class="col-sm-4 col-md-2 form-group">
+              <label for="precioUnitario">Precio unitario</label>
+              <input type="text" name="precioUnitario" class="form-control" id="precioUnitario">
+            </div>
+            <div class="col-sm-6 col-md-3 form-group">
+              <label for="cantidadPrecioUnitario">Cantidad x precio unitario</label>
+              <input type="text" name="cantidadPrecioUnitario" class="form-control" id="cantidadPrecioUnitario">
+            </div>
+            <div class="col-sm-6 col-md-3 form-group">
+              <label for="porcentajeDescuento">Porcentaje de descuento</label>
+              <input type="text" name="porcentajeDescuento" class="form-control" id="porcentajeDescuento">
+            </div>
+          </div>
+        </li>
+      </ul>
 
       <footer>
         <p>&copy; United Devs 2016</p>
