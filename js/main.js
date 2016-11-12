@@ -13,7 +13,7 @@
         $product.find('.hide-collapse').toggle();
       }
 
-      $product.after($productForm.clone());
+      $(this).closest('.row-foot').before($productForm.clone());
     });
 
     $('.transactions-list').on('click', '.btns-collapse a', function(e){
@@ -25,6 +25,22 @@
       $product.find('.show-collapse').toggle();
       $product.find('.hide-collapse').toggle();
     });
+
+    $('.transactions-list').on('click', '.btn-action--delete', function(e){
+      e.preventDefault();
+      var $modal = $('#confirmModal'),
+          $item = $(this).closest('.row-product');
+
+      $modal.find('.modal-body').text('Seguro que desea eliminar este item?');
+      $modal.find('.btn-primary').text('Eliminar');
+
+
+      $modal.modal({ backdrop: 'static', keyboard: false })
+        .one('click', '#action-exc', function (e) {
+            $item.remove();
+        });
+    });
+
   });
 
 })(jQuery);

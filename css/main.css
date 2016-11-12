@@ -3,99 +3,117 @@
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-   body {
-       padding-top: 50px;
-       padding-bottom: 20px;
-   }
+body {
+   padding-top: 50px;
+   padding-bottom: 20px;
+}
 
-   .f-section-title{
-     margin: 30px 0;
-     font-size: 20px;
-     font-weight: 300;
-     border-left: 3px solid #0877c5;
-     padding-left: 14px;
-   }
+.f-section-title{
+ margin: 30px 0;
+ font-size: 20px;
+ font-weight: 300;
+ border-left: 3px solid #0877c5;
+ padding-left: 14px;
+}
 
-   .transactions-list{
-     padding: 0;
-   }
-   .transactions-list li{
-     list-style-type: none;
-   }
-   .form-container .row{
-     font-size: 0;
-   }
-   .form-container [class|=col]{
-     font-size: 12px;
-     float: none;
-     display: inline-block;
-   }
+.transactions-list{
+ padding: 0;
+}
+.transactions-list li{
+ list-style-type: none;
+}
+.form-container .row{
+ font-size: 0;
+}
+.form-container [class|=col]{
+ font-size: 12px;
+ float: none;
+ display: inline-block;
+}
 
-   .form-container .float--active{
-     float: left;
-     display: block;
-   }
+.form-container .float--active{
+ float: left;
+ display: block;
+}
 
-   .form-container .form-control{
-     height: 28px;
-     font-size: 13px;
-   }
+.form-container .form-control{
+ height: 28px;
+ font-size: 13px;
+}
 
-   .form-container textarea.form-control{
-     height: auto;
-   }
+.form-container textarea.form-control{
+ height: auto;
+}
 
-   .form-container label{
-     font-size: 12px;
-   }
+.form-container label{
+ font-size: 12px;
+}
 
-   .form-container .form-group{
-     margin-bottom: 12px;
-   }
+.form-container .form-group{
+ margin-bottom: 12px;
+}
 
-   .info-cliente{
-     border-right: 1px solid #d0d0d0;
-   }
+.info-cliente{
+ border-right: 1px solid #d0d0d0;
+}
 
-   .btns-collapse{
-     text-align: center;
-     font-size: 12px;
-   }
+.row-product .btns-wrapper{
+  font-size: 12px;
+}
 
-   .disp--hide{
-     display: none;
-   }
+.row-product .btns-actions{
+  height: 0;
+}
 
-   .row-product, .row-head{
-      border-bottom: 1px solid #6d6d6d;
-   }
+.row-product .btns-collapse{
+ text-align: center;
+}
 
-   .row-product, .row-foot{
-     padding: 10px;
-   }
+.disp--hide{
+ display: none;
+}
 
-   .row-product:nth-child(2n+1){
-     background: rgb(247, 247, 247);
-   }
+.row-product, .row-head{
+  border-bottom: 1px solid #6d6d6d;
+}
 
-   .op-total{
-     text-align: center;
-   }
+.row-product, .row-foot{
+ padding: 10px;
+}
 
-   .transactions-list .row, .border--full{
-     position: static;
-   }
+.row-product:nth-child(2n+1){
+ background: rgb(247, 247, 247);
+}
 
-   .transactions-list{
-     position: relative;;
-   }
+.op-total{
+ text-align: center;
+}
 
-   .border--full:before{
-     content: "";
-     position: absolute;
-     top: 0;
-     bottom: 0;
-     border-left: 1px solid #6d6d6d;
-     background-color: white;
-     margin-left: -15px;
-   }
+.transactions-list .row, .border--full{
+ position: static;
+}
+
+.transactions-list{
+ position: relative;;
+}
+
+.border--full:before{
+ content: "";
+ position: absolute;
+ top: 0;
+ bottom: 0;
+ border-left: 1px solid #6d6d6d;
+ background-color: white;
+ margin-left: -15px;
+}
+
+.confirmation-msg{
+  border-left: 3px solid #ec971f;
+  padding-left: 14px;
+}
+
+.confirmation-msg a{
+  margin-left: 20px;
+  display: inline-block;
+  padding: 1px 8px;
+}
