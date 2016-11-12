@@ -13,62 +13,11 @@
 
         <!-- More info https://datatables.net/examples/index -->
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-        <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+        <!--<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>-->
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
 
-            .f-section-title{
-              margin: 30px 0;
-              font-size: 20px;
-              font-weight: 300;
-              border-left: 3px solid #0877c5;
-              padding-left: 14px;
-            }
-
-            .transactions-list{
-              padding: 0;
-            }
-            .transactions-list li{
-              list-style-type: none;
-            }
-            .form-container .row{
-              font-size: 0;
-            }
-            .form-container [class|=col]{
-              float: none;
-              display: inline-block;
-            }
-
-            .form-container .float--active{
-              float: left;
-              display: block;
-            }
-
-            .form-container .form-control{
-              height: 28px;
-              font-size: 13px;
-            }
-
-            .form-container textarea.form-control{
-              height: auto;
-            }
-
-            .form-container label{
-              font-size: 12px;
-            }
-
-            .form-container .form-group{
-              margin-bottom: 12px;
-            }
-
-            .info-cotizacion{
-              border-right: 1px solid #d0d0d0;
-            }
 
         </style>
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -83,87 +32,7 @@
 
 
     <div class="container-fluid form-container">
-
-      <hr>
       <div class="row">
-        <div class="col-sm-6 info-cotizacion float--active">
-          <h4 class="f-section-title">Cotización</h4>
-          <div class="row">
-            <div class="col-sm-6 form-group">
-              <label for="vendedor">Vendedor:</label>
-              <input type="text" name="vendedor" class="form-control" id="vendedor">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="fechaCotizacion">Fecha de cotización:</label>
-              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="fechaVencimiento">Fecha de vencimiento:</label>
-              <input type="text" name="fechaVencimiento" placeholder="dd/mm/aaaa" class="form-control" id="fechaVencimiento">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 form-group">
-              <label for="marca">Marca:</label>
-              <input type="text" name="marca" class="form-control" id="marca">
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="fase">Fase:</label>
-              <select name="fase" class="form-control" id="fase">
-                <option value="Comunicación inicial">Comunicación inicial</option>
-                <option value="Cotización">Cotización</option>
-                <option value="Negociación">Negociación</option>
-                <option value="Venta realizada">Venta realizada</option>
-                <option value="Cerrada perdida">Cerrada perdida</option>
-                <option value="Desierta">Desierta</option>
-              </select>
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="noSolicitud">No. de solicitud:</label>
-              <input type="text" name="noSolicitud" class="form-control" id="noSolicitud">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-3 form-group">
-              <label for="tasaImpuestos">Tasa de impuestos:</label>
-              <input type="number" name="tasaImpuestos" class="form-control" id="tasaImpuestos">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="moneda">Moneda:</label>
-              <select name="moneda" class="form-control" id="moneda">
-                <option value="dolares">Dolares</option>
-                <option value="colones">Colones</option>
-              </select>
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="tasaCambio">Tasa de cambio:</label>
-              <input type="number" name="tasaCambio" class="form-control" id="tasaCambio">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="redondeo">Factor de redondeo:</label>
-              <input type="number" name="redondeo" class="form-control" id="redondeo">
-            </div>
-          </div>
-          <hr>
-          <h4 class="f-section-title">Condiciones</h4>
-          <div class="row">
-              <div class="col-sm-3 form-group">
-                <label for="tiempoEntrega">Tiempo de entrega:</label>
-                <select name="tiempoEntrega" class="form-control" id="tiempoEntrega">
-                  <option>----</option>
-                </select>
-              </div>
-              <div class="col-sm-6 form-group">
-                <label for="lugarEntrega">Lugar de entrega:</label>
-                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega">
-              </div>
-              <div class="col-sm-3 form-group">
-                <label for="formaPago">Forma de pago:</label>
-                <input type="text" name="formaPago" class="form-control" id="formaPago">
-              </div>
-          </div>
-        </div>
-        <!--info cotizacion-->
         <div class="col-sm-6 info-cliente float--active">
           <h4 class="f-section-title">Datos del cliente</h4>
           <div class="row">
@@ -252,65 +121,185 @@
           </div>
         </div>
         <!--info cliente-->
+        <div class="col-sm-6 info-cotizacion float--active">
+          <h4 class="f-section-title">Cotización</h4>
+          <div class="row">
+            <div class="col-sm-6 form-group">
+              <label for="vendedor">Vendedor:</label>
+              <input type="text" name="vendedor" class="form-control" id="vendedor">
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="fechaCotizacion">Fecha de cotización:</label>
+              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion">
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="fechaVencimiento">Fecha de vencimiento:</label>
+              <input type="text" name="fechaVencimiento" placeholder="dd/mm/aaaa" class="form-control" id="fechaVencimiento">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 form-group">
+              <label for="marca">Marca:</label>
+              <input type="text" name="marca" class="form-control" id="marca">
+            </div>
+            <div class="col-sm-4 form-group">
+              <label for="fase">Fase:</label>
+              <select name="fase" class="form-control" id="fase">
+                <option value="Comunicación inicial">Comunicación inicial</option>
+                <option value="Cotización">Cotización</option>
+                <option value="Negociación">Negociación</option>
+                <option value="Venta realizada">Venta realizada</option>
+                <option value="Cerrada perdida">Cerrada perdida</option>
+                <option value="Desierta">Desierta</option>
+              </select>
+            </div>
+            <div class="col-sm-4 form-group">
+              <label for="noSolicitud">No. de solicitud:</label>
+              <input type="text" name="noSolicitud" class="form-control" id="noSolicitud">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3 form-group">
+              <label for="tasaImpuestos">Tasa de impuestos:</label>
+              <input type="number" name="tasaImpuestos" class="form-control" id="tasaImpuestos">
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="moneda">Moneda:</label>
+              <select name="moneda" class="form-control" id="moneda">
+                <option value="dolares">Dolares</option>
+                <option value="colones">Colones</option>
+              </select>
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="tasaCambio">Tasa de cambio:</label>
+              <input type="number" name="tasaCambio" class="form-control" id="tasaCambio">
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="redondeo">Factor de redondeo:</label>
+              <input type="number" name="redondeo" class="form-control" id="redondeo">
+            </div>
+          </div>
+          <hr>
+          <h4 class="f-section-title">Condiciones</h4>
+          <div class="row">
+              <div class="col-sm-3 form-group">
+                <label for="tiempoEntrega">Tiempo de entrega:</label>
+                <select name="tiempoEntrega" class="form-control" id="tiempoEntrega">
+                  <option>----</option>
+                </select>
+              </div>
+              <div class="col-sm-6 form-group">
+                <label for="lugarEntrega">Lugar de entrega:</label>
+                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega">
+              </div>
+              <div class="col-sm-3 form-group">
+                <label for="formaPago">Forma de pago:</label>
+                <input type="text" name="formaPago" class="form-control" id="formaPago">
+              </div>
+          </div>
+        </div>
+        <!--info cotizacion-->
       </div>
       <hr>
       <h4 class="f-section-title">Líneas de la transacción</h4>
       <ul class="transactions-list">
-        <li>
+        <li class="row-head">
           <div class="row">
-            <div class="col-sm-3 form-group">
+            <div class="col-sm-offset-7 col-sm-1 border--full">
+              <b>Cantidad</b>
+            </div>
+            <div class="col-sm-1 border--full">
+              <b>Unidad de medida</b>
+            </div>
+            <div class="col-sm-1 border--full">
+              <b>Precio unitario</b>
+            </div>
+            <div class="col-sm-1 border--full">
+              <b>Cantidad x precio unitario</b>
+            </div>
+            <div class="col-sm-1 border--full">
+              <b>Porcentaje de descuento</b>
+            </div>
+          </div>
+        </li>
+        <li class="row-product">
+          <div class="row">
+            <div class="col-sm-2 form-group">
               <label for="codigoArticulo">Código del artículo:</label>
               <input type="text" name="codigoArticulo" class="form-control" id="codigoArticulo">
             </div>
-            <div class="col-sm-9 form-group">
+            <div class="col-sm-5 form-group">
               <label for="nombreArticulo">Nombre del artículo:</label>
               <input type="text" name="nombreArticulo" class="form-control" id="nombreArticulo">
             </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12 form-group">
-              <label for="descripcionArticulo">Descripción:</label>
-              <textarea name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo"></textarea>
+            <div class="col-sm-1 form-group">
+              <input type="number" name="cantidad" class="form-control" id="cantidad">
+            </div>
+            <div class="col-sm-1 form-group">
+              <input type="number" name="unidadMedida" class="form-control" id="unidadMedida">
+            </div>
+            <div class="col-sm-1 form-group">
+              <input type="number" name="precioUnitario" class="form-control" id="precioUnitario">
+            </div>
+            <div class="col-sm-1 form-group">
+              <input type="number" name="cantidadPrecioUnitario" class="form-control" id="cantidadPrecioUnitario">
+            </div>
+            <div class="col-sm-1 form-group">
+              <input type="number" name="porcentajeDescuento" class="form-control" id="porcentajeDescuento">
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-6 col-md-3 form-group">
-              <label for="codigoNombreLinea">Código y nombre de línea</label>
-              <input type="text" name="name" class="form-control" id="codigoNombreLinea">
+          <div class="wrapper-collapse">
+            <div class="content-collapse">
+              <div class="row">
+                <div class="col-sm-2 form-group">
+                  <label for="codigoNombreLinea">Código y nombre de línea</label>
+                  <input type="text" name="name" class="form-control" id="codigoNombreLinea">
+                </div>
+                <div class="col-sm-1 form-group">
+                  <label for="noParte">No. de parte</label>
+                  <input type="text" name="noParte" class="form-control" id="noParte">
+                </div>
+                <div class="col-sm-2 form-group">
+                  <label for="marcaArticulo">Marca</label>
+                  <input type="text" name="marcaArticulo" class="form-control" id="marcaArticulo">
+                </div>
+                <div class="col-sm-2 form-group">
+                  <label for="proveedor">Proveedor</label>
+                  <input type="text" name="proveedor" class="form-control" id="proveedor">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-7 form-group">
+                  <label for="descripcionArticulo">Descripción:</label>
+                  <textarea name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo"></textarea>
+                </div>
+              </div>
             </div>
-            <div class="col-sm-6 col-md-3 form-group">
-              <label for="noParte">No. de parte</label>
-              <input type="text" name="noParte" class="form-control" id="noParte">
-            </div>
-            <div class="col-sm-6 col-md-3 form-group">
-              <label for="marcaArticulo">Marca</label>
-              <input type="text" name="marcaArticulo" class="form-control" id="marcaArticulo">
-            </div>
-            <div class="col-sm-6 col-md-3 form-group">
-              <label for="proveedor">Proveedor</label>
-              <input type="text" name="proveedor" class="form-control" id="proveedor">
+            <div class="btns-collapse">
+              <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
+              <a href="#" class="hide-collapse">Ocultar detalle</a>
             </div>
           </div>
+        </li>
+        <li class="row-foot">
           <div class="row">
-            <div class="col-sm-4 col-md-2 form-group">
-              <label for="cantidad">Cantidad</label>
-              <input type="text" name="cantidad" class="form-control" id="cantidad">
+            <div class="col-sm-3">
+              <button class="btn btn-default">Agregar articulo</button>
             </div>
-            <div class="col-sm-4 col-md-2 form-group">
-              <label for="unidadMedida">Unidad de medida</label>
-              <input type="text" name="unidadMedida" class="form-control" id="unidadMedida">
+            <div class="col-sm-offset-4 col-sm-1 op-total">
+              <b>0</b>
             </div>
-            <div class="col-sm-4 col-md-2 form-group">
-              <label for="precioUnitario">Precio unitario</label>
-              <input type="text" name="precioUnitario" class="form-control" id="precioUnitario">
+            <div class="col-sm-1 op-total">
+              <b>0</b>
             </div>
-            <div class="col-sm-6 col-md-3 form-group">
-              <label for="cantidadPrecioUnitario">Cantidad x precio unitario</label>
-              <input type="text" name="cantidadPrecioUnitario" class="form-control" id="cantidadPrecioUnitario">
+            <div class="col-sm-1 op-total">
+              <b>0</b>
             </div>
-            <div class="col-sm-6 col-md-3 form-group">
-              <label for="porcentajeDescuento">Porcentaje de descuento</label>
-              <input type="text" name="porcentajeDescuento" class="form-control" id="porcentajeDescuento">
+            <div class="col-sm-1 op-total">
+              <b>0</b>
+            </div>
+            <div class="col-sm-1 op-total">
+              <b>0</b>
             </div>
           </div>
         </li>
