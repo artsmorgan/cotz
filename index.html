@@ -33,86 +33,17 @@
           <h4 class="f-section-title">Datos del cliente</h4>
           <div class="row">
             <div class="col-sm-6 form-group">
-              <label for="codigoCliente">Código del cliente:</label>
-              <input type="text" name="codigoCliente" class="form-control" id="codigoCliente">
+              <label for="codigoClienteAux">Código del cliente:</label>
+              <input type="text" class="form-control" id="codigoClienteAux" data-bind="#codigoCliente">
             </div>
             <div class="col-sm-6 form-group">
-              <label for="cedulaJuridica">No. Cédula jurídica:</label>
-              <input type="text" name="cedulaJuridica" class="form-control" id="cedulaJuridica">
+              <label for="cedulaJuridicaAux">No. Cédula jurídica:</label>
+              <input type="text" class="form-control" id="cedulaJuridicaAux" data-bind="#cedulaJuridica">
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-6 form-group">
-              <label for="nombreCliente">Nombre del cliente:</label>
-              <input type="text" name="nombreCliente" class="form-control" id="nombreCliente">
-            </div>
-            <div class="col-sm-6 form-group">
-              <label for="nombreDivision">Nombre de la división:</label>
-              <input type="text" name="nombreDivision" class="form-control" id="nombreDivision">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6 form-group">
-              <label for="nombreContacto">Nombre del contacto:</label>
-              <input type="text" name="nombreContacto" class="form-control" id="nombreContacto">
-            </div>
-            <div class="col-sm-6 form-group">
-              <label for="email">Email:</label>
-              <input type="text" name="email" class="form-control" id="email">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 form-group">
-              <label for="provincia">Provincia:</label>
-              <select name="provincia" class="form-control" id="provincia">
-                <option>----</option>
-              </select>
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="canton">Cantón:</label>
-              <select name="canton" class="form-control" id="canton">
-                <option>----</option>
-              </select>
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="distrito">Distrito:</label>
-              <select name="distrito" class="form-control" id="distrito">
-                <option>----</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12 form-group">
-              <label for="direccion">Dirección:</label>
-              <input type="text" name="direccion" class="form-control" id="direccion">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 form-group">
-              <label for="telefono1">Teléfono 1:</label>
-              <input type="text" name="telefono1" class="form-control" id="telefono1">
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="telefono2">Teléfono 2:</label>
-              <input type="text" name="telefono2" class="form-control" id="telefono2">
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="telefono3">Teléfono 3:</label>
-              <input type="text" name="telefono3" class="form-control" id="telefono3">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 form-group">
-              <label for="Fax">Fax:</label>
-              <input type="text" name="Fax" class="form-control" id="Fax">
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="apartadoPostal">Apartado postal:</label>
-              <input type="text" name="apartadoPostal" class="form-control" id="apartadoPostal">
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="codigoPostal">Código postal:</label>
-              <input type="text" name="codigoPostal" class="form-control" id="codigoPostal">
+            <div class="col-sm-12">
+              <button class="btn btn-default">Mostrar detalle</button>
             </div>
           </div>
         </div>
@@ -320,21 +251,119 @@
       <footer>
         <p>&copy; United Devs 2016</p>
       </footer>
-    </div> <!-- /container -->
-    <div class="modal fade" id="confirmModal" role="dialog">
-        <div class="modal-dialog">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-body">
+      <div class="modal fade" id="confirmModal" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-primary" id="action-exc"></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" data-dismiss="modal" class="btn btn-primary" id="action-exc"></button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+
+        <div class="modal fade" id="clienteModal" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-sm-6 form-group">
+                      <label for="codigoCliente">Código del cliente:</label>
+                      <input type="text" name="codigoCliente" class="form-control" id="codigoCliente">
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <label for="cedulaJuridica">No. Cédula jurídica:</label>
+                      <input type="text" name="cedulaJuridica" class="form-control" id="cedulaJuridica">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6 form-group">
+                      <label for="nombreCliente">Nombre del cliente:</label>
+                      <input type="text" name="nombreCliente" class="form-control" id="nombreCliente">
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <label for="nombreDivision">Nombre de la división:</label>
+                      <input type="text" name="nombreDivision" class="form-control" id="nombreDivision">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6 form-group">
+                      <label for="nombreContacto">Nombre del contacto:</label>
+                      <input type="text" name="nombreContacto" class="form-control" id="nombreContacto">
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <label for="email">Email:</label>
+                      <input type="text" name="email" class="form-control" id="email">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4 form-group">
+                      <label for="provincia">Provincia:</label>
+                      <select name="provincia" class="form-control" id="provincia">
+                        <option>----</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-4 form-group">
+                      <label for="canton">Cantón:</label>
+                      <select name="canton" class="form-control" id="canton">
+                        <option>----</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-4 form-group">
+                      <label for="distrito">Distrito:</label>
+                      <select name="distrito" class="form-control" id="distrito">
+                        <option>----</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 form-group">
+                      <label for="direccion">Dirección:</label>
+                      <input type="text" name="direccion" class="form-control" id="direccion">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4 form-group">
+                      <label for="telefono1">Teléfono 1:</label>
+                      <input type="text" name="telefono1" class="form-control" id="telefono1">
+                    </div>
+                    <div class="col-sm-4 form-group">
+                      <label for="telefono2">Teléfono 2:</label>
+                      <input type="text" name="telefono2" class="form-control" id="telefono2">
+                    </div>
+                    <div class="col-sm-4 form-group">
+                      <label for="telefono3">Teléfono 3:</label>
+                      <input type="text" name="telefono3" class="form-control" id="telefono3">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4 form-group">
+                      <label for="Fax">Fax:</label>
+                      <input type="text" name="Fax" class="form-control" id="Fax">
+                    </div>
+                    <div class="col-sm-4 form-group">
+                      <label for="apartadoPostal">Apartado postal:</label>
+                      <input type="text" name="apartadoPostal" class="form-control" id="apartadoPostal">
+                    </div>
+                    <div class="col-sm-4 form-group">
+                      <label for="codigoPostal">Código postal:</label>
+                      <input type="text" name="codigoPostal" class="form-control" id="codigoPostal">
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
             </div>
           </div>
 
-        </div>
-      </div>
+    </div> <!-- /container -->
+
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
