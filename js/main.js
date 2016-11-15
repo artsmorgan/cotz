@@ -65,6 +65,20 @@
       });
     });
 
+    $('.datepicker').datepicker({
+      format: 'dd/mm/yyyy'
+    });
+
+    $('input[type=number]').on('input',function(){
+      var $this = $(this),
+          maxlength = $this.attr('maxlength'),
+          value = $this.val();
+
+      if (maxlength && $this.val().length > maxlength){
+        $this.val( value.slice(0, maxlength) );
+      }
+    })
+
   });
 
 })(jQuery);

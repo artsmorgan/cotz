@@ -3,9 +3,9 @@
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-body {
-   padding-top: 50px;
-   padding-bottom: 20px;
+
+.form-container{
+  background-color: #f2f3f4;
 }
 
 .f-section-title{
@@ -82,7 +82,7 @@ body {
 }
 
 .row-product:nth-child(2n+1){
- background: rgb(247, 247, 247);
+ background: #fff;
 }
 
 .op-total{

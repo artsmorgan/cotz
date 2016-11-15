@@ -17,6 +17,8 @@
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
+        <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
@@ -32,38 +34,38 @@
         <div class="col-sm-6 info-cliente float--active">
           <h4 class="f-section-title">Datos del cliente</h4>
           <div class="row">
-            <div class="col-sm-6 form-group">
+            <div class="col-sm-4 form-group">
               <label for="codigoClienteAux">Código del cliente:</label>
               <input type="text" class="form-control" id="codigoClienteAux" data-bind="#codigoCliente">
             </div>
-            <div class="col-sm-6 form-group">
+            <div class="col-sm-4 form-group">
               <label for="cedulaJuridicaAux">No. Cédula jurídica:</label>
               <input type="text" class="form-control" id="cedulaJuridicaAux" data-bind="#cedulaJuridica">
             </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <button class="btn btn-default">Mostrar detalle</button>
+            <div class="col-sm-4">
+              <button class="btn btn-default btn-block">Mostrar detalle</button>
             </div>
+          </div>
+          <h4 class="f-section-title">Condiciones</h4>
+          <div class="row">
+              <div class="col-sm-3 form-group">
+                <label for="tiempoEntrega">Tiempo de entrega:</label>
+                <select name="tiempoEntrega" class="form-control" id="tiempoEntrega">
+                  <option>----</option>
+                </select>
+              </div>
+              <div class="col-sm-6 form-group">
+                <label for="lugarEntrega">Lugar de entrega:</label>
+                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega">
+              </div>
+              <div class="col-sm-3 form-group">
+                <label for="formaPago">Forma de pago:</label>
+                <input type="text" name="formaPago" class="form-control" id="formaPago">
+              </div>
           </div>
         </div>
         <!--info cliente-->
         <div class="col-sm-6 info-cotizacion float--active">
-          <h4 class="f-section-title">Cotización</h4>
-          <div class="row">
-            <div class="col-sm-6 form-group">
-              <label for="vendedor">Vendedor:</label>
-              <input type="text" name="vendedor" class="form-control" id="vendedor">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="fechaCotizacion">Fecha de cotización:</label>
-              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="fechaVencimiento">Fecha de vencimiento:</label>
-              <input type="text" name="fechaVencimiento" placeholder="dd/mm/aaaa" class="form-control" id="fechaVencimiento">
-            </div>
-          </div>
           <div class="row">
             <div class="col-sm-4 form-group">
               <label for="marca">Marca:</label>
@@ -85,16 +87,31 @@
               <input type="text" name="noSolicitud" class="form-control" id="noSolicitud">
             </div>
           </div>
+          <h4 class="f-section-title">Cotización</h4>
+          <div class="row">
+            <div class="col-sm-6 form-group">
+              <label for="vendedor">Vendedor:</label>
+              <input type="text" name="vendedor" class="form-control" id="vendedor">
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="fechaCotizacion">Fecha de cotización:</label>
+              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control datepicker" id="fechaCotizacion">
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="fechaVencimiento">Fecha de vencimiento:</label>
+              <input type="text" name="fechaVencimiento" placeholder="dd/mm/aaaa" class="form-control datepicker" id="fechaVencimiento">
+            </div>
+          </div>
           <div class="row">
             <div class="col-sm-3 form-group">
               <label for="tasaImpuestos">Tasa de impuestos:</label>
-              <input type="number" name="tasaImpuestos" class="form-control" id="tasaImpuestos">
+              <input type="number" name="tasaImpuestos" min="1" max="99" maxlength="2" class="form-control" id="tasaImpuestos">
             </div>
             <div class="col-sm-3 form-group">
               <label for="moneda">Moneda:</label>
               <select name="moneda" class="form-control" id="moneda">
-                <option value="dolares">Dolares</option>
-                <option value="colones">Colones</option>
+                <option value="dolares">$</option>
+                <option value="colones">₡</option>
               </select>
             </div>
             <div class="col-sm-3 form-group">
@@ -103,26 +120,14 @@
             </div>
             <div class="col-sm-3 form-group">
               <label for="redondeo">Factor de redondeo:</label>
-              <input type="number" name="redondeo" class="form-control" id="redondeo">
+              <select name="redondeo" class="form-control" id="redondeo">
+                <option value="001">001</option>
+                <option value="001">005</option>
+                <option value="001">000</option>
+                <option value="N/A">N/A</option>
+              </select>
+
             </div>
-          </div>
-          <hr>
-          <h4 class="f-section-title">Condiciones</h4>
-          <div class="row">
-              <div class="col-sm-3 form-group">
-                <label for="tiempoEntrega">Tiempo de entrega:</label>
-                <select name="tiempoEntrega" class="form-control" id="tiempoEntrega">
-                  <option>----</option>
-                </select>
-              </div>
-              <div class="col-sm-6 form-group">
-                <label for="lugarEntrega">Lugar de entrega:</label>
-                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega">
-              </div>
-              <div class="col-sm-3 form-group">
-                <label for="formaPago">Forma de pago:</label>
-                <input type="text" name="formaPago" class="form-control" id="formaPago">
-              </div>
           </div>
         </div>
         <!--info cotizacion-->
@@ -369,6 +374,8 @@
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
     <script src="js/vendor/bootstrap.min.js"></script>
+
+    <script src="js/vendor/bootstrap-datepicker.min.js"></script>
 
     <script src="js/main.js"></script>
 
