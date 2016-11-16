@@ -1,18 +1,112 @@
 
 (function ($){
-  $(document).ready(function(){
-    var $productForm = $('.row-product').clone().addClass('disp--hide');
+  function updateConsecutiveAttr( consecutive, $item){
+    $('.form-control, label', $item).each(function(){
+      var $this = $(this),
+          attrAux = '';
 
-    $('.row-foot .btn').click(function(){
-      var $product = $('.row-product:last'),
-          $contentCollapse = $product.find('.content-collapse'),
-          $newProduct = $productForm.clone();
+      if( $this.is( '.form-control' ) ){
+        if( $this.attr( 'name' ) ){
+          attrAux = $this.attr( 'name' ).replace( /\d+/, consecutive );
+          $this.attr( 'name', attrAux );
+        }
 
-      if($contentCollapse.is(':visible')){
-        $contentCollapse.slideUp();
-        $product.find('.show-collapse').toggle();
-        $product.find('.hide-collapse').toggle();
+        if( $this.attr( 'id' ) ){
+          attrAux = $this.attr( 'id' ).replace( /\d+/, consecutive );
+          $this.attr('id', attrAux);
+        }
       }
+      else{
+        if( $this.attr( 'for' ) ){
+          attrAux = $this.attr( 'for' ).replace( /\d+/, consecutive );
+          $this.attr( 'for', attrAux );
+        }
+      }
+    });
+  }
+
+  function updateFormatCurrency(){
+    $('.op-total b') .formatCurrency({
+      symbol: $('#moneda option:selected').text()
+    });
+  }
+
+  function updateMonto( $productRow ){
+    var cantidad = $productRow.find( '.art-cantidad' ).val(),
+        precioUnitario = $productRow.find( '.art-precioUni' ).val();
+        $dispMonto = $productRow.find( '.op-total-monto' );
+
+        cantidad = cantidad ? cantidad : 0;
+        precioUnitario = precioUnitario ? precioUnitario : 0;
+
+        monto = cantidad * precioUnitario;
+
+        $productRow.find( '.op-hidden-monto' ).val( monto );
+        $dispMonto.text( monto );
+  }
+
+  function updateSubtotal(){
+    var subtotal = 0;
+    $('.row-product .op-total-monto').each(function(){
+      subtotal += $(this).asNumber();
+    });
+
+    $('.op-hidden-subtotal').val(subtotal);
+    $('.op-total-subtotal').text(subtotal);
+  }
+
+  function updateDescuento(){
+    var descuento = 0,
+        porcentaje = 0;
+
+    $('.row-product').each(function(){
+      porcentaje = $(this).find('.art-descuento').val() / 100;
+      descuento += $(this).find('.op-total-monto').asNumber() * porcentaje;
+    });
+
+    $('.op-hidden-descuento').val(descuento);
+    $('.op-total-descuento').text(descuento);
+  }
+
+  function updateIVA(){
+    var iva = 13 / 100,
+        subtotal = $('.op-total-subtotal').asNumber(),
+        descuento = $('.op-total-descuento').asNumber()
+        totalIva = ( subtotal - descuento ) * iva;
+
+    $('.op-hidden-iva').val(totalIva);
+    $('.op-total-iva').text(totalIva);
+  }
+
+  function updateTotal(){
+    var iva = $('.op-total-iva').asNumber(),
+        subtotal = $('.op-total-subtotal').asNumber(),
+        descuento = $('.op-total-descuento').asNumber(),
+        total = subtotal - descuento + iva;
+
+    $('.op-hidden-total').val(total);
+    $('.op-total-total').text(total);
+  }
+
+  $( document ).ready(function(){
+
+    updateFormatCurrency();
+
+    var $productForm = $( '.row-product' ).clone().addClass( 'disp--hide' );
+
+    $( '.row-foot .btn' ).click(function(){ //add product
+      var $product = $( '.row-product:last' ),
+          $contentCollapse = $product.find( '.content-collapse' ),
+          $newProduct = $productForm.clone(),
+          consecutive = $product.index() < 1 ? 1 : $product.index() + 1;
+
+      if($contentCollapse.is( ':visible' )){
+        $contentCollapse.slideUp();
+        $product.find( '.show-collapse' ).toggle();
+        $product.find( '.hide-collapse' ).toggle();
+      }
+
+      updateConsecutiveAttr( consecutive, $newProduct );
 
       $(this).closest('.row-foot').before($newProduct);
       $newProduct.slideDown();
@@ -28,7 +122,7 @@
       $product.find('.hide-collapse').toggle();
     });
 
-    $('.transactions-list').on('click', '.btn-action--delete', function(e){
+    $('.transactions-list').on('click', '.btn-action--delete', function(e){// delete product
       e.preventDefault();
       var $modal = $('#confirmModal'),
           $item = $(this).closest('.row-product');
@@ -41,12 +135,24 @@
             if( $(this).is('#action-exc') ){
                 $item.slideUp(400, function(){
                     $item.remove();
+                    updateSubtotal();
+                    updateDescuento();
+                    updateIVA();
+                    updateTotal();
+                    updateFormatCurrency();
+                    if( !$item.is( '.row-product:last' ) ){
+                      $('.row-product').each(function(index, $item){//update all items attributes
+                        updateConsecutiveAttr(index + 1, $item);
+                      });
+                    }
                 });
             }
 
             $('.modal-footer button').off('click');
         });
     });
+
+    $('#moneda').on('change', updateFormatCurrency);
 
     $('.info-cliente button').on('click', function(){
       $('#clienteModal').modal({ backdrop: 'static', keyboard: false });
@@ -77,7 +183,23 @@
       if (maxlength && $this.val().length > maxlength){
         $this.val( value.slice(0, maxlength) );
       }
-    })
+    });
+
+    $( '.transactions-list' ).on( 'input', '.art-cantidad, .art-precioUni', function(){
+      updateMonto( $(this).closest( '.row-product' ) );
+      updateSubtotal();
+      updateDescuento();
+      updateIVA();
+      updateTotal();
+      updateFormatCurrency();
+    });
+
+    $( '.transactions-list' ).on( 'input', '.art-descuento', function(){
+      updateDescuento();
+      updateIVA();
+      updateTotal();
+      updateFormatCurrency();
+    });
 
   });
 

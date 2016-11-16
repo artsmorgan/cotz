@@ -137,14 +137,8 @@
       <ul class="transactions-list">
         <li class="row-head">
           <div class="row">
-            <div class="col-sm-offset-7 col-sm-1 border--full">
-              <b>Cantidad</b>
-            </div>
-            <div class="col-sm-1 border--full">
+            <div class="col-sm-offset-6 col-sm-1 border--full">
               <b>Unidad de medida</b>
-            </div>
-            <div class="col-sm-1 border--full">
-              <b>Precio unitario</b>
             </div>
             <div class="col-sm-1 border--full">
               <b>Cantidad x precio unitario</b>
@@ -152,91 +146,130 @@
             <div class="col-sm-1 border--full">
               <b>Porcentaje de descuento</b>
             </div>
+            <div class="col-sm-1 border--full">
+              <b>Precio unitario</b>
+            </div>
+            <div class="col-sm-1 border--full">
+              <b>Cantidad</b>
+            </div>
+            <div class="col-sm-1 border--full">
+              <b>Monto</b>
+            </div>
           </div>
         </li>
         <li class="row-product">
           <div class="row">
             <div class="col-sm-2 form-group">
-              <label for="codigoArticulo">Código del artículo:</label>
-              <input type="text" name="codigoArticulo" class="form-control" id="codigoArticulo">
+              <label for="codigoArticulo1">Código del artículo:</label>
+              <input type="text" name="codigoArticulo1" class="form-control" id="codigoArticulo1">
             </div>
-            <div class="col-sm-5 form-group">
-              <label for="nombreArticulo">Nombre del artículo:</label>
-              <input type="text" name="nombreArticulo" class="form-control" id="nombreArticulo">
+            <div class="col-sm-4 form-group">
+              <label for="nombreArticulo1">Nombre del artículo:</label>
+              <input type="text" name="nombreArticulo1" class="form-control" id="nombreArticulo1">
             </div>
-            <div class="col-sm-1 form-group">
-              <input type="number" name="cantidad" class="form-control" id="cantidad">
+            <div class="col-sm-1 form-group border--full">
+              <input type="number" name="unidadMedida1" class="form-control" id="unidadMedida1">
             </div>
-            <div class="col-sm-1 form-group">
-              <input type="number" name="unidadMedida" class="form-control" id="unidadMedida">
+            <div class="col-sm-1 form-group border--full">
+              <input type="number" name="cantidadPrecioUnitario1" class="form-control" id="cantidadPrecioUnitario1">
             </div>
-            <div class="col-sm-1 form-group">
-              <input type="number" name="precioUnitario" class="form-control" id="precioUnitario">
+            <div class="col-sm-1 form-group border--full">
+              <input type="number" name="porcentajeDescuento1" class="form-control art-descuento" id="porcentajeDescuento1">
             </div>
-            <div class="col-sm-1 form-group">
-              <input type="number" name="cantidadPrecioUnitario" class="form-control" id="cantidadPrecioUnitario">
+            <div class="col-sm-1 form-group border--full">
+              <input type="number" name="precioUnitario1" class="form-control art-precioUni" id="precioUnitario1">
             </div>
-            <div class="col-sm-1 form-group">
-              <input type="number" name="porcentajeDescuento" class="form-control" id="porcentajeDescuento">
+            <div class="col-sm-1 form-group border--full">
+              <input type="number" name="cantidad1" class="form-control art-cantidad" id="cantidad1">
+            </div>
+            <div class="col-sm-1 form-group border--full">
+              <input type="hidden" name="monto1" class="op-hidden-monto" id="monto1">
+              <p class="op-total">
+                <b class="op-total-monto">0</b>
+              </p>
+              <span>
             </div>
           </div>
           <div class="wrapper-collapse">
             <div class="content-collapse">
               <div class="row">
                 <div class="col-sm-2 form-group">
-                  <label for="codigoNombreLinea">Código y nombre de línea</label>
-                  <input type="text" name="name" class="form-control" id="codigoNombreLinea">
+                  <label for="codigoNombreLinea1">Código y nombre de línea</label>
+                  <input type="text" name="name1" class="form-control" id="codigoNombreLinea1">
                 </div>
                 <div class="col-sm-1 form-group">
-                  <label for="noParte">No. de parte</label>
-                  <input type="text" name="noParte" class="form-control" id="noParte">
+                  <label for="noParte1">No. de parte</label>
+                  <input type="text" name="noParte1" class="form-control" id="noParte1">
+                </div>
+                <div class="col-sm-1 form-group">
+                  <label for="marcaArticulo1">Marca</label>
+                  <input type="text" name="marcaArticulo1" class="form-control" id="marcaArticulo1">
                 </div>
                 <div class="col-sm-2 form-group">
-                  <label for="marcaArticulo">Marca</label>
-                  <input type="text" name="marcaArticulo" class="form-control" id="marcaArticulo">
-                </div>
-                <div class="col-sm-2 form-group">
-                  <label for="proveedor">Proveedor</label>
-                  <input type="text" name="proveedor" class="form-control" id="proveedor">
+                  <label for="proveedor1">Proveedor</label>
+                  <input type="text" name="proveedor1" class="form-control" id="proveedor1">
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-7 form-group">
-                  <label for="descripcionArticulo">Descripción:</label>
-                  <textarea name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo"></textarea>
+                <div class="col-sm-6 form-group">
+                  <label for="descripcionArticulo1">Descripción:</label>
+                  <textarea name="descripcionArticulo1" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
                 </div>
               </div>
             </div>
-            <div class="btns-wrapper">
-              <div class="btns-actions">
-                <a href="#" class="btn-action--delete">Eliminar</a>
-              </div>
-              <div class="btns-collapse">
-                <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
-                <a href="#" class="hide-collapse">Ocultar detalle</a>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="btns-wrapper">
+                  <div class="btns-actions">
+                    <a href="#" class="btn-action--delete">Eliminar</a>
+                  </div>
+                  <div class="btns-collapse">
+                    <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
+                    <a href="#" class="hide-collapse">Ocultar detalle</a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </li>
         <li class="row-foot">
           <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-3 cell-collapse">
               <button class="btn btn-default">Agregar artículo</button>
             </div>
-            <div class="col-sm-offset-4 col-sm-1 op-total">
-              <b>0</b>
+            <div class="col-sm-offset-7 col-sm-1">
+              <b>Subtotal</b>
             </div>
             <div class="col-sm-1 op-total">
-              <b>0</b>
+              <input type="hidden" name="subtotal" class="op-hidden-subtotal">
+              <b class="op-total-subtotal">0</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-offset-10 col-sm-1">
+              <b>Descuento</b>
             </div>
             <div class="col-sm-1 op-total">
-              <b>0</b>
+              <input type="hidden" name="totalDescuento" class="op-hidden-descuento">
+              <b class="op-total-descuento">0</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-offset-10 col-sm-1">
+              <b>I.V.A</b>
             </div>
             <div class="col-sm-1 op-total">
-              <b>0</b>
+              <input type="hidden" name="totalIva" class="op-hidden-iva">
+              <b class="op-total-iva">0</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-offset-10 col-sm-1">
+              <b>Total</b>
             </div>
             <div class="col-sm-1 op-total">
-              <b>0</b>
+              <input type="hidden" name="total" class="op-hidden-total">
+              <b class="op-total-total">0</b>
             </div>
           </div>
         </li>
@@ -376,6 +409,10 @@
     <script src="js/vendor/bootstrap.min.js"></script>
 
     <script src="js/vendor/bootstrap-datepicker.min.js"></script>
+
+    <script src="js/vendor/jquery.formatCurrency-1.4.0.min.js"></script>
+
+    </script>
 
     <script src="js/main.js"></script>
 
