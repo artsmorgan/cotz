@@ -145,7 +145,7 @@
       $modal.find('.btn-primary').text('Eliminar');
 
       $modal.modal({ backdrop: 'static', keyboard: false })
-        .one('click', '.modal-footer button', function (e) {
+        .one('click', '.modal-footer .btn', function (e) {
             if( $(this).is('#action-exc') ){
                 $item.slideUp(400, function(){
                     $item.remove();
