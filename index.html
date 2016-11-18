@@ -29,7 +29,7 @@
         <![endif]-->
 
 
-    <div class="container-fluid form-container">
+    <form class="container-fluid form-container">
       <div class="row">
         <div class="col-sm-6 info-cliente float--active">
           <h4 class="f-section-title">Datos del cliente</h4>
@@ -43,7 +43,7 @@
               <input type="text" class="form-control" id="cedulaJuridicaAux" data-bind="#cedulaJuridica">
             </div>
             <div class="col-sm-4">
-              <button class="btn btn-default btn-block">Mostrar detalle</button>
+              <a href="#" class="btn btn-default btn-block">Mostrar detalle</a>
             </div>
           </div>
           <h4 class="f-section-title">Condiciones</h4>
@@ -161,29 +161,29 @@
           <div class="row">
             <div class="col-sm-2 form-group">
               <label for="codigoArticulo1">Código del artículo:</label>
-              <input type="text" name="codigoArticulo1" class="form-control" id="codigoArticulo1">
+              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo1">
             </div>
             <div class="col-sm-4 form-group">
               <label for="nombreArticulo1">Nombre del artículo:</label>
-              <input type="text" name="nombreArticulo1" class="form-control" id="nombreArticulo1">
+              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="number" name="unidadMedida1" class="form-control" id="unidadMedida1">
+              <input type="number" data-name="unidadMedida" class="form-control" id="unidadMedida1">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="number" name="cantidadPrecioUnitario1" class="form-control" id="cantidadPrecioUnitario1">
+              <input type="number" data-name="cantidadPrecioUnitario" class="form-control" id="cantidadPrecioUnitario1">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="number" name="porcentajeDescuento1" class="form-control art-descuento" id="porcentajeDescuento1">
+              <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento1">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="number" name="precioUnitario1" class="form-control art-precioUni" id="precioUnitario1">
+              <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario1">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="number" name="cantidad1" class="form-control art-cantidad" id="cantidad1">
+              <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad1">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="hidden" name="monto1" class="op-hidden-monto" id="monto1">
+              <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1">
               <p class="op-total">
                 <b class="op-total-monto">0</b>
               </p>
@@ -195,25 +195,25 @@
               <div class="row">
                 <div class="col-sm-2 form-group">
                   <label for="codigoNombreLinea1">Código y nombre de línea</label>
-                  <input type="text" name="name1" class="form-control" id="codigoNombreLinea1">
+                  <input type="text" data-name="name" class="form-control" id="codigoNombreLinea1">
                 </div>
                 <div class="col-sm-1 form-group">
                   <label for="noParte1">No. de parte</label>
-                  <input type="text" name="noParte1" class="form-control" id="noParte1">
+                  <input type="text" data-name="noParte" class="form-control" id="noParte1">
                 </div>
                 <div class="col-sm-1 form-group">
                   <label for="marcaArticulo1">Marca</label>
-                  <input type="text" name="marcaArticulo1" class="form-control" id="marcaArticulo1">
+                  <input type="text" data-name="marcaArticulo" class="form-control" id="marcaArticulo1">
                 </div>
                 <div class="col-sm-2 form-group">
                   <label for="proveedor1">Proveedor</label>
-                  <input type="text" name="proveedor1" class="form-control" id="proveedor1">
+                  <input type="text" data-name="proveedor" class="form-control" id="proveedor1">
                 </div>
               </div>
               <div class="row">
                 <div class="col-sm-6 form-group">
                   <label for="descripcionArticulo1">Descripción:</label>
-                  <textarea name="descripcionArticulo1" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
+                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
                 </div>
               </div>
             </div>
@@ -235,7 +235,7 @@
         <li class="row-foot">
           <div class="row">
             <div class="col-sm-3 cell-collapse">
-              <button class="btn btn-default">Agregar artículo</button>
+              <a href="#" class="btn btn-default">Agregar artículo</a>
             </div>
             <div class="col-sm-offset-7 col-sm-1">
               <b>Subtotal</b>
@@ -285,6 +285,11 @@
           <textarea name="notas2" rows="4" class="form-control" id="notas2"></textarea>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-offset-11 col-sm-1">
+          <a href="#" class="btn btn-default btn-block btn-save">Guardar</a>
+        </div>
+      </div>
 
       <footer>
         <p>&copy; United Devs 2016</p>
@@ -296,8 +301,8 @@
               <div class="modal-body">
               </div>
               <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-primary" id="action-exc"></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <a href="#" type="button" data-dismiss="modal" class="btn btn-primary" id="action-exc"></a>
+                <a href="#" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</a>
               </div>
             </div>
           </div>
@@ -394,13 +399,13 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                  <a href="#" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</a>
                 </div>
               </div>
             </div>
           </div>
 
-    </div> <!-- /container -->
+    </form> <!-- /container -->
 
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

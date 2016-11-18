@@ -6,11 +6,6 @@
           attrAux = '';
 
       if( $this.is( '.form-control' ) ){
-        if( $this.attr( 'name' ) ){
-          attrAux = $this.attr( 'name' ).replace( /\d+/, consecutive );
-          $this.attr( 'name', attrAux );
-        }
-
         if( $this.attr( 'id' ) ){
           attrAux = $this.attr( 'id' ).replace( /\d+/, consecutive );
           $this.attr('id', attrAux);
@@ -88,13 +83,32 @@
     $('.op-total-total').text(total);
   }
 
+  function getProdcutDataJSON(){
+    var data = [];
+
+    $( '.row-product' ).each(function(){
+      var product = {};
+      $( 'input', this ).each(function(){
+        var $input = $( this ),
+            key = $input.data( 'name' );
+
+        product[key] = $input.val();
+
+      });
+      data.push(product);
+    });
+
+    return encodeURIComponent(JSON.stringify(data));
+  }
+
   $( document ).ready(function(){
 
     updateFormatCurrency();
 
     var $productForm = $( '.row-product' ).clone().addClass( 'disp--hide' );
 
-    $( '.row-foot .btn' ).click(function(){ //add product
+    $( '.row-foot .btn' ).click(function(e){ //add product
+      e.preventDefault();
       var $product = $( '.row-product:last' ),
           $contentCollapse = $product.find( '.content-collapse' ),
           $newProduct = $productForm.clone(),
@@ -154,7 +168,8 @@
 
     $('#moneda').on('change', updateFormatCurrency);
 
-    $('.info-cliente button').on('click', function(){
+    $('.info-cliente .btn').on('click', function(e){
+      e.preventDefault();
       $('#clienteModal').modal({ backdrop: 'static', keyboard: false });
     });
 
@@ -201,6 +216,17 @@
       updateFormatCurrency();
     });
 
+    $('.btn-save').on('click', function(e){
+      e.preventDefault();
+      var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
+      console.log(data);
+
+      // $.post('URL', data, function(){
+      //   console.log('success');
+      // }).fail( function(){
+      //   console.log('fail');
+      // });
+    });
   });
 
 })(jQuery);
