@@ -17,418 +17,90 @@
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
-        <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="bower_components/bootstrap-table/src/bootstrap-table.css">
+        <link rel="stylesheet" href="css/cotz-index.css">
+        <script src="https://use.fontawesome.com/5b1d115124.js"></script>
 
-        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
+      <table id="table" data-pagination="true" 
+                        data-show-export="true" data-export-types="['csv', 'txt', 'excel']"
+                        data-search="true" data-search-on-enter-key="true"  data-smart-display="true"
+                        data-page-size="10" data-page-list="[10,25,50,100]">
+      <thead>
+      <tr>  
+        <th data-field="cot_no" data-sortable="true">Cot #</th>
+        <th data-field="client" data-sortable="true">Cliente</th>
+        <th data-field="seller" data-sortable="true">Vendedor</th>
+        <th data-field="description" data-sortable="true">Descripcion</th>
+        <th data-field="cot_date" data-sortable="true">Fecha de Cotizacion</th>
+        <th data-field="edit" data-events="edit" data-formatter="editBtn"></th>
+        <th data-field="delete" data-events="edit" data-formatter="deletetBtn"></th>
+      </tr>
+      </thead>
+      </table>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+      <script src="js/vendor/bootstrap.min.js"></script>
+
+      <script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
+      <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
+      <script src="js/export-table.js"></script>
+      <script src="js/vendor/tableExport/tableExport.min.js"></script>
+      <script type="text/javascript" src="js/vendor/tableExport/libs/FileSaver/FileSaver.min.js"></script>
+      <script type="text/javascript" src="js/vendor/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
+      <script type="text/javascript">
+        //Add Create Cot Btn
 
 
-    <form class="container-fluid form-container">
-      <div class="row">
-        <div class="col-sm-6 info-cliente float--active">
-          <h4 class="f-section-title">Datos del cliente</h4>
-          <div class="row">
-            <div class="col-sm-4 form-group">
-              <label for="codigoClienteAux">Código del cliente:</label>
-              <input type="text" class="form-control" id="codigoClienteAux" data-bind="#codigoCliente">
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="cedulaJuridicaAux">No. Cédula jurídica:</label>
-              <input type="text" class="form-control" id="cedulaJuridicaAux" data-bind="#cedulaJuridica">
-            </div>
-            <div class="col-sm-4">
-              <a href="#" class="btn btn-default btn-block">Mostrar detalle</a>
-            </div>
-          </div>
-          <h4 class="f-section-title">Condiciones</h4>
-          <div class="row">
-              <div class="col-sm-3 form-group">
-                <label for="tiempoEntrega">Tiempo de entrega:</label>
-                <select name="tiempoEntrega" class="form-control" id="tiempoEntrega">
-                  <option>----</option>
-                </select>
-              </div>
-              <div class="col-sm-6 form-group">
-                <label for="lugarEntrega">Lugar de entrega:</label>
-                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega">
-              </div>
-              <div class="col-sm-3 form-group">
-                <label for="formaPago">Forma de pago:</label>
-                <input type="text" name="formaPago" class="form-control" id="formaPago">
-              </div>
-          </div>
-        </div>
-        <!--info cliente-->
-        <div class="col-sm-6 info-cotizacion float--active">
-          <div class="row">
-            <div class="col-sm-4 form-group">
-              <label for="marca">Marca:</label>
-              <input type="text" name="marca" class="form-control" id="marca">
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="fase">Fase:</label>
-              <select name="fase" class="form-control" id="fase">
-                <option value="Comunicación inicial">Comunicación inicial</option>
-                <option value="Cotización">Cotización</option>
-                <option value="Negociación">Negociación</option>
-                <option value="Venta realizada">Venta realizada</option>
-                <option value="Cerrada perdida">Cerrada perdida</option>
-                <option value="Desierta">Desierta</option>
-              </select>
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="noSolicitud">No. de solicitud:</label>
-              <input type="text" name="noSolicitud" class="form-control" id="noSolicitud">
-            </div>
-          </div>
-          <h4 class="f-section-title">Cotización</h4>
-          <div class="row">
-            <div class="col-sm-6 form-group">
-              <label for="vendedor">Vendedor:</label>
-              <input type="text" name="vendedor" class="form-control" id="vendedor">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="fechaCotizacion">Fecha de cotización:</label>
-              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control datepicker" id="fechaCotizacion">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="fechaVencimiento">Fecha de vencimiento:</label>
-              <input type="text" name="fechaVencimiento" placeholder="dd/mm/aaaa" class="form-control datepicker" id="fechaVencimiento">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-3 form-group">
-              <label for="tasaImpuestos">Tasa de impuestos:</label>
-              <input type="number" name="tasaImpuestos" min="1" max="99" maxlength="2" class="form-control" id="tasaImpuestos">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="moneda">Moneda:</label>
-              <select name="moneda" class="form-control" id="moneda">
-                <option value="dolares">$</option>
-                <option value="colones">₡</option>
-              </select>
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="tasaCambio">Tasa de cambio:</label>
-              <input type="number" name="tasaCambio" class="form-control" id="tasaCambio">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="redondeo">Factor de redondeo:</label>
-              <select name="redondeo" class="form-control" id="redondeo">
-                <option value="001">001</option>
-                <option value="001">005</option>
-                <option value="001">000</option>
-                <option value="N/A">N/A</option>
-              </select>
 
-            </div>
-          </div>
-        </div>
-        <!--info cotizacion-->
-      </div>
-      <hr>
-      <h4 class="f-section-title">Líneas de la transacción</h4>
-      <ul class="transactions-list">
-        <li class="row-head">
-          <div class="row">
-            <div class="col-sm-offset-6 col-sm-1 border--full">
-              <b>Unidad de medida</b>
-            </div>
-            <div class="col-sm-1 border--full">
-              <b>Cantidad x precio unitario</b>
-            </div>
-            <div class="col-sm-1 border--full">
-              <b>Porcentaje de descuento</b>
-            </div>
-            <div class="col-sm-1 border--full">
-              <b>Precio unitario</b>
-            </div>
-            <div class="col-sm-1 border--full">
-              <b>Cantidad</b>
-            </div>
-            <div class="col-sm-1 border--full">
-              <b>Monto</b>
-            </div>
-          </div>
-        </li>
-        <li class="row-product">
-          <div class="row">
-            <div class="col-sm-2 form-group">
-              <label for="codigoArticulo1">Código del artículo:</label>
-              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo1">
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="nombreArticulo1">Nombre del artículo:</label>
-              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
-            </div>
-            <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="unidadMedida" class="form-control" id="unidadMedida1">
-            </div>
-            <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="cantidadPrecioUnitario" class="form-control" id="cantidadPrecioUnitario1">
-            </div>
-            <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento1">
-            </div>
-            <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario1">
-            </div>
-            <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad1">
-            </div>
-            <div class="col-sm-1 form-group border--full">
-              <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1">
-              <p class="op-total">
-                <b class="op-total-monto">0</b>
-              </p>
-              <span>
-            </div>
-          </div>
-          <div class="wrapper-collapse">
-            <div class="content-collapse">
-              <div class="row">
-                <div class="col-sm-2 form-group">
-                  <label for="codigoNombreLinea1">Código y nombre de línea</label>
-                  <input type="text" data-name="name" class="form-control" id="codigoNombreLinea1">
-                </div>
-                <div class="col-sm-1 form-group">
-                  <label for="noParte1">No. de parte</label>
-                  <input type="text" data-name="noParte" class="form-control" id="noParte1">
-                </div>
-                <div class="col-sm-1 form-group">
-                  <label for="marcaArticulo1">Marca</label>
-                  <input type="text" data-name="marcaArticulo" class="form-control" id="marcaArticulo1">
-                </div>
-                <div class="col-sm-2 form-group">
-                  <label for="proveedor1">Proveedor</label>
-                  <input type="text" data-name="proveedor" class="form-control" id="proveedor1">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6 form-group">
-                  <label for="descripcionArticulo1">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="btns-wrapper">
-                  <div class="btns-actions">
-                    <a href="#" class="btn-action--delete">Eliminar</a>
-                  </div>
-                  <div class="btns-collapse">
-                    <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
-                    <a href="#" class="hide-collapse">Ocultar detalle</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </li>
-        <li class="row-foot">
-          <div class="row">
-            <div class="col-sm-3 cell-collapse">
-              <a href="#" class="btn btn-default">Agregar artículo</a>
-            </div>
-            <div class="col-sm-offset-7 col-sm-1">
-              <b>Subtotal</b>
-            </div>
-            <div class="col-sm-1 op-total">
-              <input type="hidden" name="subtotal" class="op-hidden-subtotal">
-              <b class="op-total-subtotal">0</b>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-offset-10 col-sm-1">
-              <b>Descuento</b>
-            </div>
-            <div class="col-sm-1 op-total">
-              <input type="hidden" name="totalDescuento" class="op-hidden-descuento">
-              <b class="op-total-descuento">0</b>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-offset-10 col-sm-1">
-              <b>I.V.A</b>
-            </div>
-            <div class="col-sm-1 op-total">
-              <input type="hidden" name="totalIva" class="op-hidden-iva">
-              <b class="op-total-iva">0</b>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-offset-10 col-sm-1">
-              <b>Total</b>
-            </div>
-            <div class="col-sm-1 op-total">
-              <input type="hidden" name="total" class="op-hidden-total">
-              <b class="op-total-total">0</b>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <h4 class="f-section-title">Notas</h4>
-      <div class="row">
-        <div class="col-sm-6 form-group">
-          <label for="notas1">Notas 1:</label>
-          <textarea name="notas1" rows="4" class="form-control" id="notas1"></textarea>
-        </div>
-        <div class="col-sm-6 form-group">
-          <label for="notas2">Notas 2:</label>
-          <textarea name="notas2" rows="4" class="form-control" id="notas2"></textarea>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-offset-11 col-sm-1">
-          <a href="#" class="btn btn-default btn-block btn-save">Guardar</a>
-        </div>
-      </div>
+        $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
+        
+        var edit = { 
+            'click .like': function (e, value, row, index) { 
+                $('#table').tableExport({type:'csv'}); 
+            }
+        };
 
-      <footer>
-        <p>&copy; United Devs 2016</p>
-      </footer>
-      <div class="modal fade" id="confirmModal" role="dialog">
-          <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-              <div class="modal-body">
-              </div>
-              <div class="modal-footer">
-                <a href="#" type="button" data-dismiss="modal" class="btn btn-primary" id="action-exc"></a>
-                <a href="#" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        var editBtn = function (value) { 
+             return '<a href="#" class="edit" data="$id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+        };
 
-        <div class="modal fade" id="clienteModal" role="dialog">
-            <div class="modal-dialog">
-              <!-- Modal content-->
-              <div class="modal-content">
-                <div class="modal-body">
-                  <div class="row">
-                    <div class="col-sm-6 form-group">
-                      <label for="codigoCliente">Código del cliente:</label>
-                      <input type="text" name="codigoCliente" class="form-control" id="codigoCliente">
-                    </div>
-                    <div class="col-sm-6 form-group">
-                      <label for="cedulaJuridica">No. Cédula jurídica:</label>
-                      <input type="text" name="cedulaJuridica" class="form-control" id="cedulaJuridica">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6 form-group">
-                      <label for="nombreCliente">Nombre del cliente:</label>
-                      <input type="text" name="nombreCliente" class="form-control" id="nombreCliente">
-                    </div>
-                    <div class="col-sm-6 form-group">
-                      <label for="nombreDivision">Nombre de la división:</label>
-                      <input type="text" name="nombreDivision" class="form-control" id="nombreDivision">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6 form-group">
-                      <label for="nombreContacto">Nombre del contacto:</label>
-                      <input type="text" name="nombreContacto" class="form-control" id="nombreContacto">
-                    </div>
-                    <div class="col-sm-6 form-group">
-                      <label for="email">Email:</label>
-                      <input type="text" name="email" class="form-control" id="email">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-4 form-group">
-                      <label for="provincia">Provincia:</label>
-                      <select name="provincia" class="form-control" id="provincia">
-                        <option>----</option>
-                      </select>
-                    </div>
-                    <div class="col-sm-4 form-group">
-                      <label for="canton">Cantón:</label>
-                      <select name="canton" class="form-control" id="canton">
-                        <option>----</option>
-                      </select>
-                    </div>
-                    <div class="col-sm-4 form-group">
-                      <label for="distrito">Distrito:</label>
-                      <select name="distrito" class="form-control" id="distrito">
-                        <option>----</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-12 form-group">
-                      <label for="direccion">Dirección:</label>
-                      <input type="text" name="direccion" class="form-control" id="direccion">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-4 form-group">
-                      <label for="telefono1">Teléfono 1:</label>
-                      <input type="text" name="telefono1" class="form-control" id="telefono1">
-                    </div>
-                    <div class="col-sm-4 form-group">
-                      <label for="telefono2">Teléfono 2:</label>
-                      <input type="text" name="telefono2" class="form-control" id="telefono2">
-                    </div>
-                    <div class="col-sm-4 form-group">
-                      <label for="telefono3">Teléfono 3:</label>
-                      <input type="text" name="telefono3" class="form-control" id="telefono3">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-4 form-group">
-                      <label for="Fax">Fax:</label>
-                      <input type="text" name="Fax" class="form-control" id="Fax">
-                    </div>
-                    <div class="col-sm-4 form-group">
-                      <label for="apartadoPostal">Apartado postal:</label>
-                      <input type="text" name="apartadoPostal" class="form-control" id="apartadoPostal">
-                    </div>
-                    <div class="col-sm-4 form-group">
-                      <label for="codigoPostal">Código postal:</label>
-                      <input type="text" name="codigoPostal" class="form-control" id="codigoPostal">
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <a href="#" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</a>
-                </div>
-              </div>
-            </div>
-          </div>
+        var deletetBtn = function (value) { 
+             return '<a href="#" class="edit" data="$id"><i class="fa fa-times" aria-hidden="true"></i></a>';
+        };
 
-    </form> <!-- /container -->
+        var createCotBtn = function(){
+          return '<button class="btn btn-primary" onclick="gotoCotz()" type="button" aria-expanded="false"><i class="fa fa-plus-circle"></i> Crear Cotizacion</button>';
+        }
 
+        function gotoCotz(id){
+          console.log('id',id);
+          if(id===null || typeof id === 'undefined'){
+            window.location.href = "cotz.php";
+          }
+          parent.iframeLoaded();
+        }
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+      $(function () {
+         parent.iframeLoaded();
+          $('#table').bootstrapTable({
+             url: 'http://crm.local/cotz/api/cotz.php?action=getJsonSample',
+             onDblClickRow: function(row, $element, field){
+              var cotID = row['cot_no'];
+             },
+             onLoadSuccess: function(){
+               parent.iframeLoaded(); 
+             }
+          });
+          $('.fixed-table-toolbar').prepend(createCotBtn);
+      });
 
-    <script src="js/vendor/bootstrap.min.js"></script>
+      </script>
 
-    <script src="js/vendor/bootstrap-datepicker.min.js"></script>
-
-    <script src="js/vendor/jquery.formatCurrency-1.4.0.min.js"></script>
-
-    </script>
-
-    <script src="js/main.js"></script>
-
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <script>
-        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-        e.src='//www.google-analytics.com/analytics.js';
-        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-        ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-    </script>
   </body>
 </html>

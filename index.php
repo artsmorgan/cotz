@@ -1,10 +1,31 @@
+
+<?php 
+	define("ABSPATH",dirname(__FILE__)."/");
+	//echo ABSPATH.'classes/conn.php';
+	require_once(ABSPATH.'classes/conn.php');
+	include_once('/utils/genericReader.php');
+
+	global $db;
+
+	$rs2 = $db->Execute("SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id;");
+	//print_r($rs2);
+	$rs = $rs2->FetchRow();
+
+	print_r($rs);
+
+
+	
+
+
+?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
     <head>
-        <meta charset="utf-8">
+        
+        <<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title></title>
         <meta name="description" content="">
@@ -36,18 +57,15 @@
     <div class="container">
       <?php
 
-      include_once('/utils/CsvReader.php');
-      $invPath = './inventario/inventario.txt';
+		$invPath = './inventario/inventario_crm.txt';
+		$csv = new GenericReader();
+		$c = $csv->process($invPath, '\t');
+		$userId = $_GET['userId'];
+		echo 'testy ' . $userId;
 
-      $csv = new CsvReader();
-      $c = $csv->CSVToArray($invPath, '\t');
-
-      $userId = $_GET['userId'];
-      echo 'testy ' . $userId;
-
-      echo '<pre>';
-      print_r($c);
-      echo '</pre>';
+		echo '<pre>';
+		print_r($c);
+		echo '</pre>';
     ?>
       <hr>
 

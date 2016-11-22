@@ -1,5 +1,13 @@
 
+function gotoList(){
+    window.location.href = "index.html";
+    parent.iframeLoaded();
+  }
+
 (function ($){
+
+   $('[data-toggle="tooltip"]').tooltip()
+
   function updateConsecutiveAttr( consecutive, $item){
     $('.form-control, label', $item).each(function(){
       var $this = $(this),
