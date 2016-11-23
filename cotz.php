@@ -64,7 +64,7 @@
               <i class="fa fa-print" aria-hidden="true"></i>
             </button>
           </div>
-        </div>  
+        </div>
       <!-- <button class="btn btn-primary" onclick="gotoList()">Regresar al listado</button> -->
     <form class="container-fluid form-container">
       <div class="row">
@@ -103,7 +103,7 @@
         </div>
         <!--info cliente-->
         <div class="col-sm-6 info-cotizacion float--active">
-          
+
           <h4 class="f-section-title">Cotización</h4>
           <div class="row">
             <div class="col-sm-6 form-group">
@@ -208,7 +208,7 @@
               <label for="nombreArticulo1">Nombre del artículo:</label>
               <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
             </div>
-             <div class="col-sm-2 form-group">             
+             <div class="col-sm-2 form-group">
               <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">ver de Inventario</button>
             </div>
             <div class="col-sm-1 form-group border--full">
@@ -239,7 +239,7 @@
               <div class="row">
                 <div class="col-sm-2 form-group">
                   <label for="codigoNombreLinea1">Código y nombre de línea</label>
-                  <input type="text" data-name="name" class="form-control" id="codigoNombreLinea1">
+                  <input type="text" data-name="codigoNombreLinea" class="form-control" id="codigoNombreLinea1">
                 </div>
                 <div class="col-sm-1 form-group">
                   <label for="noParte1">No. de parte</label>
@@ -460,8 +460,6 @@
     <script src="js/vendor/bootstrap-datepicker.min.js"></script>
 
     <script src="js/vendor/jquery.formatCurrency-1.4.0.min.js"></script>
-
-    </script>
 
     <script src="js/main.js"></script>
 
