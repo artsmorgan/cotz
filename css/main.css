@@ -147,8 +147,8 @@
 }
 
 #inventarioModal .modal-content {
-  height: 300px;
-  min-height: 100%;
+  /*height: 800px;
+  min-height: 100%;*/
 }
 
 .modal {
@@ -174,4 +174,9 @@
 #inventarioModal.modal.fade:not(.in) .modal-dialog {
     -webkit-transform: translate3d(-25%, 0, 0);
     transform: translate3d(-25%, 0, 0);
+}
+
+#inventarioModal.modal .table>tbody>tr>td{
+  padding: 2px;
+      font-size: 12px;
 }

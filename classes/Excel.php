@@ -1,5 +1,7 @@
 <?php
 
+require_once '../phpExcelReader/Excel/reader.php';
+
 class Excel {
     public function getInvFromExcel(){
         // ExcelFile($filename, $encoding);
@@ -9,7 +11,7 @@ class Excel {
 
 
         set_time_limit (0);
-        $data->read('./inv.xls');
+        $data->read('../phpExcelReader/inv.xls');
 
 
 
@@ -24,22 +26,24 @@ class Excel {
 
         foreach($cells as $key => $value){
             if($key > 1){
-                    $obj = array(
-                        "Apellidos" => $value[1],
-                        "Bodega" => $value[2],
-                        "Codigo" => $value[3],
-                        "NombreDelArticulo" =>  mb_convert_encoding( $value[4], 'UTF-8' ),
-                        "Linea" => $value[5],
-                        "NoDeParte" => $value[6],
-                        "Unidad" => $value[7],
-                        "CantidadDisponible" => $value[8],
-                        "Precio" => $value[9],
-                        "Provedor" => $value[10],
-                        "DetallesDelArticulo" => mb_convert_encoding( $value[11], 'UTF-8' ),
-                    );
-                    array_push($arrRst, $obj);
+                $obj = array(
+                    "Apellidos" => $value[1],
+                    "Bodega" => $value[2],
+                    "Codigo" => $value[3],
+                    "NombreDelArticulo" =>  mb_convert_encoding( $value[4], 'UTF-8' ),
+                    "Linea" => $value[5],
+                    "NoDeParte" => $value[6],
+                    "Unidad" => $value[7],
+                    "CantidadDisponible" => $value[8],
+                    "Precio" => $value[9],
+                    "Provedor" => $value[10],
+                    "DetallesDelArticulo" => mb_convert_encoding( $value[11], 'UTF-8' ),
+                );
+                array_push($arrRst, $obj);
+            }    
         }
-        
-        echo json_encode($arrRst,JSON_UNESCAPED_UNICODE);
+
+        // return json_encode($arrRst,JSON_UNESCAPED_UNICODE);
+        return $arrRst;
     }
 }

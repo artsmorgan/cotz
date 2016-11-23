@@ -39,7 +39,25 @@
                 <h4 class="modal-title" id="myModalLabel">Consultar Inventario</h4>
               </div>
               <div class="modal-body">
-                ...
+                <table id="table" data-pagination="true"
+                        data-search="true" data-search-on-enter-key="true"  data-smart-display="true"
+                        data-page-size="6" data-page-list="[10,25,50,100]">
+                    <thead>
+                    <tr>
+                      <th data-radio="true"></th>
+                      <th data-field="Apellidos" data-sortable="true">Apellidos</th>
+                      <th data-field="Bodega" data-sortable="true">Bodega</th>
+                      <th data-field="Codigo" data-sortable="true">Codigo</th>
+                      <th data-field="NombreDelArticulo" data-sortable="true">Nombre Del Articulo</th>
+                      <th data-field="NoDeParte" data-sortable="true">No De Parte</th>
+                      <th data-field="Unidad">Unidad</th>
+                      <th data-field="CantidadDisponible" >Cantidad Disponible</th>
+                      <th data-field="Precio" >Precio</th>
+                      <th data-field="Provedor" >Provedor</th>
+                      <th data-field="DetallesDelArticulo" > Detalles Del Articulo</th>
+                    </tr>
+                    </thead>
+                </table>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -461,6 +479,9 @@
 
     <script src="js/vendor/jquery.formatCurrency-1.4.0.min.js"></script>
 
+    <script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
+    <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
+    <script src="js/vendor/tableExport/tableExport.min.js"></script>
     <script src="js/main.js"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
