@@ -4,6 +4,28 @@ function gotoList(){
     parent.iframeLoaded();
   }
 
+
+$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
+        
+        
+
+      $(function () {
+         parent.iframeLoaded();
+          $('#table').bootstrapTable({
+             url: 'http://crm.local/cotz/api/inv.php?action=getInventario',             
+             onLoadSuccess: function(){
+               parent.iframeLoaded(); 
+             },
+             onAll: function(name, args){
+                parent.iframeLoaded();
+             }
+          });
+          $('.fixed-table-toolbar').prepend(createCotBtn);
+      });
+
+
+
+
 (function ($){
 
    $('[data-toggle="tooltip"]').tooltip()
