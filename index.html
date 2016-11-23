@@ -54,10 +54,7 @@
       <script type="text/javascript" src="js/vendor/tableExport/libs/FileSaver/FileSaver.min.js"></script>
       <script type="text/javascript" src="js/vendor/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
       <script type="text/javascript">
-        //Add Create Cot Btn
-
-
-
+       
         $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
         
         var edit = { 
@@ -95,6 +92,9 @@
              },
              onLoadSuccess: function(){
                parent.iframeLoaded(); 
+             },
+             onAll: function(name, args){
+                parent.iframeLoaded();
              }
           });
           $('.fixed-table-toolbar').prepend(createCotBtn);
