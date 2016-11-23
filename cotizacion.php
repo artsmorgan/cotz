@@ -36,39 +36,27 @@
     <div class="container">
       <?php
 
-      include_once('/utils/CsvReader.php');
-      $invPath = './inventario/inventario.txt';
+      // include_once('/utils/CsvReader.php');
+      // $invPath = './inventario/inventario.txt';
 
-      $csv = new CsvReader();
-      $c = $csv->CSVToArray($invPath, '\t');
+      // $csv = new CsvReader();
+      // $c = $csv->CSVToArray($invPath, '\t');
 
-      $userId = $_GET['userId'];
-      echo 'testy ' . $userId;
+      // $userId = $_GET['userId'];
+      // echo 'testy ' . $userId;
 
-      echo '<pre>';
-      print_r($c);
-      echo '</pre>';
+      // echo '<pre>';
+      // print_r($c);
+      // echo '</pre>';
+      include_once('/classes/Excel.php');
+      $excel = new Excel('./inventario/inventario_crm.xls');
+      var_dump($excel->toArray());
     ?>
       <hr>
 
       <footer>
         <p>&copy; United Devs 2016</p>
       </footer>
-    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-
-        <script src="js/vendor/bootstrap.min.js"></script>
-
-        <script src="js/main.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
+    </div>
     </body>
 </html>
