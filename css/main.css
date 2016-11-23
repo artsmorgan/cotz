@@ -26,7 +26,7 @@
  font-size: 0;
 }
 .form-container [class|=col]{
- font-size: 12px;
+ font-size: 10px;
  float: none;
  display: inline-block;
 }
@@ -133,4 +133,45 @@
     background: #ccc;
     float: left;
     width: 100%;
+}
+
+.transactions-list li.row-head{
+  padding: 5px;
+    background: darkred;
+    margin-top: 10px;
+    color: #fff;
+}
+
+#inventarioModal .modal-dialog {
+  width: 95%;
+}
+
+#inventarioModal .modal-content {
+  height: 300px;
+  min-height: 100%;
+}
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+  width: 100%;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+#inventarioModal.modal.fade:not(.in) .modal-dialog {
+    -webkit-transform: translate3d(-25%, 0, 0);
+    transform: translate3d(-25%, 0, 0);
 }
