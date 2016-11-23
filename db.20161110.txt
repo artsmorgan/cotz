@@ -1,0 +1,8 @@
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id; &nbsp; 
+<hr>
+
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id; &nbsp; 
+<hr>
+

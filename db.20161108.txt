@@ -1,0 +1,90 @@
+<hr>
+(mssqlnative): select * from person &nbsp; 
+<hr>
+
+<hr>running query: 'select * from person'<hr>input array: false<hr>result: false
+-14: SQLState: IMSSP
+Error Code: -14
+Message: An invalid parameter was passed to sqlsrv_query.
+
+<hr>
+(mssqlnative): select * from table &nbsp; 
+<hr>
+
+<hr>running query: 'select * from table'<hr>input array: false<hr>result: false
+-14: SQLState: IMSSP
+Error Code: -14
+Message: An invalid parameter was passed to sqlsrv_query.
+
+<hr>
+(mssqlnative): select * from person &nbsp; 
+<hr>
+
+<hr>running query: 'select * from person'<hr>input array: false<hr>result: false
+-14: SQLState: IMSSP
+Error Code: -14
+Message: An invalid parameter was passed to sqlsrv_query.
+
+<hr>
+(mysql): select * from person &nbsp; 
+<hr>
+
+2002: php_network_getaddresses: getaddrinfo failed: Host desconocido. 
+<hr>
+(mysql): select * from person &nbsp; 
+<hr>
+
+<hr>
+(mysql): select * from person &nbsp; 
+<hr>
+
+<hr>
+(mysql): select * from person &nbsp; 
+<hr>
+
+<hr>
+(mysql): select * from person &nbsp; 
+<hr>
+
+<hr>
+(mysql): select * from person &nbsp; 
+<hr>
+
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c 
+inner join person p 
+on c.person_id = p.id; &nbsp; 
+<hr>
+
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id; &nbsp; 
+<hr>
+
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id; &nbsp; 
+<hr>
+
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id; &nbsp; 
+<hr>
+
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id; &nbsp; 
+<hr>
+
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id; &nbsp; 
+<hr>
+
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id; &nbsp; 
+<hr>
+
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id; &nbsp; 
+<hr>
+
+<hr>
+(mysql): SELECT c.companyname, c.description, c.account_id,  p.department, p.firstname, p.lastname, p.mobilephone FROM zurmo_test.contact c inner join person p on c.person_id = p.id; &nbsp; 
+<hr>
+
