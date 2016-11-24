@@ -141,7 +141,7 @@ function gotoList(){
       $( '#inventarioModal button.btn-primary' ).prop( 'disabled', false );
     });
 
-    $( '#inventarioModal button.btn-primary' ).on( 'click', function(){
+    $( '#inventarioModal' ).on( 'click', 'button.btn-primary', function(){
       $( '[data-name=codigoArticulo]', $productRow ).val( productData.Codigo );
       $( '[data-name=nombreArticulo]', $productRow ).val( productData.NombreDelArticulo );
       $( '[data-name=precioUnitario]', $productRow ).val( productData.Precio );
@@ -152,7 +152,7 @@ function gotoList(){
       $( '[data-name=precioUnitario]', $productRow ).trigger( 'input' );
     });
 
-    $( '.row-product' ).on( 'click', 'button[data-toggle=modal]', function(){
+    $( '.transactions-list' ).on( 'click', '.row-product button[data-toggle=modal]', function(){
       $productRow = $(this).closest( '.row-product' );
     });
 
