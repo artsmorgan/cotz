@@ -2,33 +2,11 @@
 function gotoList(){
     window.location.href = "index.html";
     parent.iframeLoaded();
-  }
-
-
-$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
-        
-        
-
-      $(function () {
-         parent.iframeLoaded();
-          $('#table').bootstrapTable({
-             url: 'http://crm.local/cotz/api/inv.php?action=getInventario',             
-             onLoadSuccess: function(){
-               parent.iframeLoaded(); 
-             },
-             onAll: function(name, args){
-                parent.iframeLoaded();
-             }
-          });
-          $('.fixed-table-toolbar').prepend(createCotBtn);
-      });
-
-
-
+}
 
 (function ($){
 
-   $('[data-toggle="tooltip"]').tooltip()
+  $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
 
   function updateConsecutiveAttr( consecutive, $item){
     $('.form-control, label', $item).each(function(){
@@ -131,11 +109,52 @@ $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
     return encodeURIComponent(JSON.stringify(data));
   }
 
+  function parentIframeLoaded(){
+    if( typeof parent.iframeLoaded == 'function' ){
+      parent.iframeLoaded();
+    }
+  }
+
   $( document ).ready(function(){
 
-    updateFormatCurrency();
+    var $productForm = $( '.row-product' ).clone().addClass( 'disp--hide' ),
+        $productRow = {},
+        productData = {};
 
-    var $productForm = $( '.row-product' ).clone().addClass( 'disp--hide' );
+    updateFormatCurrency();
+    parentIframeLoaded();
+    //$( '.fixed-table-toolbar' ).prepend(createCotBtn);
+
+   $( '#table' ).bootstrapTable({
+      url: 'http://crm.local/cotz/api/inv.json',
+      onLoadSuccess: function(){
+        parentIframeLoaded();
+      },
+      onAll: function(name, args){
+         parentIframeLoaded();
+      }
+    });
+
+    $( '#table' ).on( 'click-row.bs.table', function( e, item, $tr ){
+      productData = item;
+      $( '[type=radio]', $tr ).prop( 'checked', true );
+      $( '#inventarioModal button.btn-primary' ).prop( 'disabled', false );
+    });
+
+    $( '#inventarioModal button.btn-primary' ).on( 'click', function(){
+      $( '[data-name=codigoArticulo]', $productRow ).val( productData.Codigo );
+      $( '[data-name=nombreArticulo]', $productRow ).val( productData.NombreDelArticulo );
+      $( '[data-name=precioUnitario]', $productRow ).val( productData.Precio );
+      $( '[data-name=noParte]', $productRow ).val( productData.NoDeParte );
+      $( '[data-name=proveedor]', $productRow ).val( productData.Provedor );
+      $( '[data-name=descripcionArticulo]', $productRow ).val( productData.DetallesDelArticulo );
+
+      $( '[data-name=precioUnitario]', $productRow ).trigger( 'input' );
+    });
+
+    $( '.row-product' ).on( 'click', 'button[data-toggle=modal]', function(){
+      $productRow = $(this).closest( '.row-product' );
+    });
 
     $( '.row-foot .btn' ).click(function(e){ //add product
       e.preventDefault();
@@ -145,23 +164,23 @@ $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
           consecutive = $product.index() < 1 ? 1 : $product.index() + 1;
 
       if($contentCollapse.is( ':visible' )){
-        $contentCollapse.slideUp();
+        $contentCollapse.slideUp( 400 );
         $product.find( '.show-collapse' ).toggle();
         $product.find( '.hide-collapse' ).toggle();
       }
 
       updateConsecutiveAttr( consecutive, $newProduct );
 
-      $(this).closest('.row-foot').before($newProduct);
-      $newProduct.slideDown();
+      $(this).closest( '.row-foot' ).before($newProduct);
+      $newProduct.slideDown( 400, parentIframeLoaded );
     });
 
-    $('.transactions-list').on('click', '.btns-collapse a', function(e){
+    $( '.transactions-list' ).on( 'click', '.btns-collapse a', function(e){
       e.preventDefault();
       var $product = $(this).closest('.row-product'),
           $contentCollapse = $product.find('.content-collapse');
 
-      $contentCollapse.slideToggle();
+      $contentCollapse.slideToggle( 400, parentIframeLoaded );
       $product.find('.show-collapse').toggle();
       $product.find('.hide-collapse').toggle();
     });
@@ -184,6 +203,8 @@ $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
                     updateIVA();
                     updateTotal();
                     updateFormatCurrency();
+                    parentIframeLoaded();
+
                     if( !$item.is( '.row-product:last' ) ){
                       $('.row-product').each(function(index, $item){//update all items attributes
                         updateConsecutiveAttr(index + 1, $item);

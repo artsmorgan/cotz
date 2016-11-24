@@ -8,6 +8,10 @@
   /*background-color: #f2f3f4;*/
 }
 
+.form-page{
+  overflow: hidden;
+}
+
 .f-section-title{
  margin:0;
  font-size: 20px;
