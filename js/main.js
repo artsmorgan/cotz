@@ -148,6 +148,7 @@ function gotoList(){
       $( '[data-name=noParte]', $productRow ).val( productData.NoDeParte );
       $( '[data-name=proveedor]', $productRow ).val( productData.Provedor );
       $( '[data-name=descripcionArticulo]', $productRow ).val( productData.DetallesDelArticulo );
+      $( '[data-name=cantidad]', $productRow ).val(1);
 
       $( '[data-name=precioUnitario]', $productRow ).trigger( 'input' );
     });
