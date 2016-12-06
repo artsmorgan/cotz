@@ -141,14 +141,12 @@ function gotoList(){
   }
 
   function applyRoundFactor( number, factor ){
-    if ( factor !== 'total' || factor !== 'total_final' ){
+    if ( factor !== 'total' && factor !== 'total_final' ){
       factor = 'total_final';
     }
 
     var method = $('#redondeo').val(),
         round = roundMethods[method][factor];
-
-    console.log('round: ' +  round);
 
     return roundTo(number, round);
   }
@@ -313,7 +311,7 @@ function gotoList(){
     $('.btn-save').on('click', function(e){
       e.preventDefault();
       var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
-      
+
       // $.post('URL', data, function(){
       //   console.log('success');
       // }).fail( function(){
