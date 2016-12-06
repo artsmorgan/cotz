@@ -8,6 +8,21 @@ function gotoList(){
 
   $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
 
+  var roundMethods = {
+    factor_1: {
+      total: 0.05,
+      total_final: 0.05
+    },
+    factor_2: {
+      total: 0.05,
+      total_final: 1
+    },
+    factor_3: {
+      total: 0.01,
+      total_final: 0.01
+    }
+  };
+
   function updateConsecutiveAttr( consecutive, $item){
     $('.form-control, label', $item).each(function(){
       var $this = $(this),
@@ -34,7 +49,7 @@ function gotoList(){
     });
   }
 
-  function updateMonto( $productRow ){
+  function updateMonto( $productRow ) {
     var cantidad = $productRow.find( '.art-cantidad' ).val(),
         precioUnitario = $productRow.find( '.art-precioUni' ).val();
         $dispMonto = $productRow.find( '.op-total-monto' );
@@ -43,6 +58,8 @@ function gotoList(){
         precioUnitario = precioUnitario ? precioUnitario : 0;
 
         monto = cantidad * precioUnitario;
+
+        monto = applyRoundFactor(monto, 'total');
 
         $productRow.find( '.op-hidden-monto' ).val( monto );
         $dispMonto.text( monto );
@@ -53,6 +70,8 @@ function gotoList(){
     $('.row-product .op-total-monto').each(function(){
       subtotal += $(this).asNumber();
     });
+
+    subtotal = applyRoundFactor(subtotal, 'total');
 
     $('.op-hidden-subtotal').val(subtotal);
     $('.op-total-subtotal').text(subtotal);
@@ -67,6 +86,8 @@ function gotoList(){
       descuento += $(this).find('.op-total-monto').asNumber() * porcentaje;
     });
 
+    descuento = applyRoundFactor(descuento, 'total');
+
     $('.op-hidden-descuento').val(descuento);
     $('.op-total-descuento').text(descuento);
   }
@@ -77,6 +98,8 @@ function gotoList(){
         descuento = $('.op-total-descuento').asNumber()
         totalIva = ( subtotal - descuento ) * iva;
 
+    totalIva = applyRoundFactor(totalIva, 'total');
+
     $('.op-hidden-iva').val(totalIva);
     $('.op-total-iva').text(totalIva);
   }
@@ -86,6 +109,8 @@ function gotoList(){
         subtotal = $('.op-total-subtotal').asNumber(),
         descuento = $('.op-total-descuento').asNumber(),
         total = subtotal - descuento + iva;
+
+    total = applyRoundFactor(total, 'total_final');
 
     $('.op-hidden-total').val(total);
     $('.op-total-total').text(total);
@@ -113,6 +138,23 @@ function gotoList(){
     if( typeof parent.iframeLoaded == 'function' ){
       parent.iframeLoaded();
     }
+  }
+
+  function applyRoundFactor( number, factor ){
+    if ( factor !== 'total' || factor !== 'total_final' ){
+      factor = 'total_final';
+    }
+
+    var method = $('#redondeo').val(),
+        round = roundMethods[method][factor];
+
+    console.log('round: ' +  round);
+
+    return roundTo(number, round);
+  }
+
+  function roundTo(number, round ){
+    return round * Math.round(number/round);
   }
 
   $( document ).ready(function(){
@@ -271,13 +313,24 @@ function gotoList(){
     $('.btn-save').on('click', function(e){
       e.preventDefault();
       var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
-      console.log(data);
-
+      
       // $.post('URL', data, function(){
       //   console.log('success');
       // }).fail( function(){
       //   console.log('fail');
       // });
+    });
+
+    $('#redondeo').on('change', function(){
+      $('.row-product').each(function(){
+        updateMonto( $(this) );
+      });
+
+      updateSubtotal();
+      updateDescuento();
+      updateIVA();
+      updateTotal();
+      updateFormatCurrency();
     });
   });
 

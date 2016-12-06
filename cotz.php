@@ -156,10 +156,9 @@
             <div class="col-sm-3 form-group">
               <label for="redondeo">Factor de redondeo:</label>
               <select name="redondeo" class="form-control" id="redondeo">
-                <option value="001">001</option>
-                <option value="001">005</option>
-                <option value="001">000</option>
-                <option value="N/A">N/A</option>
+                <option value="factor_1">factor_1</option>
+                <option value="factor_2">factor_2</option>
+                <option value="factor_3">factor_3</option>
               </select>
 
             </div>
