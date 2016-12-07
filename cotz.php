@@ -21,6 +21,7 @@
         <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
         <link rel="stylesheet" href="css/jquery-ui.min.css">
         <link rel="stylesheet" href="css/main.css">
+        <script src="https://use.fontawesome.com/5b1d115124.js"></script>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body class="form-page">

@@ -1,6 +1,8 @@
 var SERVER_PROD = 'http://tecnosagot.united-crm.com';
 var SERVER_DEV = 'http://crm.local/';
 
+
+
 var salesPersons = [{
   id: 0,
   name: 'Roberto Castro Araya'
@@ -215,7 +217,7 @@ function gotoList(){
     //$( '.fixed-table-toolbar' ).prepend(createCotBtn);
 
    $( '#table' ).bootstrapTable({
-      url: 'http://crm.local/cotz/api/inv.json',
+      url: SERVER_PROD+'/cotz/api/inv.json',
       onLoadSuccess: function(){
         parentIframeLoaded();
       },
