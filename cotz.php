@@ -19,10 +19,8 @@
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
         <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
+        <link rel="stylesheet" href="css/jquery-ui.min.css">
         <link rel="stylesheet" href="css/main.css">
-
-         <script src="https://use.fontawesome.com/5b1d115124.js"></script>
-
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body class="form-page">
@@ -156,10 +154,9 @@
             <div class="col-sm-3 form-group">
               <label for="redondeo">Factor de redondeo:</label>
               <select name="redondeo" class="form-control" id="redondeo">
-                <option value="001">001</option>
-                <option value="001">005</option>
-                <option value="001">000</option>
-                <option value="N/A">N/A</option>
+                <option value="factor_1">factor_1</option>
+                <option value="factor_2">factor_2</option>
+                <option value="factor_3">factor_3</option>
               </select>
 
             </div>
@@ -169,11 +166,11 @@
         <!--info cotizacion-->
         <div class="col-sm-12">
           <div class="row">
-            <div class="col-sm-4 form-group">
+            <div class="col-sm-3 form-group">
               <label for="marca">Marca:</label>
               <input type="text" name="marca" class="form-control" id="marca">
             </div>
-            <div class="col-sm-4 form-group">
+            <div class="col-sm-3 form-group">
               <label for="fase">Fase:</label>
               <select name="fase" class="form-control" id="fase">
                 <option value="Comunicación inicial">Comunicación inicial</option>
@@ -184,9 +181,13 @@
                 <option value="Desierta">Desierta</option>
               </select>
             </div>
-            <div class="col-sm-4 form-group">
+            <div class="col-sm-3 form-group">
               <label for="noSolicitud">No. de solicitud:</label>
               <input type="text" name="noSolicitud" class="form-control" id="noSolicitud">
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="noCotizacion">No. de cotización:</label>
+              <input type="text" name="noCotizacion" class="form-control" id="noCotizacion">
             </div>
           </div>
         </div>
@@ -472,16 +473,13 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-
     <script src="js/vendor/bootstrap.min.js"></script>
-
     <script src="js/vendor/bootstrap-datepicker.min.js"></script>
-
     <script src="js/vendor/jquery.formatCurrency-1.4.0.min.js"></script>
-
     <script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
     <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
+    <script src="js/vendor/jquery-ui.min.js"></script>
     <script src="js/main.js"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

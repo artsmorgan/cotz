@@ -1,6 +1,52 @@
 var SERVER_PROD = 'http://tecnosagot.united-crm.com';
 var SERVER_DEV = 'http://crm.local/';
 
+var salesPersons = [{
+  id: 0,
+  name: 'Roberto Castro Araya'
+},
+  {
+  id: 1,
+  name: 'Patricia Valverde Test'
+},
+{
+  id: 2,
+  name: 'Carme Herra Roldan'
+},
+{
+  id: 3,
+  name: 'Tomas Calderon Arias'
+},
+{
+  id: 4,
+  name: 'Cecilia Hernandez Ramirez'
+},
+{
+  id: 5,
+  name: 'Pablo Test Uva'
+}
+];
+
+
+var clients = [
+  {
+    id: 123456,
+    name: 'Dos pinos'
+  },
+  {
+    id: 7891011,
+    name: 'Dos pin'
+  },
+  {
+    id: 1234789,
+    name: 'pinitos'
+  },
+  {
+    id: 7890125,
+    name: 'un coral'
+  }
+];
+
 
 function gotoList(){
     window.location.href = "index.html";
@@ -10,6 +56,21 @@ function gotoList(){
 (function ($){
 
   $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
+
+  var roundMethods = {
+    factor_1: {
+      total: 0.05,
+      total_final: 0.05
+    },
+    factor_2: {
+      total: 0.05,
+      total_final: 1
+    },
+    factor_3: {
+      total: 0.01,
+      total_final: 0.01
+    }
+  };
 
   function updateConsecutiveAttr( consecutive, $item){
     $('.form-control, label', $item).each(function(){
@@ -37,7 +98,7 @@ function gotoList(){
     });
   }
 
-  function updateMonto( $productRow ){
+  function updateMonto( $productRow ) {
     var cantidad = $productRow.find( '.art-cantidad' ).val(),
         precioUnitario = $productRow.find( '.art-precioUni' ).val();
         $dispMonto = $productRow.find( '.op-total-monto' );
@@ -46,6 +107,8 @@ function gotoList(){
         precioUnitario = precioUnitario ? precioUnitario : 0;
 
         monto = cantidad * precioUnitario;
+
+        monto = applyRoundFactor(monto, 'total');
 
         $productRow.find( '.op-hidden-monto' ).val( monto );
         $dispMonto.text( monto );
@@ -56,6 +119,8 @@ function gotoList(){
     $('.row-product .op-total-monto').each(function(){
       subtotal += $(this).asNumber();
     });
+
+    subtotal = applyRoundFactor(subtotal, 'total');
 
     $('.op-hidden-subtotal').val(subtotal);
     $('.op-total-subtotal').text(subtotal);
@@ -70,6 +135,8 @@ function gotoList(){
       descuento += $(this).find('.op-total-monto').asNumber() * porcentaje;
     });
 
+    descuento = applyRoundFactor(descuento, 'total');
+
     $('.op-hidden-descuento').val(descuento);
     $('.op-total-descuento').text(descuento);
   }
@@ -80,6 +147,8 @@ function gotoList(){
         descuento = $('.op-total-descuento').asNumber()
         totalIva = ( subtotal - descuento ) * iva;
 
+    totalIva = applyRoundFactor(totalIva, 'total');
+
     $('.op-hidden-iva').val(totalIva);
     $('.op-total-iva').text(totalIva);
   }
@@ -89,6 +158,8 @@ function gotoList(){
         subtotal = $('.op-total-subtotal').asNumber(),
         descuento = $('.op-total-descuento').asNumber(),
         total = subtotal - descuento + iva;
+
+    total = applyRoundFactor(total, 'total_final');
 
     $('.op-hidden-total').val(total);
     $('.op-total-total').text(total);
@@ -116,6 +187,21 @@ function gotoList(){
     if( typeof parent.iframeLoaded == 'function' ){
       parent.iframeLoaded();
     }
+  }
+
+  function applyRoundFactor( number, factor ){
+    if ( factor !== 'total' && factor !== 'total_final' ){
+      factor = 'total_final';
+    }
+
+    var method = $('#redondeo').val(),
+        round = roundMethods[method][factor];
+
+    return roundTo(number, round);
+  }
+
+  function roundTo(number, round ){
+    return round * Math.round(number/round);
   }
 
   $( document ).ready(function(){
@@ -274,7 +360,6 @@ function gotoList(){
     $('.btn-save').on('click', function(e){
       e.preventDefault();
       var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
-     // console.log(data);
 
       $.post(SERVER_DEV+'/cotz/api/cotz.php?action=processCot', data, function(data){
         console.log(data);
@@ -282,6 +367,67 @@ function gotoList(){
       }).fail( function(){
         console.log('fail');
       });
+    });
+
+    $('#redondeo').on('change', function(){
+      $('.row-product').each(function(){
+        updateMonto( $(this) );
+      });
+
+      updateSubtotal();
+      updateDescuento();
+      updateIVA();
+      updateTotal();
+      updateFormatCurrency();
+    });
+
+    $('#vendedor').autocomplete({
+      minLength: 3,
+      source: function(request, response) {
+        var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+        response($.grep(salesPersons, function(value) {
+            return matcher.test(value.name);
+        }));
+      },
+      focus: function( event, ui ){
+        $('#vendedor').val( ui.item.name );
+        return false;
+      },
+      select: function( event, ui ){
+        $('#vendedor').attr( 'data-id', ui.item.id );
+        $('#vendedor').val( ui.item.name );
+        return false;
+      }
+    }).autocomplete('instance')._renderItem = function( ul, item ){
+      return $( "<li>" )
+        .append( '<div class="small">' + item.name + '</div>'  )
+        .appendTo( ul );
+    };
+
+    $('#codigoCliente, #codigoClienteAux, #nombreCliente').each(function(){
+      $(this).autocomplete({
+        minLength: 3,
+        source: function(request, response) {
+          var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+          response($.grep(clients, function(value) {
+              return matcher.test(value.name + ' ' + value.id);
+          }));
+        },
+        focus: function( event, ui ){
+          $('#codigoClienteAux, #codigoCliente').val( ui.item.id );
+          $('#nombreCliente').val( ui.item.name );
+          return false;
+        },
+        select: function( event, ui ){
+          $('#codigoClienteAux, #codigoCliente').val( ui.item.id );
+          $('#nombreCliente').val( ui.item.name );
+          return false;
+        }
+      }).autocomplete('instance')._renderItem = function( ul, item ){
+        return $( "<li>")
+          .append('<div class="small">' + item.id + '<br>' + item.name + '</div>')
+          .appendTo( ul );
+      };
     });
   });
 
