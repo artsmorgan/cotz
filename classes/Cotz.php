@@ -1,5 +1,8 @@
 <?php
-
+	
+	require_once('../adodb5'.DIRECTORY_SEPARATOR .'adodb.inc.php');
+	//echo ABSPATH.'classes/conn.php';
+	require_once('../classes/conn.php');
 	/**
 	* 
 	*/
@@ -36,9 +39,65 @@
 			return json_encode($content);
 		}
 
-		public function saveCotization($data){}
+		public function saveCotization($data){
+			
+			$header = $this->saveHeader($data);
 
-		private function saveHeader($header){}
+			print_r($header);
+
+			//save content
+		}
+
+		private function parseToNull($arr){
+			// print_r($data);
+			$data = Array();
+			foreach ($arr as $key => $value) {
+				// echo 'value: '. $value;
+				if($value==''){
+
+					$value = "NULL";
+				}
+				// print_r(array($key=>$value));
+				//array_push($data, array($key=>$value));
+				$data[$key] = $value;
+			}
+			$data['numeroCotizacion'] = 0;
+			$data['sessionId'] = 8;
+
+			return $data;
+		}
+
+		private function saveHeader($data){
+
+			$data = $this->parseToNull($data);
+
+			print_r($data);
+			//save header
+			$sql = "INSERT INTO cotz_header(nombre_empresa,cedula_juridica,contacto,owner,solicitud_no,fecha,
+								telefono,fax,correo,vigente_hasta,cotz_no,subtotal,total,tax,descuento,createdAt,createdBy)
+								VALUES(
+								".$data['nombreCliente'].",
+								".$data['cedulaJuridica'].",
+								".$data['nombreContacto'].",
+								".$data['vendedor'].",
+								".$data['noSolicitud'].",
+								".$data['fechaCotizacion'].",
+								".$data['telefono1'].",
+								".$data['Fax'].",
+								".$data['email'].",
+								".$data['fechaVencimiento'].",
+								".$data['numeroCotizacion'].",
+								".$data['subtotal'].",
+								".$data['total'].",
+								".$data['totalIva'].",
+								".$data['totalDescuento'].","
+								.$this->now.",							
+								".$data['sessionId']."); SELECT LAST_INSERT_ID() ;";
+
+			//id = $db->Execute($sql);
+
+			return $sql;
+		}
 
 		private function saveContent($content){}
 

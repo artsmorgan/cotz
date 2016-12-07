@@ -1,3 +1,6 @@
+var SERVER_PROD = 'http://tecnosagot.united-crm.com';
+var SERVER_DEV = 'http://crm.local/';
+
 
 function gotoList(){
     window.location.href = "index.html";
@@ -271,13 +274,14 @@ function gotoList(){
     $('.btn-save').on('click', function(e){
       e.preventDefault();
       var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
-      console.log(data);
+     // console.log(data);
 
-      // $.post('URL', data, function(){
-      //   console.log('success');
-      // }).fail( function(){
-      //   console.log('fail');
-      // });
+      $.post(SERVER_DEV+'/cotz/api/cotz.php?action=processCot', data, function(data){
+        console.log(data);
+        console.log('success');
+      }).fail( function(){
+        console.log('fail');
+      });
     });
   });
 

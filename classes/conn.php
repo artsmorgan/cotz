@@ -1,8 +1,5 @@
 <?php 
 
-require_once(ABSPATH.'adodb5/adodb.inc.php');
-
-
 $db_params = array();
 $db_params['host'] = 'localhost';
 $db_params['user'] = 'root';
@@ -17,7 +14,7 @@ $db->SetFetchMode(ADODB_FETCH_ASSOC);
 $db->debug = true;
 
 function dbErrorFile($msg,$newline){
-	$filename = "db.".date("Ymd").".txt";
+	$filename = "log_.".date("Ymd").".txt";
 	$h = fopen($filename,"a+");
 	fwrite($h, $msg);
 	fwrite($h, "\n");

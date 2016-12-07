@@ -15,6 +15,13 @@
 		case 'getJsonSample':
 			echo $cotz->getJsonSanmple();
 			break;
+
+		case 'processCot':
+			$cotz->saveCotization($_POST);
+			// echo '<pre>';
+			// 	print_r($_POST);
+			// echo '</pre>';
+			break;	
 		
 		default:
 			# code...
