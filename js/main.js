@@ -400,26 +400,6 @@ function gotoList(){
         .appendTo( ul );
     };
 
-    var clienteAutocomplete = {
-      minLength: 3,
-      source: function(request, response) {
-        var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
-        response($.grep(clients, function(value) {
-            return matcher.test(value.name + ' ' + value.id);
-        }));
-      },
-      focus: function( event, ui ){
-        $('#codigoClienteAux, #codigoCliente').val( ui.item.id );
-        $('#nombreCliente').val( ui.item.name );
-        return false;
-      },
-      select: function( event, ui ){
-        $('#codigoClienteAux, #codigoCliente').val( ui.item.id );
-        $('#nombreCliente').val( ui.item.name );
-        return false;
-      }
-    };
-
     $('#codigoCliente, #codigoClienteAux, #nombreCliente').each(function(){
       $(this).autocomplete({
         minLength: 3,

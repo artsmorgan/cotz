@@ -166,11 +166,11 @@
         <!--info cotizacion-->
         <div class="col-sm-12">
           <div class="row">
-            <div class="col-sm-4 form-group">
+            <div class="col-sm-3 form-group">
               <label for="marca">Marca:</label>
               <input type="text" name="marca" class="form-control" id="marca">
             </div>
-            <div class="col-sm-4 form-group">
+            <div class="col-sm-3 form-group">
               <label for="fase">Fase:</label>
               <select name="fase" class="form-control" id="fase">
                 <option value="Comunicación inicial">Comunicación inicial</option>
@@ -181,9 +181,13 @@
                 <option value="Desierta">Desierta</option>
               </select>
             </div>
-            <div class="col-sm-4 form-group">
+            <div class="col-sm-3 form-group">
               <label for="noSolicitud">No. de solicitud:</label>
               <input type="text" name="noSolicitud" class="form-control" id="noSolicitud">
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="noCotizacion">No. de cotización:</label>
+              <input type="text" name="noCotizacion" class="form-control" id="noCotizacion">
             </div>
           </div>
         </div>
