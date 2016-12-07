@@ -1,3 +1,49 @@
+var salesPersons = [{
+  id: 0,
+  name: 'Roberto Castro Araya'
+},
+  {
+  id: 1,
+  name: 'Patricia Valverde Test'
+},
+{
+  id: 2,
+  name: 'Carme Herra Roldan'
+},
+{
+  id: 3,
+  name: 'Tomas Calderon Arias'
+},
+{
+  id: 4,
+  name: 'Cecilia Hernandez Ramirez'
+},
+{
+  id: 5,
+  name: 'Pablo Test Uva'
+}
+];
+
+
+var clients = [
+  {
+    id: 123456,
+    name: 'Dos pinos'
+  },
+  {
+    id: 7891011,
+    name: 'Dos pin'
+  },
+  {
+    id: 1234789,
+    name: 'pinitos'
+  },
+  {
+    id: 7890125,
+    name: 'un coral'
+  }
+];
+
 
 function gotoList(){
     window.location.href = "index.html";
@@ -329,6 +375,75 @@ function gotoList(){
       updateIVA();
       updateTotal();
       updateFormatCurrency();
+    });
+
+    $('#vendedor').autocomplete({
+      minLength: 3,
+      source: function(request, response) {
+        var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+        response($.grep(salesPersons, function(value) {
+            return matcher.test(value.name);
+        }));
+      },
+      focus: function( event, ui ){
+        $('#vendedor').val( ui.item.name );
+        return false;
+      },
+      select: function( event, ui ){
+        $('#vendedor').attr( 'data-id', ui.item.id );
+        $('#vendedor').val( ui.item.name );
+        return false;
+      }
+    }).autocomplete('instance')._renderItem = function( ul, item ){
+      return $( "<li>" )
+        .append( '<div class="small">' + item.name + '</div>'  )
+        .appendTo( ul );
+    };
+
+    var clienteAutocomplete = {
+      minLength: 3,
+      source: function(request, response) {
+        var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+        response($.grep(clients, function(value) {
+            return matcher.test(value.name + ' ' + value.id);
+        }));
+      },
+      focus: function( event, ui ){
+        $('#codigoClienteAux, #codigoCliente').val( ui.item.id );
+        $('#nombreCliente').val( ui.item.name );
+        return false;
+      },
+      select: function( event, ui ){
+        $('#codigoClienteAux, #codigoCliente').val( ui.item.id );
+        $('#nombreCliente').val( ui.item.name );
+        return false;
+      }
+    };
+
+    $('#codigoCliente, #codigoClienteAux, #nombreCliente').each(function(){
+      $(this).autocomplete({
+        minLength: 3,
+        source: function(request, response) {
+          var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+          response($.grep(clients, function(value) {
+              return matcher.test(value.name + ' ' + value.id);
+          }));
+        },
+        focus: function( event, ui ){
+          $('#codigoClienteAux, #codigoCliente').val( ui.item.id );
+          $('#nombreCliente').val( ui.item.name );
+          return false;
+        },
+        select: function( event, ui ){
+          $('#codigoClienteAux, #codigoCliente').val( ui.item.id );
+          $('#nombreCliente').val( ui.item.name );
+          return false;
+        }
+      }).autocomplete('instance')._renderItem = function( ul, item ){
+        return $( "<li>")
+          .append('<div class="small">' + item.id + '<br>' + item.name + '</div>')
+          .appendTo( ul );
+      };
     });
   });
 

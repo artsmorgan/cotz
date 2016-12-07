@@ -19,10 +19,8 @@
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
         <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
+        <link rel="stylesheet" href="css/jquery-ui.min.css">
         <link rel="stylesheet" href="css/main.css">
-
-         <script src="https://use.fontawesome.com/5b1d115124.js"></script>
-
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body class="form-page">
@@ -471,16 +469,13 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-
     <script src="js/vendor/bootstrap.min.js"></script>
-
     <script src="js/vendor/bootstrap-datepicker.min.js"></script>
-
     <script src="js/vendor/jquery.formatCurrency-1.4.0.min.js"></script>
-
     <script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
     <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
+    <script src="js/vendor/jquery-ui.min.js"></script>
     <script src="js/main.js"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
