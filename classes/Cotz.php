@@ -68,35 +68,35 @@
 		}
 
 		private function saveHeader($data){
-
+			global $db;
 			$data = $this->parseToNull($data);
-
-			print_r($data);
+			// echo 'db';
+			// print_r($db);
 			//save header
 			$sql = "INSERT INTO cotz_header(nombre_empresa,cedula_juridica,contacto,owner,solicitud_no,fecha,
 								telefono,fax,correo,vigente_hasta,cotz_no,subtotal,total,tax,descuento,createdAt,createdBy)
 								VALUES(
-								".$data['nombreCliente'].",
-								".$data['cedulaJuridica'].",
-								".$data['nombreContacto'].",
-								".$data['vendedor'].",
-								".$data['noSolicitud'].",
-								".$data['fechaCotizacion'].",
-								".$data['telefono1'].",
-								".$data['Fax'].",
-								".$data['email'].",
-								".$data['fechaVencimiento'].",
-								".$data['numeroCotizacion'].",
-								".$data['subtotal'].",
-								".$data['total'].",
-								".$data['totalIva'].",
-								".$data['totalDescuento'].","
-								.$this->now.",							
-								".$data['sessionId']."); SELECT LAST_INSERT_ID() ;";
+								'".$data['nombreCliente']."',
+								'".$data['cedulaJuridica']."',
+								'".$data['nombreContacto']."',
+								'".$data['vendedor']."',
+								'".$data['noSolicitud']."',
+								'".$data['fechaCotizacion']."',
+								'".$data['telefono1']."',
+								'".$data['Fax']."',
+								'".$data['email']."',
+								'".$data['fechaVencimiento']."',
+								'".$data['numeroCotizacion']."',
+								'".$data['subtotal']."',
+								'".$data['total']."',
+								'".$data['totalIva']."',
+								'".$data['totalDescuento']."',
+								'".$this->now."',							
+								'".$data['sessionId']."'); SELECT LAST_INSERT_ID() ;";
+			echo $sql;
+			$id = $db->Execute($sql);
 
-			//id = $db->Execute($sql);
-
-			return $sql;
+			return $id;
 		}
 
 		private function saveContent($content){}
