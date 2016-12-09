@@ -207,7 +207,7 @@
                 <option value="Phelps">Phelps</option>
                 <option value="Precision Brand">Precision Brand</option>
                 <option value="Quadrant">Quadrant</option>
-                <option value="Quimicos construccion"></option>
+                <option value="Quimicos construccion">Quimicos construccion</option>
                 <option value="Rasstech">Rasstech</option>
                 <option value="Rimatec">Rimatec</option>
                 <option value="RitePro">RitePro</option>
@@ -287,7 +287,7 @@
               <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad1">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="unidadMedida" class="form-control" id="unidadMedida1">
+              <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedida1">
             </div>
             <div class="col-sm-1 form-group border--full">
               <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario1">

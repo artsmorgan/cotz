@@ -378,6 +378,9 @@ function gotoList(){
         var $elem = $(elems[i]);
         if ( !$elem.val() ){
           $elem.closest('.form-group').addClass('hasErrors');
+          if( allValid ){
+            $elem.focus();
+          }
           allValid = false;
         }
       }
