@@ -1,3 +1,8 @@
+var SERVER_PROD = 'http://tecnosagot.united-crm.com';
+var SERVER_DEV = 'http://crm.local/';
+
+
+
 var salesPersons = [{
   id: 0,
   name: 'Roberto Castro Araya'
@@ -213,7 +218,7 @@ function gotoList(){
     //$( '.fixed-table-toolbar' ).prepend(createCotBtn);
 
    $( '#table' ).bootstrapTable({
-      url: 'http://crm.local/cotz/api/inv.json',
+      url: SERVER_PROD+'/cotz/api/inv.json',
       onLoadSuccess: function(){
         parentIframeLoaded();
       },
@@ -377,11 +382,12 @@ function gotoList(){
         }
       }
 
-      // $.post('URL', data, function(){
-      //   console.log('success');
-      // }).fail( function(){
-      //   console.log('fail');
-      // });
+      $.post(SERVER_DEV+'/cotz/api/cotz.php?action=processCot', data, function(data){
+        console.log(data);
+        console.log('success');
+      }).fail( function(){
+        console.log('fail');
+      });
     });
 
     $('#redondeo').on('change', function(){
