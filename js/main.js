@@ -98,14 +98,15 @@ function gotoList(){
   function updateMonto( $productRow ) {
     var cantidad = $productRow.find( '.art-cantidad' ).val(),
         precioUnitario = $productRow.find( '.art-precioUni' ).val();
-        $dispMonto = $productRow.find( '.op-total-monto' );
+        $dispMonto = $productRow.find( '.op-total-monto' ),
+        method = $productRow.find('[data-name=factorLinea]').val();
 
         cantidad = cantidad ? cantidad : 0;
         precioUnitario = precioUnitario ? precioUnitario : 0;
 
         monto = cantidad * precioUnitario;
 
-        monto = applyRoundFactor(monto, 'total');
+        monto = applyRoundFactor(monto, 'total', method);
 
         $productRow.find( '.op-hidden-monto' ).val( monto );
         $dispMonto.text( monto );
@@ -186,13 +187,13 @@ function gotoList(){
     }
   }
 
-  function applyRoundFactor( number, factor ){
+  function applyRoundFactor( number, factor, method ){
     if ( factor !== 'total' && factor !== 'total_final' ){
       factor = 'total_final';
     }
 
-    var method = $('#redondeo').val(),
-        round = roundMethods[method][factor];
+    method = method || $('#redondeo').val();
+    var round = roundMethods[method][factor];
 
     return roundTo(number, round);
   }
@@ -231,8 +232,6 @@ function gotoList(){
       $( '[data-name=codigoArticulo]', $productRow ).val( productData.Codigo );
       $( '[data-name=nombreArticulo]', $productRow ).val( productData.NombreDelArticulo );
       $( '[data-name=precioUnitario]', $productRow ).val( productData.Precio );
-      $( '[data-name=noParte]', $productRow ).val( productData.NoDeParte );
-      $( '[data-name=proveedor]', $productRow ).val( productData.Provedor );
       $( '[data-name=descripcionArticulo]', $productRow ).val( productData.DetallesDelArticulo );
       $( '[data-name=cantidad]', $productRow ).val(1);
 
@@ -354,9 +353,29 @@ function gotoList(){
       updateFormatCurrency();
     });
 
+    $('[required]').on('input blur', function(){
+      var $this = $(this);
+      if ( !$this.val() ){
+        $this.closest('.form-group').addClass('hasErrors');
+      }
+      else {
+        $this.closest('.form-group').removeClass('hasErrors');
+      }
+    });
+
     $('.btn-save').on('click', function(e){
       e.preventDefault();
-      var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
+      var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON(),
+          allValid = true,
+          elems = $('[required]');
+
+      for(var i = 0; i < elems.length; i++){
+        var $elem = $(elems[i]);
+        if ( !$elem.val() ){
+          $elem.closest('.form-group').addClass('hasErrors');
+          allValid = false;
+        }
+      }
 
       // $.post('URL', data, function(){
       //   console.log('success');
@@ -375,6 +394,11 @@ function gotoList(){
       updateIVA();
       updateTotal();
       updateFormatCurrency();
+    });
+
+    $('.transactions-list').on('change', '[data-name=factorLinea]', function(){
+      var i= $(this);
+      $(this).closest('.row-product').find('[data-name=precioUnitario]').trigger( 'input' );
     });
 
     $('#vendedor').autocomplete({

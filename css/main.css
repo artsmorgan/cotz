@@ -58,7 +58,7 @@
  margin-bottom: 12px;
 }
 
-.info-cliente{
+.float--active:first-child{
  border-right: 1px solid #d0d0d0;
 }
 
@@ -191,4 +191,13 @@ li.ui-menu-item + li{
 
 ul.ui-autocomplete{
   z-index: 10000;
+}
+
+.hasErrors{
+  color: red;
+}
+
+.hasErrors select, .hasErrors input, .hasErrors textarea{
+  color: red;
+  border-color: red;
 }

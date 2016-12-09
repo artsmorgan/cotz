@@ -85,40 +85,6 @@
       <!-- <button class="btn btn-primary" onclick="gotoList()">Regresar al listado</button> -->
     <form class="container-fluid form-container">
       <div class="row">
-        <div class="col-sm-6 info-cliente float--active">
-          <h4 class="f-section-title">Datos del cliente</h4>
-          <div class="row">
-            <div class="col-sm-4 form-group">
-              <label for="codigoClienteAux">Código del cliente:</label>
-              <input type="text" class="form-control" id="codigoClienteAux" data-bind="#codigoCliente">
-            </div>
-            <div class="col-sm-4 form-group">
-              <label for="cedulaJuridicaAux">No. Cédula jurídica:</label>
-              <input type="text" class="form-control" id="cedulaJuridicaAux" data-bind="#cedulaJuridica">
-            </div>
-            <div class="col-sm-4">
-              <a href="#" class="btn btn-default btn-block">Mostrar detalle</a>
-            </div>
-          </div>
-          <h4 class="f-section-title">Condiciones</h4>
-          <div class="row">
-              <div class="col-sm-3 form-group">
-                <label for="tiempoEntrega">Tiempo de entrega:</label>
-                <select name="tiempoEntrega" class="form-control" id="tiempoEntrega">
-                  <option>----</option>
-                </select>
-              </div>
-              <div class="col-sm-6 form-group">
-                <label for="lugarEntrega">Lugar de entrega:</label>
-                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega">
-              </div>
-              <div class="col-sm-3 form-group">
-                <label for="formaPago">Forma de pago:</label>
-                <input type="text" name="formaPago" class="form-control" id="formaPago">
-              </div>
-          </div>
-        </div>
-        <!--info cliente-->
         <div class="col-sm-6 info-cotizacion float--active">
 
           <h4 class="f-section-title">Cotización</h4>
@@ -159,21 +125,107 @@
                 <option value="factor_2">factor_2</option>
                 <option value="factor_3">factor_3</option>
               </select>
-
             </div>
           </div>
         </div>
-
         <!--info cotizacion-->
+        <div class="col-sm-6 info-cliente float--active">
+          <h4 class="f-section-title">Datos del cliente</h4>
+          <div class="row">
+            <div class="col-sm-4 form-group">
+              <label for="cuentaNombreAux">Cuenta (Nombre):</label>
+              <input type="text" class="form-control" id="cuentaNombreAux" required>
+            </div>
+            <div class="col-sm-4 form-group">
+              <label for="clienteNombreAux">Cliente (Nombre):</label>
+              <input type="text" class="form-control" id="clienteNombreAux" required>
+            </div>
+            <div class="col-sm-4">
+              <a href="#" class="btn btn-default btn-block">Mostrar detalle</a>
+            </div>
+          </div>
+          <h4 class="f-section-title">Condiciones</h4>
+          <div class="row">
+              <div class="col-sm-3 form-group">
+                <label for="tiempoEntrega">Tiempo de entrega:</label>
+                <select name="tiempoEntrega" class="form-control" id="tiempoEntrega">
+                  <option>----</option>
+                </select>
+              </div>
+              <div class="col-sm-6 form-group">
+                <label for="lugarEntrega">Lugar de entrega:</label>
+                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega">
+              </div>
+              <div class="col-sm-3 form-group">
+                <label for="formaPago">Forma de pago:</label>
+                <input type="text" name="formaPago" class="form-control" id="formaPago">
+              </div>
+          </div>
+        </div>
+        <!--info cliente-->
         <div class="col-sm-12">
           <div class="row">
             <div class="col-sm-3 form-group">
+              <label for="noSolicitud">No. de solicitud:</label>
+              <input type="text" name="noSolicitud" class="form-control" id="noSolicitud">
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="noCotizacion">No. de cotización:</label>
+              <input type="text" name="noCotizacion" class="form-control" id="noCotizacion" required>
+            </div>
+            <div class="col-sm-3 form-group">
               <label for="marca">Marca:</label>
-              <input type="text" name="marca" class="form-control" id="marca">
+              <select type="text" name="marca" class="form-control" id="marca" required>
+                <option value="">Seleccione</option>
+                <option value="Adhesives Technology">Adhesives Technology</option>
+                <option value="Apollo Valves">Apollo Valves</option>
+                <option value="Asbury">Asbury</option>
+                <option value="ASCO">ASCO</option>
+                <option value="Ashcroft">Ashcroft</option>
+                <option value="Bray">Bray</option>
+                <option value="Cedazo">Cedazo</option>
+                <option value="Clark Reliance">Clark Reliance</option>
+                <option value="Compra local">Compra local</option>
+                <option value="Conarco">Conarco</option>
+                <option value="Crown">Crown</option>
+                <option value="Dualco">Dualco</option>
+                <option value="Empire">Empire</option>
+                <option value="Endress-Hauser">Endress-Hauser</option>
+                <option value="Ervin">Ervin</option>
+                <option value="ESAB">ESAB</option>
+                <option value="Flow-Tek">Flow-Tek</option>
+                <option value="GE-IT">GE-IT</option>
+                <option value="ITT">ITT</option>
+                <option value="Kryton">Kryton</option>
+                <option value="LA-CO">LA-CO</option>
+                <option value="Lovejoy">Lovejoy</option>
+                <option value="Magnaflux">Magnaflux</option>
+                <option value="Monti">Monti</option>
+                <option value="Opta Minerals">Opta Minerals</option>
+                <option value="Otros">Otros</option>
+                <option value="Phelps">Phelps</option>
+                <option value="Precision Brand">Precision Brand</option>
+                <option value="Quadrant">Quadrant</option>
+                <option value="Quimicos construccion"></option>
+                <option value="Rasstech">Rasstech</option>
+                <option value="Rimatec">Rimatec</option>
+                <option value="RitePro">RitePro</option>
+                <option value="Rubberart">Rubberart</option>
+                <option value="Servicios">Servicios</option>
+                <option value="Sika">Sika</option>
+                <option value="Sinto">Sinto</option>
+                <option value="Teadit">Teadit</option>
+                <option value="TLV">TLV</option>
+                <option value="UTEX">UTEX</option>
+                <option value="Vazel">Vazel</option>
+                <option value="Wall Colmonoy">Wall Colmonoy</option>
+                <option value="Zinga">Zinga</option>
+              </select>
             </div>
             <div class="col-sm-3 form-group">
               <label for="fase">Fase:</label>
-              <select name="fase" class="form-control" id="fase">
+              <select name="fase" class="form-control" id="fase" required>
+                <option value="">Seleccione</option>
                 <option value="Comunicación inicial">Comunicación inicial</option>
                 <option value="Cotización">Cotización</option>
                 <option value="Negociación">Negociación</option>
@@ -181,14 +233,6 @@
                 <option value="Cerrada perdida">Cerrada perdida</option>
                 <option value="Desierta">Desierta</option>
               </select>
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="noSolicitud">No. de solicitud:</label>
-              <input type="text" name="noSolicitud" class="form-control" id="noSolicitud">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="noCotizacion">No. de cotización:</label>
-              <input type="text" name="noCotizacion" class="form-control" id="noCotizacion">
             </div>
           </div>
         </div>
@@ -198,20 +242,20 @@
       <ul class="transactions-list">
         <li class="row-head">
           <div class="row">
-            <div class="col-sm-offset-6 col-sm-1 border--full">
+            <div class="col-sm-offset-6 col-sm-1 border-full">
+              <b>Factor de redondeo</b>
+            </div>
+            <div class="col-sm-1 border--full">
+              <b>Cant</b>
+            </div>
+            <div class="col-sm-1 border--full">
               <b>U/ medida</b>
-            </div>
-            <div class="col-sm-1 border--full">
-              <b>Cant x precio U.</b>
-            </div>
-            <div class="col-sm-1 border--full">
-              <b>% descuento</b>
             </div>
             <div class="col-sm-1 border--full">
               <b>Precio u.</b>
             </div>
             <div class="col-sm-1 border--full">
-              <b>Cant</b>
+              <b>% descuento</b>
             </div>
             <div class="col-sm-1 border--full">
               <b>Monto</b>
@@ -232,19 +276,23 @@
               <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">ver de Inventario</button>
             </div>
             <div class="col-sm-1 form-group border--full">
+              <select type="number" data-name="factorLinea" class="form-control" id="factorLinea1">
+                <option value="factor_1">factor_1</option>
+                <option value="factor_2">factor_2</option>
+                <option value="factor_3">factor_3</option>
+              </select>
+            </div>
+            <div class="col-sm-1 form-group border--full">
+              <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad1">
+            </div>
+            <div class="col-sm-1 form-group border--full">
               <input type="number" data-name="unidadMedida" class="form-control" id="unidadMedida1">
-            </div>
-            <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="cantidadPrecioUnitario" class="form-control" id="cantidadPrecioUnitario1">
-            </div>
-            <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento1">
             </div>
             <div class="col-sm-1 form-group border--full">
               <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario1">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad1">
+              <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento1">
             </div>
             <div class="col-sm-1 form-group border--full">
               <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1">
@@ -256,24 +304,6 @@
           </div>
           <div class="wrapper-collapse">
             <div class="content-collapse">
-              <div class="row">
-                <div class="col-sm-2 form-group">
-                  <label for="codigoNombreLinea1">Código y nombre de línea</label>
-                  <input type="text" data-name="codigoNombreLinea" class="form-control" id="codigoNombreLinea1">
-                </div>
-                <div class="col-sm-1 form-group">
-                  <label for="noParte1">No. de parte</label>
-                  <input type="text" data-name="noParte" class="form-control" id="noParte1">
-                </div>
-                <div class="col-sm-1 form-group">
-                  <label for="marcaArticulo1">Marca</label>
-                  <input type="text" data-name="marcaArticulo" class="form-control" id="marcaArticulo1">
-                </div>
-                <div class="col-sm-2 form-group">
-                  <label for="proveedor1">Proveedor</label>
-                  <input type="text" data-name="proveedor" class="form-control" id="proveedor1">
-                </div>
-              </div>
               <div class="row">
                 <div class="col-sm-6 form-group">
                   <label for="descripcionArticulo1">Descripción:</label>
@@ -341,12 +371,12 @@
       <h4 class="f-section-title">Notas</h4>
       <div class="row">
         <div class="col-sm-6 form-group">
-          <label for="notas1">Notas 1:</label>
-          <textarea name="notas1" rows="4" class="form-control" id="notas1"></textarea>
+          <label for="notas1">Notas Cotización:</label>
+          <textarea name="notasCotizacion" rows="4" class="form-control" id="notasCotizacion"></textarea>
         </div>
         <div class="col-sm-6 form-group">
-          <label for="notas2">Notas 2:</label>
-          <textarea name="notas2" rows="4" class="form-control" id="notas2"></textarea>
+          <label for="notas2">Notas CRM:</label>
+          <textarea name="notasCRM" rows="4" class="form-control" id="notasCRM"></textarea>
         </div>
       </div>
       <div class="row">
