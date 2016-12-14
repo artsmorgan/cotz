@@ -96,7 +96,7 @@
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaCotizacion">Fecha de cotización:</label>
-              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control datepicker" id="fechaCotizacion">
+              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion" disabled>
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaVencimiento">Fecha de vencimiento:</label>
