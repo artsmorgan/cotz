@@ -328,8 +328,13 @@ function gotoList(){
       });
     });
 
+    var today = new Date(),
+        todayStr = today.getDate() + '/' + ( today.getMonth() + 1 ) + '/' + today.getFullYear();
+    $('#fechaCotizacion').val( todayStr );
+
     $('.datepicker').datepicker({
-      format: 'dd/mm/yyyy'
+      format: 'dd/mm/yyyy',
+      startDate: today
     });
 
     $('input[type=number]').on('input',function(){
