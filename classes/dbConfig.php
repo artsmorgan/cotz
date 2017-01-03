@@ -10,7 +10,7 @@ class dbConfig {
     public static $db_conn_server = "127.0.0.1";
     public static $db_conn_user = "root";
     public static $db_conn_pass = "";
-    public static $db_conn_database = "wishapic";
+    public static $db_conn_database = "tecno_test";
     public static $db_driver = 'mysqli';
 
     
