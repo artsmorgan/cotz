@@ -1,7 +1,6 @@
 <?php
 	
-	require_once('../adodb5'.DIRECTORY_SEPARATOR .'adodb.inc.php');
-	//echo ABSPATH.'classes/conn.php';
+	
 	require_once('../classes/conn.php');
 	/**
 	* 
