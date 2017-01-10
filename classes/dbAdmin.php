@@ -18,7 +18,7 @@ class dbAdmin {
     }
 
     function getConnection() {
-        $this->_adoconn = &ADONewConnection(dbConfig::$db_driver);
+        $this->_adoconn = ADONewConnection(dbConfig::$db_driver);
         $this->_adoconn->PConnect(dbConfig::$db_conn_server,
                 dbConfig::$db_conn_user,dbConfig::$db_conn_pass,
                 dbConfig::$db_conn_database);
@@ -46,10 +46,12 @@ class dbAdmin {
     }
 
     public function getAllFromUser($username){
+        // var_dump($this->_adoconn);die();
         try {
             $sql ='select * from _user';
-            $rs = $this->_adoconn->Execute($sql);
             $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql);
+           
             $this->_adoconn->SetFetchMode(ADODB_FETCH_ASSOC);
             $result = $rs->getRows();
          }catch(Exception $e ){

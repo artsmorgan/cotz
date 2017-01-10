@@ -1,0 +1,72 @@
+<hr>
+(mysql): INSERT INTO cotz_header(nombre_empresa,cedula_juridica,contacto,owner,solicitud_no,fecha,
+								telefono,fax,correo,vigente_hasta,cotz_no,subtotal,total,tax,descuento,createdAt,createdBy)
+								VALUES(
+								etest,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								0,
+								NULL,
+								NULL,
+								NULL,
+								NULL,2016-12-08 13:18:35,							
+								8); SELECT LAST_INSERT_ID() ; &nbsp; 
+<hr>
+
+1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '13:18:35,							
+								8); SELECT LAST_INSERT_ID()' at line 18
+<hr>
+(mysql): INSERT INTO cotz_header(nombre_empresa,cedula_juridica,contacto,owner,solicitud_no,fecha,
+								telefono,fax,correo,vigente_hasta,cotz_no,subtotal,total,tax,descuento,createdAt,createdBy)
+								VALUES(
+								test,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								0,
+								NULL,
+								NULL,
+								NULL,
+								NULL,2016-12-08 13:46:00,							
+								8); SELECT LAST_INSERT_ID() ; &nbsp; 
+<hr>
+
+1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '13:46:00,							
+								8); SELECT LAST_INSERT_ID()' at line 18
+<hr>
+(mysql): INSERT INTO cotz_header(nombre_empresa,cedula_juridica,contacto,owner,solicitud_no,fecha,
+								telefono,fax,correo,vigente_hasta,cotz_no,subtotal,total,tax,descuento,createdAt,createdBy)
+								VALUES(
+								test,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								NULL,
+								0,
+								NULL,
+								NULL,
+								NULL,
+								NULL,2016-12-08 14:05:34,							
+								8); SELECT LAST_INSERT_ID() ; &nbsp; 
+<hr>
+
+1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '14:05:34,							
+								8); SELECT LAST_INSERT_ID()' at line 18

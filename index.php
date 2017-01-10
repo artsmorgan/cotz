@@ -7,7 +7,7 @@ $username = $_GET['u'];
 
 $userdata = dbAdmin::getInstancia()->getAllFromUser($username);
 
-echo '$userdata . '.$userdata;
+print_r($userdata);
 
 
 echo $username;
