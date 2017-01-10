@@ -1,3 +1,18 @@
+<?php
+include 'conspath.php';
+include_once (AS_PATH.'/classes/dbAdmin.php');
+
+$path = "'".PATH."'";
+$username = $_GET['u'];
+
+$userdata = dbAdmin::getInstancia()->getAllFromUser($username);
+
+echo '$userdata . '.$userdata;
+
+
+echo $username;
+?>
+
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -85,14 +100,14 @@
 
       $(function () {
 
-        $.get(<?php echo PATH; ?>+'/cotz/services/cotz.php?action=list_cotz')
+        $.get(<?php echo $path; ?>+'/cotz/services/cotz.php?action=list_cotz')
           .done(function( data ) {
             alert( "Data Loaded: " + data );
           });
 
          parent.iframeLoaded();
           $('#table').bootstrapTable({
-             url: <?php echo PATH; ?>+'/cotz/api/cotz.php?action=getJsonSample',
+             url: <?php echo $path; ?>+'/cotz/api/cotz.php?action=getJsonSample',
              onDblClickRow: function(row, $element, field){
               var cotID = row['cot_no'];
              },

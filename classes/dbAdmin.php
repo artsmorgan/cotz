@@ -44,6 +44,20 @@ class dbAdmin {
         list($m, $d, $y) = explode('/', $date);
         return trim($y) . "-" . trim($m) . "-" . trim($d);
     }
+
+    public function getAllFromUser($username){
+        try {
+            $sql ='select * from _user';
+            $rs = $this->_adoconn->Execute($sql);
+            $this->getConnection();
+            $this->_adoconn->SetFetchMode(ADODB_FETCH_ASSOC);
+            $result = $rs->getRows();
+         }catch(Exception $e ){
+            $this->closeConnection();
+        }
+
+        return $result;    
+    }
    
 
     public function doLogin($uid,$password){
