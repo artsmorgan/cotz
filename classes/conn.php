@@ -4,7 +4,7 @@ $db_params = array();
 $db_params['host'] = 'localhost';
 $db_params['user'] = 'root';
 $db_params['pass'] = 'rootatlocalhost';
-$db_params['db'] = 'zurmo_test';
+$db_params['db'] = 'new_ts_2';
 
 $db = null;
 $db = newAdoConnection('mysql');

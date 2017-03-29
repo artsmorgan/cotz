@@ -11,9 +11,12 @@ if(!defined('PATH')){
 // $API_URL = $_SERVER['SERVER_NAME'];
 
 
-function print_all($arr){
+function print_all($arr, $dump = false){
 	echo '<pre>';
-	var_dump($arr);
+	if($dump)
+		var_dump($arr);
+	else
+		print_r($arr);
 	echo '</pre>';
 }
 

@@ -1,3 +1,23 @@
+<?php
+include 'conspath.php';
+include_once (AS_PATH.'/classes/dbAdmin.php');
+
+// $path = "'".PATH."'";
+$path = "'"."http://".$_SERVER['SERVER_NAME']."'";
+$username = $_GET['u'];
+
+$userlist = dbAdmin::getInstancia()->getAllFromUser();
+
+$userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
+
+// print_all($userlist);
+// echo '---------------------------';
+// print_all($userdata);
+
+
+// echo $username;
+?>
+
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -67,6 +87,144 @@
           </div>
         </div>
 
+
+         <!-- Modal user lists -->
+        <div class="modal fade" id="vendedoresModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Seleccionar Vendedor</h4>
+              </div>
+              <div class="modal-body">
+                <table id="user-table" class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <?php for($i = 0; $i < count($userlist);$i++ ){?>                      
+                      <tr>
+                        <td><?php  echo $userlist[$i]['firstname'].' '. $userlist[$i]['lastname'];  ?></td>
+                        <td>
+                          <a href="#" class="add-vendedor btn btn-primary" 
+                                          data-id="<?php  echo $userlist[$i]['id']; ?>" 
+                                          data-username="<?php  echo $userlist[$i]['firstname'].' '. $userlist[$i]['lastname'];  ?>">
+                            <i class="fa fa-user-plus" aria-hidden="true"></i> Agregar
+                          </a>
+                        </td>
+                      </tr>
+                      <?php } ?>
+                    </tbody>
+                </table>
+              </div>             
+            </div>
+          </div>
+        </div>
+
+
+        <!-- End clientesModal modals-->
+
+
+         <!-- Modal user lists -->
+        <div class="modal fade" id="clientesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Seleccionar Vendedor</h4>
+              </div>
+              <div class="modal-body">
+                <div class="alert alert-danger select_client_alert" role="alert"><strong>Precaucion</strong> Debe seleccionar una compania primero</div>
+                <table id="user-table" class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>email</th>
+                      <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>                      
+                    </tbody>
+                </table>
+              </div>             
+            </div>
+          </div>
+        </div>
+
+
+        <!-- End clientesModal-->
+
+
+          <!-- Modal companiasModal lists -->
+        <div class="modal fade" id="companiasModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Seleccionar Compania</h4>
+              </div>
+              <div class="modal-body company-modal-body">
+                 <br>
+                 <div class="auto-complete">
+                   <div class="form-group">
+                      <label for="exampleInputEmail1">Ingrese el nombre de la compania</label>
+                      <input type="text" class="form-control" id="companiaInput" placeholder="Compania...">
+                      <div class="ui-widget" style="margin-top:2em; font-family:Arial">
+                          Seleccionado:
+                          <div id="log" class="ui-widget-content">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Id</th>
+                                    <th>Nombre</th>
+                                    <th>Telefono</th>
+                                    <th>Sitio Web</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                   <td class="id_compania"></td>
+                                    <td class="nombre_compania"></td>
+                                    <td class="telefono_compania"></td>
+                                    <td class="website_compania"></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Descripcion</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="description_company"></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              
+                          </div>
+                        </div>
+                        <br>
+                        <p style="text-align: center;">
+                                <a href="#" class="add_compania btn btn-primary disabled">Agregar</a>
+                          </p>
+                    </div>
+                 </div>
+              </div>             
+            </div>
+          </div>
+        </div>
+
+
+        <!-- End companiasModal modals-->
+
+
+
         <div class="toolbar">
           <div class="btn-group pull-right" role="group">
             <button type="button" class="btn btn-default" onclick="gotoList()" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
@@ -92,7 +250,11 @@
           <div class="row">
             <div class="col-sm-6 form-group">
               <label for="vendedor">Vendedor:</label>
-              <input type="text" name="vendedor" class="form-control" id="vendedor">
+              <input type="text" name="vendedor" class="form-control" id="vendedor" 
+                        value="<?php echo $userdata[0]['firstname'].' '.$userdata[0]['lastname']; ?>" />
+
+              <input type="hidden" name="userid" id="userid" value="<?php echo $userdata[0]['id']; ?>" />          
+
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaCotizacion">Fecha de cotización:</label>
@@ -113,6 +275,7 @@
               <select name="moneda" class="form-control" id="moneda">
                 <option value="dolares">$</option>
                 <option value="colones">₡</option>
+                <option value="euro">€</option>
               </select>
             </div>
             <div class="col-sm-3 form-group">
@@ -122,9 +285,9 @@
             <div class="col-sm-3 form-group">
               <label for="redondeo">Factor de redondeo:</label>
               <select name="redondeo" class="form-control" id="redondeo">
-                <option value="factor_1">factor_1</option>
-                <option value="factor_2">factor_2</option>
-                <option value="factor_3">factor_3</option>
+                <option value="factor_1">0,05</option>
+                <option value="factor_2">1,00</option>
+                <option value="factor_3">0,01</option>
               </select>
             </div>
           </div>
@@ -134,11 +297,12 @@
           <h4 class="f-section-title">Datos del cliente</h4>
           <div class="row">
             <div class="col-sm-4 form-group">
-              <label for="cuentaNombreAux">Cuenta (Nombre):</label>
+              <label for="cuentaNombreAux">Compañía :</label>
               <input type="text" class="form-control" id="cuentaNombreAux" required>
+              <input type="hidden" name="company_id" id="company_id">
             </div>
             <div class="col-sm-4 form-group">
-              <label for="clienteNombreAux">Cliente (Nombre):</label>
+              <label for="clienteNombreAux">Contacto :</label>
               <input type="text" class="form-control" id="clienteNombreAux" required>
             </div>
             <div class="col-sm-4">
@@ -149,9 +313,7 @@
           <div class="row">
               <div class="col-sm-3 form-group">
                 <label for="tiempoEntrega">Tiempo de entrega:</label>
-                <select name="tiempoEntrega" class="form-control" id="tiempoEntrega">
-                  <option>----</option>
-                </select>
+                <input type="text" name="tiempoEntrega" class="form-control" id="tiempoEntrega" />
               </div>
               <div class="col-sm-6 form-group">
                 <label for="lugarEntrega">Lugar de entrega:</label>
@@ -178,49 +340,31 @@
               <label for="marca">Marca:</label>
               <select type="text" name="marca" class="form-control" id="marca" required>
                 <option value="">Seleccione</option>
-                <option value="Adhesives Technology">Adhesives Technology</option>
-                <option value="Apollo Valves">Apollo Valves</option>
-                <option value="Asbury">Asbury</option>
-                <option value="ASCO">ASCO</option>
-                <option value="Ashcroft">Ashcroft</option>
-                <option value="Bray">Bray</option>
-                <option value="Cedazo">Cedazo</option>
-                <option value="Clark Reliance">Clark Reliance</option>
-                <option value="Compra local">Compra local</option>
-                <option value="Conarco">Conarco</option>
-                <option value="Crown">Crown</option>
-                <option value="Dualco">Dualco</option>
-                <option value="Empire">Empire</option>
-                <option value="Endress-Hauser">Endress-Hauser</option>
-                <option value="Ervin">Ervin</option>
-                <option value="ESAB">ESAB</option>
-                <option value="Flow-Tek">Flow-Tek</option>
-                <option value="GE-IT">GE-IT</option>
-                <option value="ITT">ITT</option>
-                <option value="Kryton">Kryton</option>
-                <option value="LA-CO">LA-CO</option>
-                <option value="Lovejoy">Lovejoy</option>
-                <option value="Magnaflux">Magnaflux</option>
-                <option value="Monti">Monti</option>
-                <option value="Opta Minerals">Opta Minerals</option>
-                <option value="Otros">Otros</option>
-                <option value="Phelps">Phelps</option>
-                <option value="Precision Brand">Precision Brand</option>
-                <option value="Quadrant">Quadrant</option>
-                <option value="Quimicos construccion">Quimicos construccion</option>
-                <option value="Rasstech">Rasstech</option>
-                <option value="Rimatec">Rimatec</option>
-                <option value="RitePro">RitePro</option>
-                <option value="Rubberart">Rubberart</option>
-                <option value="Servicios">Servicios</option>
-                <option value="Sika">Sika</option>
-                <option value="Sinto">Sinto</option>
-                <option value="Teadit">Teadit</option>
-                <option value="TLV">TLV</option>
-                <option value="UTEX">UTEX</option>
-                <option value="Vazel">Vazel</option>
-                <option value="Wall Colmonoy">Wall Colmonoy</option>
-                <option value="Zinga">Zinga</option>
+                <option value="ALLIED">ALLIED</option>
+                <option value="ASTM">ASTM</option>
+                <option value="ATC">ATC</option>
+                <option value="BUSHNELL">BUSHNELL</option>
+                <option value="COLEPARMER">COLE PARMER</option>
+                <option value="DEXSIL">DEXSIL</option>
+                <option value="DEFELSKO">DEFELSKO</option>
+                <option value="ECO-SHELL">ECO-SHELL</option>
+                <option value="FIVE_STAR">FIVE STAR</option>
+                <option value="FLORIDA">FLORIDA</option>
+                <option value="FORESTRY_SUPPLIERS">FORESTRY SUPPLIERS</option>
+                <option value="GE">GE</option>
+                <option value="GILSON">GILSON</option>
+                <option value="GUNT">GUNT</option>
+                <option value="GURLEY">GURLEY</option>
+                <option value="MARSWELL">MARSWELL</option>
+                <option value="MITUTOYO">MITUTOYO</option>
+                <option value="OMEGA">OMEGA</option>
+                <option value="RUBBERART">RUBBERART</option>
+                <option value="TACC">TACC</option>
+                <option value="VAISALA">VAISALA</option>
+                <option value="VE_GROUP">VE GROUP</option>
+                <option value="YSI">YSI</option>
+                <option value="YXLON">YXLON</option>
+                <option value="ZWICK">ZWICK</option>
               </select>
             </div>
             <div class="col-sm-3 form-group">
@@ -243,16 +387,16 @@
       <ul class="transactions-list">
         <li class="row-head">
           <div class="row">
-            <div class="col-sm-offset-6 col-sm-1 border-full">
+           <!--  <div class="col-sm-offset-6 col-sm-1 border-full">
               <b>Factor de redondeo</b>
-            </div>
-            <div class="col-sm-1 border--full">
+            </div> -->
+            <div class="col-sm-offset-6 col-sm-1 border--full">
               <b>Cant</b>
             </div>
             <div class="col-sm-1 border--full">
               <b>U/ medida</b>
             </div>
-            <div class="col-sm-1 border--full">
+            <div class="col-sm-2 border--full">
               <b>Precio u.</b>
             </div>
             <div class="col-sm-1 border--full">
@@ -276,20 +420,20 @@
              <div class="col-sm-2 form-group">
               <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">ver de Inventario</button>
             </div>
-            <div class="col-sm-1 form-group border--full">
+            <!-- <div class="col-sm-1 form-group border--full">
               <select type="number" data-name="factorLinea" class="form-control" id="factorLinea1">
                 <option value="factor_1">factor_1</option>
                 <option value="factor_2">factor_2</option>
                 <option value="factor_3">factor_3</option>
               </select>
-            </div>
+            </div> -->
             <div class="col-sm-1 form-group border--full">
               <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad1">
             </div>
             <div class="col-sm-1 form-group border--full">
               <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedida1">
             </div>
-            <div class="col-sm-1 form-group border--full">
+            <div class="col-sm-2 form-group border--full">
               <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario1">
             </div>
             <div class="col-sm-1 form-group border--full">

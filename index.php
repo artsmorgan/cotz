@@ -2,15 +2,22 @@
 include 'conspath.php';
 include_once (AS_PATH.'/classes/dbAdmin.php');
 
-$path = "'".PATH."'";
+// $path = "'".PATH."'";
+$path = "'"."http://".$_SERVER['SERVER_NAME']."'";
 $username = $_GET['u'];
-
-$userdata = dbAdmin::getInstancia()->getAllFromUser($username);
-
-print_r($userdata);
+$usernameToString = "'".$username."'";
 
 
-echo $username;
+$userlist = dbAdmin::getInstancia()->getAllFromUser();
+
+$userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
+
+// print_all($userlist);
+
+// print_all($userdata);
+
+
+// echo $username;
 ?>
 
 <!doctype html>
@@ -34,10 +41,19 @@ echo $username;
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="bower_components/bootstrap-table/src/bootstrap-table.css">
         <link rel="stylesheet" href="css/cotz-index.css">
+        <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+      
         <script src="https://use.fontawesome.com/5b1d115124.js"></script>
 
     </head>
     <body>
+
+
+    <div class="filter-by-data">
+      <p><h3>Filtros </h3> Desde: <input type="text" id="datepicker_from"> Hasta: <input type="text" id="datepicker_to"> <a href="#" class="btn btn-default">Filtrar</a></p>
+    </div>
+    <br>
+
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -50,7 +66,10 @@ echo $username;
         <th data-field="cot_no" data-sortable="true">Cot #</th>
         <th data-field="client" data-sortable="true">Cliente</th>
         <th data-field="seller" data-sortable="true">Vendedor</th>
-        <th data-field="description" data-sortable="true">Descripcion</th>
+        <th data-field="seller" data-sortable="true">Marca</th>
+        <th data-field="seller" data-sortable="true">Fase</th>
+        <th data-field="seller" data-sortable="true">Monto</th>
+        <!-- <th data-field="description" data-sortable="true">Descripcion</th> -->
         <th data-field="cot_date" data-sortable="true">Fecha de Cotizacion</th>
         <th data-field="edit" data-events="edit" data-formatter="editBtn"></th>
         <th data-field="delete" data-events="edit" data-formatter="deletetBtn"></th>
@@ -59,7 +78,7 @@ echo $username;
       </table>
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
       <script src="js/vendor/bootstrap.min.js"></script>
 
       <script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
@@ -70,6 +89,11 @@ echo $username;
       <script type="text/javascript" src="js/vendor/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
       <script type="text/javascript">
        
+         $( function() {
+          $( "#datepicker_from" ).datepicker();
+          $( "#datepicker_to" ).datepicker();
+        } );
+
         $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
         
         var edit = { 
@@ -87,14 +111,17 @@ echo $username;
         };
 
         var createCotBtn = function(){
-          return '<button class="btn btn-primary" onclick="gotoCotz()" type="button" aria-expanded="false"><i class="fa fa-plus-circle"></i> Crear Cotizacion</button>';
+          var username = <?php echo json_encode($username) ?>;
+          // console.log(typeof username);
+          return '<button class="btn btn-primary" onclick="gotoCotz(`'+username+'`)" type="button" aria-expanded="false"><i class="fa fa-plus-circle"></i> Crear Cotizacion</button>';
         }
 
         function gotoCotz(id){
-          console.log('id',id);
-          if(id===null || typeof id === 'undefined'){
-            window.location.href = "cotz.php";
-          }
+          // console.log('id',id);
+          // if(id===null || typeof id === 'undefined'){
+          //   window.location.href = "cotz.php?u="+id;
+          // }
+           window.location.href = "cotz.php?u="+id;
           parent.iframeLoaded();
         }
 
@@ -102,7 +129,7 @@ echo $username;
 
         $.get(<?php echo $path; ?>+'/cotz/services/cotz.php?action=list_cotz')
           .done(function( data ) {
-            alert( "Data Loaded: " + data );
+            // alert( "Data Loaded: " + data );
           });
 
          parent.iframeLoaded();

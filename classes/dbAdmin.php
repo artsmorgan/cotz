@@ -22,6 +22,7 @@ class dbAdmin {
         $this->_adoconn->PConnect(dbConfig::$db_conn_server,
                 dbConfig::$db_conn_user,dbConfig::$db_conn_pass,
                 dbConfig::$db_conn_database);
+        $this->_adoconn->SetFetchMode(ADODB_FETCH_ASSOC);
     }
 
     function closeConnection() {
@@ -45,14 +46,13 @@ class dbAdmin {
         return trim($y) . "-" . trim($m) . "-" . trim($d);
     }
 
-    public function getAllFromUser($username){
+    public function getAllFromUser(){
         // var_dump($this->_adoconn);die();
         try {
-            $sql ='select * from _user';
+            $sql ='SELECT u.username, u.role_id, p.* FROM _user u inner join person p where u.person_id = p.id;';
             $this->getConnection();
             $rs = $this->_adoconn->Execute($sql);
            
-            $this->_adoconn->SetFetchMode(ADODB_FETCH_ASSOC);
             $result = $rs->getRows();
          }catch(Exception $e ){
             $this->closeConnection();
@@ -60,46 +60,24 @@ class dbAdmin {
 
         return $result;    
     }
-   
-
-    public function doLogin($uid,$password){
-        $_params=null;
-        $result=null;
-
-        $pw =  md5($password);
-        // echo $pw.' ////';
+    
+    public function getAllFromUserByUsername($username){
+        // var_dump($this->_adoconn);die();
         try {
-            $sql ='select count(*) as count from user where username = "'.$uid.'" and password = "'.$pw.'"';
-            $rs = null;
+            $sql ='SELECT u.username, u.role_id, p.* FROM _user u inner join person p where u.person_id = p.id and u.username = ?';
             $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql, $username);
+           
             
-            // print_r($sql);die();
-            $this->_adoconn->SetFetchMode(ADODB_FETCH_ASSOC);
-            $rs = $this->_adoconn->Execute($sql);
-                        
             $result = $rs->getRows();
-
-            if($result[0]['count']>0){
-                $token = $this->generateToken();
-                //insert the token
-                $sql ='update user set token = "'.$token.'" where username = "'.$uid.'" and password = "'.$pw.'"';
-                $this->_adoconn->Execute($sql);
-            }
-
-            $sql ='select * from user where username = "'.$uid.'" and password = "'.$pw.'"';
-            $rs = $this->_adoconn->Execute($sql);
-            $result = $rs->getRows();
-            // print_r($result);die();
-
-            $this->closeConnection();
-
-        }catch(Exception $e ){
+         }catch(Exception $e ){
             $this->closeConnection();
         }
 
-        return $result[0];
+        return $result;    
     }
 
+    
 
     private function generateToken(){
         $length = 20;
@@ -112,6 +90,205 @@ class dbAdmin {
         return md5($randomString);
     }
 
+
+    public function getCompanyList($term) {
+
+            $sql ='SELECT id,description, name, officephone, website FROM account where name LIKE "'.$term.'%";';
+
+            // echo $sql;
+
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql);
+           
+            
+            $result = $rs->getRows();
+
+            return $result;
+       
+    }
+
+
+    public function getCompanyContactsByCompany($id) {
+
+            $result = 0;
+
+            $sql ='SELECT count(*) as count FROM accountcontactaffiliation where accountaffiliation_account_id =?;';
+
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql, $id);
+            
+            $result = $rs->getRows();
+            $this->closeConnection();
+
+           
+
+            if($result[0]['count']>=0){
+
+                $userSql = "SELECT ac.id as ac_id , c.companyname, e.emailaddress as email,
+                            p.firstname, p.lastname, p.jobtitle, p.mobilephone, p.officephone
+                            FROM accountcontactaffiliation ac 
+                            inner join contact c on ac.contactaffiliation_contact_id = c.id
+                            inner join person p on c.person_id = p.id
+                            inner join email e on p.primaryemail_email_id = e.id
+                            where ac.accountaffiliation_account_id = ?;";
+                $this->getConnection();
+                $rs = $this->_adoconn->Execute($userSql, $id);     
+                $result = $rs->getRows();
+
+                 return $result;
+
+
+            }
+
+
+            return $result;
+       
+    }
+
+    public function updateContactExternalData($ownerId, $externalId, $companyId, $userId) {
+
+           // echo $ownerId + ' | ownerId <br>';
+           // echo $accountId + ' | accountId <br>';
+
+            $sql ='update contact set 
+                            external_owner_id = "'.$ownerId.'"
+                            , external_id="'.$externalId.'"
+                            , external_company_id="'.$companyId.'"
+                             where id = '.$userId.';';
+
+            
+
+            //echo $sql; die();
+             $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql);
+            $this->closeConnection();
+
+
+            return true;
+       
+    }
+
+    public function updateAccountUserOwner($ownerId, $externalId, $accountId) {
+
+           // echo $ownerId + ' | ownerId <br>';
+           // echo $accountId + ' | accountId <br>';
+
+            $sql ='update account set external_owner_id = "'.$ownerId.'", external_id="'.$externalId.'" where id = '.$accountId.';';
+
+            
+
+            //echo $sql; die();
+             $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql);
+            $this->closeConnection();
+
+
+            return true;
+       
+    }
+
+
+    public function updateContactUserOwner($ownerId, $externalId, $accountId) {
+
+           // echo $ownerId + ' | ownerId <br>';
+           // echo $accountId + ' | accountId <br>';
+
+            $sql ='update account set external_owner_id = "'.$ownerId.'", external_id="'.$externalId.'" where id = '.$accountId.';';
+
+            
+
+            //echo $sql; die();
+             $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql);
+            $this->closeConnection();
+
+
+            return true;
+       
+    }
+
+    public function getCompanyIds() {
+
+            $result = 0;
+
+            $sql ='select a.id as a_id, a.external_owner_id, a.ownedsecurableitem_id, u.username, u.id as u_id 
+                    from account a inner join _user u on a.external_owner_id = u.external_id;';
+
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql);
+            
+            $result = $rs->getRows();
+            $this->closeConnection();
+                    
+            return $result;
+       
+    }
+
+
+    public function getContactIds() {
+
+            $result = 0;
+
+            $sql ='select c.id as contact, c.person_id,c.external_owner_id,  p.ownedsecurableitem_id , u.id as u_id
+                    from contact c 
+                    inner join person p on c.person_id = p.id
+                    inner join _user u on c.external_owner_id = u.external_id;';
+
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql);
+            
+            $result = $rs->getRows();
+            $this->closeConnection();
+                    
+            return $result;
+       
+    }
+
+    public function getAccountExternalId(){
+        $result = 0;
+        $sql = 'select a.id as account_id, a.external_id as account_external_id, c.id as contact_id
+                from account a inner join contact c on c.external_company_id = a.external_id;';
+
+        $this->getConnection();
+        $rs = $this->_adoconn->Execute($sql);
+        
+        $result = $rs->getRows();
+        $this->closeConnection();
+                
+        return $result;        
+    }
+
+
+    public function updateCompanyOwnerById($ownerId, $securableId) {
+
+            $result = 0;
+
+            $sql ='update ownedsecurableitem SET owner__user_id='.$ownerId.' WHERE id= '. $securableId;
+
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql);
+            $this->closeConnection();
+
+
+            return true;
+       
+    }
+
+    public function createCompanyOwnerRelation($companyID, $userID) {
+
+            $result = 0;
+
+            $sql ='update contact set account_id = '.$companyID.' where id = '.$userID.';
+                    INSERT INTO accountcontactaffiliation (`primary`,`item_id`,`role_customfield_id`,`accountaffiliation_account_id`,`contactaffiliation_contact_id`) VALUES(1,21008,null,'.$companyID.','.$userID.');';
+
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql);
+            $this->closeConnection();
+
+
+            return true;
+       
+    }
     
 
 }

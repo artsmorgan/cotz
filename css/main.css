@@ -161,6 +161,15 @@
   width: 100%;
 }
 
+.select_client_alert{
+  display: none;
+}
+
+.company-modal-body{
+
+  min-height: 400px;
+
+}
 .modal:before {
   content: '';
   display: inline-block;
@@ -172,7 +181,7 @@
 .modal-dialog {
   display: inline-block;
   text-align: left;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 #inventarioModal.modal.fade:not(.in) .modal-dialog {
@@ -200,4 +209,13 @@ ul.ui-autocomplete{
 .hasErrors select, .hasErrors input, .hasErrors textarea{
   color: red;
   border-color: red;
+}
+
+#user-table{
+  width: 100%;
+}
+
+
+#user-table td{
+  padding: 10px 0;
 }

@@ -50,8 +50,8 @@ var clients = [
 ];
 
 
-function gotoList(){
-    window.location.href = "index.html";
+function gotoList(username){
+    window.location.href = "index.php?u="+username;
     parent.iframeLoaded();
 }
 
@@ -207,6 +207,11 @@ function gotoList(){
     return round * Math.round(number/round);
   }
 
+  function setNewVendedor(username, id){
+    $('#vendedor').val(username);
+    $('#userid').val(id);
+  }
+
   $( document ).ready(function(){
 
     var $productForm = $( '.row-product' ).clone().addClass( 'disp--hide' ),
@@ -226,6 +231,76 @@ function gotoList(){
          parentIframeLoaded();
       }
     });
+
+
+
+  $('#vendedor').on('click', function(e){
+   // console.log('holap');
+   $('#vendedoresModal').modal({ backdrop: 'static', keyboard: false });
+  })
+  $('#cuentaNombreAux').on('click', function(e){
+   // console.log('holap');
+   $('#companiasModal').modal({ backdrop: 'static', keyboard: false });
+  })
+   $('#clienteNombreAux').on('click', function(e){
+   // console.log('holap');
+   $('#clientesModal').modal({ backdrop: 'static', keyboard: false });
+  
+     if($('#cuentaNombreAux').val()=='' || $('#cuentaNombreAux').val() == null){      
+        $('.select_client_alert').show();
+     }else{
+
+         $.ajax({
+                url: "../cotz/services/cotz.php",
+                data: { term: request.term,action: 'term_company' },
+                dataType: "json",
+                type: "POST",
+                success: function(data){
+                  //console.log(data);
+                   var result = $.map(data, function(item){
+                    console.log(item);
+                  return {
+                            label: item.name,
+                            value: item.name,
+                            id: item.id,
+                            desc: item.description,
+                            phone: item.officephone,
+                            website: item.website
+                        }
+                    });
+                    response(result);
+                }
+            });
+
+
+
+     }
+
+
+
+
+  })
+
+
+   $('#clientesModal').on('hidden.bs.modal', function (e) {
+    $('.select_client_alert').hide();
+   });
+
+  
+
+
+
+
+   $('.add-vendedor').on('click', function(e){
+      e.preventDefault();
+      var name = $(this).data('username');
+      var id =  $(this).data('id');
+      setNewVendedor(name, id);
+      // console.log('name: %d - id: %d', name, id)
+      $('#vendedoresModal').modal('hide');
+
+   })
+
 
     $( '#table' ).on( 'click-row.bs.table', function( e, item, $tr ){
       productData = item;
@@ -464,5 +539,84 @@ function gotoList(){
       };
     });
   });
+
+
+
+function log( ui ) {
+  console.log(ui);
+  var ui = ui.item;
+      var desc = (ui.desc==null || ui.desc == '') ? "-" : ui.desc;
+      var website = (ui.website==null || ui.website == '') ? "-" : ui.website;
+      $( ".nombre_compania" ).text( ui.label );
+      $( ".telefono_compania" ).text( ui.phone );
+      $( ".website_compania" ).text( website );
+      $( ".description_company" ).text( desc );
+      $('.add_compania').removeClass('disabled');
+      $('.id_compania').text(ui.id);
+      
+    }
+
+$('#companiasModal').on('hidden.bs.modal', function (e) {
+   $( ".nombre_compania" ).text( "" );
+      $( ".telefono_compania" ).text( "" );
+      $( ".website_compania" ).text( "" );
+      $( ".description_company" ).text( "" );
+      $('.add_compania').addClass('disabled');
+      $( "#companiaInput" ).val("");
+      $('.id_compania').text("");
+})
+
+$('.add_compania').on('click', function(e){
+  e.preventDefault();
+  $('#company_id').val($('.id_compania').text());
+  $('#cuentaNombreAux').val($('.nombre_compania').text());
+  $('#companiasModal').modal('hide');
+})
+
+$("#companiaInput").autocomplete({
+        minLength: 2,
+        source: function(request, response) {
+            $.ajax({
+                url: "../cotz/services/cotz.php",
+                data: { term: request.term,action: 'term_company' },
+                dataType: "json",
+                type: "POST",
+                success: function(data){
+                  //console.log(data);
+                   var result = $.map(data, function(item){
+                    console.log(item);
+                  return {
+                            label: item.name,
+                            value: item.name,
+                            id: item.id,
+                            desc: item.description,
+                            phone: item.officephone,
+                            website: item.website
+                        }
+                    });
+                    response(result);
+                }
+            });
+        },
+        // Inputs customer data into forms.
+        select: function(event, ui){
+          //do it here
+         log(ui);
+        }
+    })
+  .autocomplete( "instance" )._renderItem = function( ul, item ) {
+    console.log(item);
+      var desc = (item.desc==null || item.desc == '') ? "-" : item.desc;
+      return $( "<li>" )
+        .append( "<div>" + item.label + "<br> Descripcion: " + desc + "<br> Telefono: " + item.phone + "</div>" )
+        .appendTo( ul );
+    };
+
+
+
+
+
+
+
 
 })(jQuery);

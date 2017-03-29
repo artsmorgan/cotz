@@ -4,7 +4,7 @@
 
 	$action = $_REQUEST['action'];
 
-
+	
 
 	switch ($action) {
 		case 'save_cot':
@@ -20,7 +20,31 @@
 
 		case 'update_cot':
 						
-			break;			
+			break;	
+
+		case 'term_company':
+				
+				$term = $_REQUEST['term'];
+
+				$search = dbAdmin::getInstancia()->getCompanyList($term);
+
+				echo json_encode($search);
+			break;		
+
+		case 'account_has_contacts':
+				
+				$id = $_REQUEST['id'];
+
+				$results = dbAdmin::getInstancia()->getCompanyContactsByCompany($id);
+				
+				if(count($results)<=0){
+					echo json_encode(array("result"=>0, "ok"=>false));
+					return;
+				}
+
+
+				echo json_encode(array("result"=>$results, "ok"=>false));
+			break;					
 		
 	}
 
