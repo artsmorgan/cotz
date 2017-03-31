@@ -7,7 +7,7 @@ $db_params['pass'] = 'rootatlocalhost';
 $db_params['db'] = 'new_ts_2';
 
 $db = null;
-$db = newAdoConnection('mysql');
+$db = newAdoConnection('mysqli');
 $db->connect($db_params["host"],$db_params["user"],$db_params["pass"],$db_params["db"]);
 $db->SetFetchMode(ADODB_FETCH_ASSOC);
 

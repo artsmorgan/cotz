@@ -143,11 +143,11 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                     <tr>
                       <th>Nombre</th>
                       <th>email</th>
+                      <th>Telefono</th>
                       <th></th>
                     </tr>
                     </thead>
-                    <tbody>                      
-                    </tbody>
+                    <tbody class="account_list_by_company"> </tbody>
                 </table>
               </div>             
             </div>
@@ -258,7 +258,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaCotizacion">Fecha de cotización:</label>
-              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion" disabled>
+              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion" >
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaVencimiento">Fecha de vencimiento:</label>
@@ -301,12 +301,13 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <input type="text" class="form-control" id="cuentaNombreAux" required>
               <input type="hidden" name="company_id" id="company_id">
             </div>
-            <div class="col-sm-4 form-group">
+            <div class="col-sm-8 form-group">
               <label for="clienteNombreAux">Contacto :</label>
               <input type="text" class="form-control" id="clienteNombreAux" required>
-            </div>
+              <input type="hidden" name="contact_id" id="contact_id">
+            <!-- </div>
             <div class="col-sm-4">
-              <a href="#" class="btn btn-default btn-block">Mostrar detalle</a>
+              <a href="#" class="btn btn-default btn-block">Mostrar detalle</a> -->
             </div>
           </div>
           <h4 class="f-section-title">Condiciones</h4>
@@ -452,7 +453,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <div class="row">
                 <div class="col-sm-6 form-group">
                   <label for="descripcionArticulo1">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
+                  <textarea data-name="descripcionArticulo" name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
                 </div>
               </div>
             </div>

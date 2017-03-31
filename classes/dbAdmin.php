@@ -291,5 +291,131 @@ class dbAdmin {
     }
     
 
+    public function getContactsByAccount($acount_id){
+        $result = 0;
+        $sql = 'select c.id, p.firstname, p.lastname, p.officephone, p.officefax, e.emailaddress
+                from contact c
+                inner join person p on c.person_id = p.id
+                inner join email e on p.primaryemail_email_id = e.id
+                where c.account_id = '.$acount_id.';';
+
+        $this->getConnection();
+        $rs = $this->_adoconn->Execute($sql);
+        
+        $result = $rs->getRows();
+        $this->closeConnection();
+                
+        return $result;        
+    }
+
+
+
+    public function insertHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
+                                $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
+                                $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio){
+        $sql = 'insert INTO `cotz_header`
+                (`vendedor_id`,`fecha_cotizacion`,`fecha_vencimiento`,`tasa_impuestos`,`moneda`,
+                `factor_redondeo`,`no_solicitud`,`no_cotizacion`,`account_id`,`contact_id`,`tiempo_entrega`,
+                `lugar_entrega`,`forma_pago`,`marca`,`fase`,`notas`,`notas_crm`,`fecha_creacion`,
+                `fecha_modificacion`,`modificado_por`,`subtotal`,`descuento`,`impuesto`,`total`, `tasa_cambio`)
+                VALUES("'.$vendedor_id.'","'.$fecha_cotizacion.'","'.$fecha_vencimiento.'",
+                "'.$tasa_impuestos.'","'.$moneda.'","'.$factor_redondeo.'","'.$no_solicitud.'",
+                "'.$no_cotizacion.'","'.$account_id.'","'.$contact_id.'","'.$tiempo_entrega.'",
+                "'.$lugar_entrega.'","'.$forma_pago.'","'.$marca.'","'.$fase.'","'.$notas.'",
+                "'.$notas_crm.'",now(),"","","'.$subtotal.'","'.$descuento.'","'.$impuesto.'","'.$total.'","'.$tasa_cambio.'");';
+                // echo $sql;die();
+                // $sql = 'select 1 as test';
+        $this->getConnection();
+        $rs = $this->_adoconn->Execute($sql);   
+        $id = $this->_adoconn->Insert_ID();
+        $this->closeConnection();
+       
+
+        return $id;        
+
+
+    }
+
+    public function insertRow($id_header, $codigo_articulo,$nombre_articulo,$descripcion,$cantidad,$unidad_medida,$precio,$descuento_porcentaje,$monto){
+        
+        $sql = 'insert INTO `cotz_detail` (`id_header`,`codigo_articulo`,`nombre_articulo`,`descripcion`,
+                            `cantidad`,`unidad_medida`,`precio`,`descuento_porcentaje`,`monto`)  VALUES
+                            ("'.$id_header.'","'.$codigo_articulo.'","'.$nombre_articulo.'","'.$descripcion.'",
+                            "'.$cantidad.'","'.$unidad_medida.'","'.$precio.'","'.$descuento_porcentaje.'","'.$monto.'");';
+                // echo $sql;die();
+                // $sql = 'select 1 as test';
+        $this->getConnection();
+        $rs = $this->_adoconn->Execute($sql);   
+        $id = $this->_adoconn->Insert_ID();
+        $this->closeConnection();
+       
+
+        return $id;        
+
+
+    }
+
+
+    public function getCotizacionById($id) {
+
+            $result = 0;
+
+            $sql ='select * from cotz_header where id = ?;';
+
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql, $id);
+            
+            $result = $rs->getRows();
+            $this->closeConnection();
+
+    
+            $userSql = "select * from cotz_detail where id_header = ?;";
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($userSql, $id);     
+            $lines = $rs->getRows();
+
+            $result['lines'] = $lines;
+            
+
+            return $result;
+       
+    }
+
+
+     public function getCotizacionHeaderByCustomerId($id) {
+
+            $result = 0;
+
+            $sql ='select * from cotz_header where vendedor_id = ?;';
+
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql, $id);
+            
+            $result = $rs->getRows();
+            $this->closeConnection();
+
+
+            return $result;
+       
+    }
+
+    public function getCotizacionHeaderByCustomerAll() {
+
+            $result = 0;
+
+            $sql ='select * from cotz_header ';
+
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql);
+            
+            $result = $rs->getRows();
+            $this->closeConnection();
+
+
+            return $result;
+       
+    }
+
+
 }
 ?>

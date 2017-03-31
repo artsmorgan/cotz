@@ -173,6 +173,7 @@ function gotoList(username){
 
     $( '.row-product' ).each(function(){
       var product = {};
+      $()
       $( 'input', this ).each(function(){
         var $input = $( this ),
             key = $input.data( 'name' );
@@ -180,6 +181,16 @@ function gotoList(username){
         product[key] = $input.val();
 
       });
+
+      $( 'textarea', this ).each(function(){
+        var $input = $( this ),
+            key = $input.data( 'name' );
+
+        product[key] = $input.val();
+
+      });
+
+     
       data.push(product);
     });
 
@@ -237,49 +248,50 @@ function gotoList(username){
   $('#vendedor').on('click', function(e){
    // console.log('holap');
    $('#vendedoresModal').modal({ backdrop: 'static', keyboard: false });
-  })
+  });
+
   $('#cuentaNombreAux').on('click', function(e){
    // console.log('holap');
    $('#companiasModal').modal({ backdrop: 'static', keyboard: false });
-  })
-   $('#clienteNombreAux').on('click', function(e){
-   // console.log('holap');
-   $('#clientesModal').modal({ backdrop: 'static', keyboard: false });
+  });
+
+  $('#clienteNombreAux').on('click', function(e){
+     // console.log('holap');
+     $('#clientesModal').modal({ backdrop: 'static', keyboard: false });
   
      if($('#cuentaNombreAux').val()=='' || $('#cuentaNombreAux').val() == null){      
         $('.select_client_alert').show();
      }else{
+         var id = $('#company_id').val();
+         console.log(id);
+         getContactsByAccount(id, function(data){
+            console.log(data);
+            data = data.result;
+            for(var i = 0; i < data.length; i++){
+           
+                $('.account_list_by_company').append('<tr><td class="c_acc_name">'+data[i].firstname+' '+data[i].lastname+'</td>'+
+                                                    '<td>'+data[i].emailaddress+'</td>'+
+                                                    '<td>'+data[i].officephone+'</td>'+
+                                                    '<td><a href="#" class="add_contact_acc btn btn-default" data-c_acc="'+data[i].id+'">Agregar</a></td></tr>');
+            }
+            $('.add_contact_acc').on('click', function(e){
 
-         $.ajax({
-                url: "../cotz/services/cotz.php",
-                data: { term: request.term,action: 'term_company' },
-                dataType: "json",
-                type: "POST",
-                success: function(data){
-                  //console.log(data);
-                   var result = $.map(data, function(item){
-                    console.log(item);
-                  return {
-                            label: item.name,
-                            value: item.name,
-                            id: item.id,
-                            desc: item.description,
-                            phone: item.officephone,
-                            website: item.website
-                        }
-                    });
-                    response(result);
-                }
-            });
+                e.preventDefault();
+                var id = $(this).data('c_acc');
+                var name = $(this).parent().parent().find('.c_acc_name').text();
 
-
-
+                $('#clienteNombreAux').val(name);
+                $("#contact_id").val(id);
+                $('#clientesModal').modal('hide');
+              })
+         });
      }
 
-
-
-
   })
+
+
+
+
 
 
    $('#clientesModal').on('hidden.bs.modal', function (e) {
@@ -404,13 +416,17 @@ function gotoList(username){
     });
 
     var today = new Date(),
-        todayStr = today.getDate() + '/' + ( today.getMonth() + 1 ) + '/' + today.getFullYear();
+        todayStr =  today.getFullYear()+ '-' + ( today.getMonth() + 1 ) + '-' + today.getDate();
     $('#fechaCotizacion').val( todayStr );
 
-    $('.datepicker').datepicker({
-      format: 'dd/mm/yyyy',
+    $('.datepicker,#fechaCotizacion').datepicker({
+      format: 'yy-mm-dd',
       startDate: today
     });
+
+
+
+    
 
     $('input[type=number]').on('input',function(){
       var $this = $(this),
@@ -449,29 +465,36 @@ function gotoList(username){
     });
 
     $('.btn-save').on('click', function(e){
-      e.preventDefault();
-      var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON(),
-          allValid = true,
-          elems = $('[required]');
+            e.preventDefault();
+            var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON(),
+                allValid = true,
+                elems = $('[required]');
 
-      for(var i = 0; i < elems.length; i++){
-        var $elem = $(elems[i]);
-        if ( !$elem.val() ){
-          $elem.closest('.form-group').addClass('hasErrors');
-          if( allValid ){
-            $elem.focus();
-          }
-          allValid = false;
-        }
-      }
+            for(var i = 0; i < elems.length; i++){
+              var $elem = $(elems[i]);
+              if ( !$elem.val() ){
+                $elem.closest('.form-group').addClass('hasErrors');
+                if( allValid ){
+                  $elem.focus();
+                }
+                allValid = false;
+              }
+            }
+            console.log('data',data);
+            $.ajax({
+                url: "../cotz/services/cotz.php",
+                data: { data: data, action: 'save_cot' },
+                type: "POST"
+            })
+            .done(function(data){
+                console.log('data',data);
+              })
+            .fail(function(e){
+              console.log('fail',e);
+            })
+          
+    });        
 
-      $.post(SERVER_DEV+'/cotz/api/cotz.php?action=processCot', data, function(data){
-        console.log(data);
-        console.log('success');
-      }).fail( function(){
-        console.log('fail');
-      });
-    });
 
     $('#redondeo').on('change', function(){
       $('.row-product').each(function(){
@@ -540,7 +563,17 @@ function gotoList(username){
     });
   });
 
-
+function getContactsByAccount(acc_id, cb){
+    $.ajax({
+          url: "../cotz/services/cotz.php",
+          data: { acc_id: acc_id, action: 'get_usersAccount' },
+          dataType: "json",
+          type: "POST",
+          success: function(data){
+            cb(data);
+          }
+      });
+}
 
 function log( ui ) {
   console.log(ui);
@@ -571,6 +604,8 @@ $('.add_compania').on('click', function(e){
   $('#company_id').val($('.id_compania').text());
   $('#cuentaNombreAux').val($('.nombre_compania').text());
   $('#companiasModal').modal('hide');
+
+
 })
 
 $("#companiaInput").autocomplete({
