@@ -109,8 +109,22 @@
 			$id = $_REQUEST['id'];
 			$results = dbAdmin::getInstancia()->getCotizacionById($id);
 			echo json_encode(array("result"=>$results, "ok"=>true));
+
+			break;
+
+		case 'get_cotizacionesByUserId':
+			$id = $_REQUEST['id'];
+			$results = dbAdmin::getInstancia()->getCotizacionHeaderByCustomerId($id);
+			echo json_encode(array("result"=>$results, "ok"=>true));
 			
 			break;
+			
+		case 'get_cotizacionesAll':
+			
+			$results = dbAdmin::getInstancia()->getCotizacionHeaderByCustomerAll();
+			echo json_encode($results);
+			
+			break;		
 
 
 		

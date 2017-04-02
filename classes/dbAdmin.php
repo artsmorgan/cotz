@@ -360,7 +360,12 @@ class dbAdmin {
 
             $result = 0;
 
-            $sql ='select * from cotz_header where id = ?;';
+            $sql ='select c.*, u.username, p.firstname, p.lastname, a.name from cotz_header c 
+                    inner join _user u on c.vendedor_id = u.id
+                    inner join account a on c.account_id = a.id
+                    inner join contact co on c.contact_id = co.id
+                    inner join person p on   co.person_id = p.id
+                    where c.id = ?;';
 
             $this->getConnection();
             $rs = $this->_adoconn->Execute($sql, $id);
@@ -386,7 +391,12 @@ class dbAdmin {
 
             $result = 0;
 
-            $sql ='select * from cotz_header where vendedor_id = ?;';
+            $sql ='select c.*, u.username, p.firstname, p.lastname, a.name from cotz_header c 
+                    inner join _user u on c.vendedor_id = u.id
+                    inner join account a on c.account_id = a.id
+                    inner join contact co on c.contact_id = co.id
+                    inner join person p on   co.person_id = p.id
+                    where c.id = ?;';
 
             $this->getConnection();
             $rs = $this->_adoconn->Execute($sql, $id);
@@ -403,7 +413,11 @@ class dbAdmin {
 
             $result = 0;
 
-            $sql ='select * from cotz_header ';
+            $sql ='select c.*, u.username, p.firstname, p.lastname, a.name from cotz_header c 
+                    inner join _user u on c.vendedor_id = u.id
+                    inner join account a on c.account_id = a.id
+                    inner join contact co on c.contact_id = co.id
+                    inner join person p on   co.person_id = p.id;';
 
             $this->getConnection();
             $rs = $this->_adoconn->Execute($sql);

@@ -64,15 +64,15 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                         data-page-size="10" data-page-list="[10,25,50,100]">
       <thead>
       <tr>  
-        <th data-field="cot_no" data-sortable="true">Cot #</th>
-        <th data-field="client" data-sortable="true">Cliente</th>
-        <th data-field="seller" data-sortable="true">Vendedor</th>
-        <th data-field="seller" data-sortable="true">Marca</th>
-        <th data-field="seller" data-sortable="true">Fase</th>
-        <th data-field="seller" data-sortable="true">Monto</th>
+        <th data-field="id" class="cot-id" data-sortable="true">Cot #</th>
+        <th data-field="name" data-sortable="true">Cliente</th>
+        <th data-field="username" data-sortable="true">Vendedor</th>
+        <th data-field="marca" data-sortable="true">Marca</th>
+        <th data-field="fase" data-sortable="true">Fase</th>
+        <th data-field="total" data-sortable="true">Monto</th>
         <!-- <th data-field="description" data-sortable="true">Descripcion</th> -->
-        <th data-field="cot_date" data-sortable="true">Fecha de Cotizacion</th>
-        <th data-field="edit" data-events="edit" data-formatter="editBtn"></th>
+        <th data-field="fecha_cotizacion" data-sortable="true">Fecha de Cotizacion</th>
+        <th data-field="id" data-events="edit" data-formatter="editBtn"></th>
         <th data-field="delete" data-events="edit" data-formatter="deletetBtn"></th>
       </tr>
       </thead>
@@ -102,9 +102,18 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                 $('#table').tableExport({type:'csv'}); 
             }
         };
-
+      function gotoCotizacion(el){
+              var username = <?php echo json_encode($username) ?>;
+              var id = $(el).closest('tr').find('.cot-id').text();
+              var url = "cotz_update.php?u="+username+'&cotId='+id;
+              // console.log('url',url);
+             window.location.href = url;
+              parent.iframeLoaded();
+           }
         var editBtn = function (value) { 
-             return '<a href="#" class="edit" data="$id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+
+           
+             return '<a href="#" class="edit-cotz" onclick="gotoCotizacion(this)" data="$id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
         };
 
         var deletetBtn = function (value) { 
@@ -128,14 +137,17 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 
       $(function () {
 
-        $.get(<?php echo $path; ?>+'/cotz/services/cotz.php?action=list_cotz')
+
+
+        $.get(<?php echo $path; ?>+'/cotz/services/cotz.php?action=get_cotizacionesAll')
           .done(function( data ) {
             // alert( "Data Loaded: " + data );
+            console.log(data);
           });
 
          parent.iframeLoaded();
           $('#table').bootstrapTable({
-             url: <?php echo $path; ?>+'/cotz/api/cotz.php?action=getJsonSample',
+             url: 'services/cotz.php?action=get_cotizacionesAll',
              onDblClickRow: function(row, $element, field){
               var cotID = row['cot_no'];
              },
