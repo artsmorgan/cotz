@@ -5,7 +5,6 @@ include_once (AS_PATH.'/classes/dbAdmin.php');
 // $path = "'".PATH."'";
 $path = "'"."http://".$_SERVER['SERVER_NAME']."'";
 $username = $_GET['u'];
-$username = $_GET['cotId'];
 
 $userlist = dbAdmin::getInstancia()->getAllFromUser();
 
