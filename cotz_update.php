@@ -1,22 +1,16 @@
 <?php
 include 'conspath.php';
 include_once (AS_PATH.'/classes/dbAdmin.php');
-
 // $path = "'".PATH."'";
 $path = "'"."http://".$_SERVER['SERVER_NAME']."'";
 $username = $_GET['u'];
 $cotid = $_GET['cotId'];
-
 $userlist = dbAdmin::getInstancia()->getAllFromUser();
-
 $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
-
 $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 // print_all($userlist);
 // echo '---------------------------';
 // print_all($userdata);
-
-
 // echo $username;
 ?>
 
@@ -48,8 +42,6 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body class="form-page">
-<?php var_dump($cot ); ?>
-
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -246,7 +238,8 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           </div>
         </div>
       <!-- <button class="btn btn-primary" onclick="gotoList()">Regresar al listado</button> -->
-    <form class="container-fluid form-container">
+    <form class="container-fluid form-container is-update">
+      <input type="hidden" value="<?php echo $cotid; ?>" name="cotId">
       <div class="row">
         <div class="col-sm-6 info-cotizacion float--active">
 
@@ -492,37 +485,37 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           <li class="row-product">
           <div class="row">
             <div class="col-sm-1 form-group">
-              <label for="codigoArticul<?php echo $index + 2; ?>">Código del artículo:</label>
-              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticul<?php echo $index + 2; ?>" value="<?php echo $linea['codigo_articulo']; ?>" >
+              <label for="codigoArticulo<?php echo $index + 1; ?>">Código del artículo:</label>
+              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo<?php echo $index + 1; ?>" value="<?php echo $linea['codigo_articulo']; ?>" >
             </div>
             <div class="col-sm-3 form-group">
-              <label for="nombreArticul<?php echo $index + 2; ?>">Nombre del artículo:</label>
-              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticul<?php echo $index + 2; ?>" value="<?php echo $linea['nombre_articulo']; ?>">
+              <label for="nombreArticulo<?php echo $index + 1; ?>">Nombre del artículo:</label>
+              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo<?php echo $index + 1; ?>" value="<?php echo $linea['nombre_articulo']; ?>">
             </div>
              <div class="col-sm-2 form-group">
               <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">ver de Inventario</button>
             </div>
             <!-- <div class="col-sm-1 form-group border--full">
-              <select type="number" data-name="factorLinea" class="form-control" id="factorLine<?php echo $index + 2; ?>">
+              <select type="number" data-name="factorLinea" class="form-control" id="factorLinea<?php echo $index + 1; ?>">
                 <option value="factor_1">factor_1</option>
                 <option value="factor_2">factor_2</option>
                 <option value="factor_3">factor_3</option>
               </select>
             </div> -->
             <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantida<?php echo $index + 2; ?>" value="<?php echo $linea['cantidad']; ?>">
+              <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad<?php echo $index + 1; ?>" value="<?php echo $linea['cantidad']; ?>">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedid<?php echo $index + 2; ?>" value="<?php echo $linea['unidad_medida']; ?>">
+              <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedida<?php echo $index + 1; ?>" value="<?php echo $linea['unidad_medida']; ?>">
             </div>
             <div class="col-sm-2 form-group border--full">
-              <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitari<?php echo $index + 2; ?>" value="<?php echo $linea['precio']; ?>">
+              <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario<?php echo $index + 1; ?>" value="<?php echo $linea['precio']; ?>">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuent<?php echo $index + 2; ?>" value="<?php echo $linea['descuento_porcentaje']; ?>">
+              <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento<?php echo $index + 1; ?>" value="<?php echo $linea['descuento_porcentaje']; ?>">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="hidden" data-name="monto" class="op-hidden-monto" id="mont<?php echo $index + 2; ?>" value="<?php echo $linea['monto']; ?>">
+              <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto<?php echo $index + 1; ?>" value="<?php echo $linea['monto']; ?>">
               <p class="op-total">
                 <b class="op-total-monto">0</b>
               </p>
@@ -533,8 +526,8 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="content-collapse">
               <div class="row">
                 <div class="col-sm-6 form-group">
-                  <label for="descripcionArticul<?php echo $index + 2; ?>">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticul<?php echo $index + 2; ?>"><?php echo $linea['descripcion']; ?></textarea>
+                  <label for="descripcionArticulo<?php echo $index + 1; ?>">Descripción:</label>
+                  <textarea data-name="descripcionArticulo" name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo<?php echo $index + 1; ?>"><?php echo $linea['descripcion']; ?></textarea>
                 </div>
               </div>
             </div>

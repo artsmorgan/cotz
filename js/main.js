@@ -229,6 +229,8 @@ function gotoList(username){
         $productRow = {},
         productData = {};
 
+    $( '.row-product.disp--hide' ).remove();
+
     updateFormatCurrency();
     parentIframeLoaded();
     //$( '.fixed-table-toolbar' ).prepend(createCotBtn);
@@ -468,7 +470,9 @@ function gotoList(username){
             e.preventDefault();
             var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON(),
                 allValid = true,
-                elems = $('[required]');
+                elems = $('[required]'),
+                isUpdate = $('.form-container').hasClass('is-update'),
+                action = isUpdate ? 'update_cot':'save_cot';
 
             for(var i = 0; i < elems.length; i++){
               var $elem = $(elems[i]);
@@ -483,7 +487,7 @@ function gotoList(username){
             console.log('data',data);
             $.ajax({
                 url: "../cotz/services/cotz.php",
-                data: { data: data, action: 'save_cot' },
+                data: { data: data, action: action },
                 type: "POST"
             })
             .done(function(data){
@@ -561,6 +565,9 @@ function gotoList(username){
           .appendTo( ul );
       };
     });
+
+    $('.form-container.is-update .art-cantidad').trigger('input');
+
   });
 
 function getContactsByAccount(acc_id, cb){
@@ -646,12 +653,5 @@ $("#companiaInput").autocomplete({
         .append( "<div>" + item.label + "<br> Descripcion: " + desc + "<br> Telefono: " + item.phone + "</div>" )
         .appendTo( ul );
     };
-
-
-
-
-
-
-
 
 })(jQuery);

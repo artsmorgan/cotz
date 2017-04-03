@@ -336,6 +336,65 @@ class dbAdmin {
 
     }
 
+    public function updateHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
+                                $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
+                                $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio, $id){
+        $sql = 'update `cotz_header`
+                SET
+                `vendedor_id` = "'.$vendedor_id.'",
+                `fecha_cotizacion` = "'.$fecha_cotizacion.'",
+                `fecha_vencimiento` = "'.$fecha_vencimiento.'",
+                `tasa_impuestos` = "'.$tasa_impuestos.'",
+                `moneda` = "'.$moneda.'",
+                `factor_redondeo` = "'.$factor_redondeo.'",
+                `no_solicitud` = "'.$no_solicitud.'",
+                `no_cotizacion` = "'.$no_cotizacion.'",
+                `account_id` = "'.$account_id.'",
+                `contact_id` = "'.$contact_id.'",
+                `tiempo_entrega` = "'.$tiempo_entrega.'",
+                `lugar_entrega` = "'.$lugar_entrega.'",
+                `forma_pago` = "'.$forma_pago.'",
+                `marca` = "'.$marca.'",
+                `fase` = "'.$fase.'",
+                `notas` = "'.$notas.'",
+                `notas_crm` = "'.$notas_crm.'",
+                `fecha_modificacion` = now(),
+                `modificado_por` = "'.$vendedor_id.'",
+                `subtotal` = "'.$subtotal.'",
+                `descuento` = "'.$descuento.'",
+                `impuesto` = "'.$impuesto.'",
+                `total` = "'.$total.'",
+                `tasa_cambio` = "'.$tasa_cambio.'"
+                WHERE `id` ='.$id;
+                // echo $sql;die();
+                // $sql = 'select 1 as test';
+        $this->getConnection();
+        $rs = $this->_adoconn->Execute($sql); 
+        $this->closeConnection();
+       
+
+        return true;        
+
+
+    }
+
+    public function deleteRows($id){
+        $sql = 'delete from cotz_detail
+                WHERE `id_header` ='.$id;
+                // echo $sql;die();
+                // $sql = 'select 1 as test';
+        $this->getConnection();
+        $rs = $this->_adoconn->Execute($sql);   
+        $id = $this->_adoconn->Insert_ID();
+        $this->closeConnection();
+       
+
+        return true;        
+
+
+    }
+
+
     public function insertRow($id_header, $codigo_articulo,$nombre_articulo,$descripcion,$cantidad,$unidad_medida,$precio,$descuento_porcentaje,$monto){
         
         $sql = 'insert INTO `cotz_detail` (`id_header`,`codigo_articulo`,`nombre_articulo`,`descripcion`,
@@ -392,7 +451,12 @@ class dbAdmin {
 
             $result = 0;
 
-            $sql ='select * from cotz_header where vendedor_id = ?;';
+            $sql ='select c.*, u.username, p.firstname, p.lastname, a.name from cotz_header c 
+                    inner join _user u on c.vendedor_id = u.id
+                    inner join account a on c.account_id = a.id
+                    inner join contact co on c.contact_id = co.id
+                    inner join person p on   co.person_id = p.id
+                    where c.id = ?;';
 
             $this->getConnection();
             $rs = $this->_adoconn->Execute($sql, $id);
@@ -409,7 +473,11 @@ class dbAdmin {
 
             $result = 0;
 
-            $sql ='select * from cotz_header ';
+            $sql ='select c.*, u.username, p.firstname, p.lastname, a.name from cotz_header c 
+                    inner join _user u on c.vendedor_id = u.id
+                    inner join account a on c.account_id = a.id
+                    inner join contact co on c.contact_id = co.id
+                    inner join person p on   co.person_id = p.id;';
 
             $this->getConnection();
             $rs = $this->_adoconn->Execute($sql);
