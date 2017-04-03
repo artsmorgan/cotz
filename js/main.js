@@ -225,7 +225,7 @@ function gotoList(username){
 
   $( document ).ready(function(){
 
-    var $productForm = $( '.row-product' ).clone().addClass( 'disp--hide' ),
+    var $productForm = $( '.row-product:first' ).clone().addClass( 'disp--hide' ),
         $productRow = {},
         productData = {};
 

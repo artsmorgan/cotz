@@ -5,11 +5,13 @@ include_once (AS_PATH.'/classes/dbAdmin.php');
 // $path = "'".PATH."'";
 $path = "'"."http://".$_SERVER['SERVER_NAME']."'";
 $username = $_GET['u'];
+$cotid = $_GET['cotId'];
 
 $userlist = dbAdmin::getInstancia()->getAllFromUser();
 
 $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 
+$cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 // print_all($userlist);
 // echo '---------------------------';
 // print_all($userdata);
@@ -46,6 +48,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body class="form-page">
+<?php var_dump($cot ); ?>
+
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -251,43 +255,44 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             <div class="col-sm-6 form-group">
               <label for="vendedor">Vendedor:</label>
               <input type="text" name="vendedor" class="form-control" id="vendedor" 
-                        value="<?php echo $userdata[0]['firstname'].' '.$userdata[0]['lastname']; ?>" />
-
-              <input type="hidden" name="userid" id="userid" value="<?php echo $userdata[0]['id']; ?>" />          
+                        value="<?php echo $cot[0]['vendedor_nombre']; ?>" />
+              <input type="hidden" name="userid" id="userid" value="<?php echo $cot[0]['vendedor_id']; ?>" />          
 
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaCotizacion">Fecha de cotización:</label>
-              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion" >
+              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion" value="<?php echo $cot[0]['fecha_cotizacion']; ?>">
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaVencimiento">Fecha de vencimiento:</label>
-              <input type="text" name="fechaVencimiento" placeholder="dd/mm/aaaa" class="form-control datepicker" id="fechaVencimiento">
+              <input type="text" name="fechaVencimiento" placeholder="dd/mm/aaaa" class="form-control datepicker" id="fechaVencimiento" value="<?php echo $cot[0]['fecha_vencimiento']; ?>">
             </div>
           </div>
           <div class="row">
             <div class="col-sm-3 form-group">
               <label for="tasaImpuestos">Tasa de impuestos:</label>
-              <input type="number" name="tasaImpuestos" min="1" max="99" maxlength="2" class="form-control" id="tasaImpuestos">
+              <input type="number" name="tasaImpuestos" min="1" max="99" maxlength="2" class="form-control" id="tasaImpuestos" value="<?php echo $cot[0]['tasa_impuestos']; ?>">
             </div>
             <div class="col-sm-3 form-group">
               <label for="moneda">Moneda:</label>
               <select name="moneda" class="form-control" id="moneda">
-                <option value="dolares">$</option>
-                <option value="colones">₡</option>
-                <option value="euro">€</option>
+                <?php $selectop = array( 'dolares' => '$', 'colones' => '₡', 'euro' => '€' ); ?>
+                <?php foreach( $selectop as $opvalue => $optxt ): ?>
+                  <option value="<?php echo $opvalue; ?>" <?php echo ( $cot[0]['moneda'] == $opvalue ? 'selected' : '' ); ?> ><?php echo $optxt; ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
             <div class="col-sm-3 form-group">
               <label for="tasaCambio">Tasa de cambio:</label>
-              <input type="number" name="tasaCambio" class="form-control" id="tasaCambio">
+              <input type="number" name="tasaCambio" class="form-control" id="tasaCambio" value="<?php echo $cot[0]['tasa_cambio']; ?>">
             </div>
             <div class="col-sm-3 form-group">
               <label for="redondeo">Factor de redondeo:</label>
               <select name="redondeo" class="form-control" id="redondeo">
-                <option value="factor_1">0,05</option>
-                <option value="factor_2">1,00</option>
-                <option value="factor_3">0,01</option>
+                <?php $selectop = array( 'factor_1' => '0,05', 'factor_2' => '1,00', 'factor_3' => '0,01' ); ?>
+                <?php foreach( $selectop as $opvalue => $optxt ): ?>
+                  <option value="<?php echo $opvalue; ?>" <?php echo ( $cot[0]['factor_redondeo'] == $opvalue ? 'selected' : '' ); ?> ><?php echo $optxt; ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
           </div>
@@ -298,13 +303,13 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
           <div class="row">
             <div class="col-sm-4 form-group">
               <label for="cuentaNombreAux">Compañía :</label>
-              <input type="text" class="form-control" id="cuentaNombreAux" required>
-              <input type="hidden" name="company_id" id="company_id">
+              <input type="text" class="form-control" id="cuentaNombreAux" required value="<?php echo $cot[0]['account_name']; ?>">
+              <input type="hidden" name="company_id" id="company_id" value="<?php echo $cot[0]['account_id']; ?>">
             </div>
             <div class="col-sm-8 form-group">
               <label for="clienteNombreAux">Contacto :</label>
-              <input type="text" class="form-control" id="clienteNombreAux" required>
-              <input type="hidden" name="contact_id" id="contact_id">
+              <input type="text" class="form-control" id="clienteNombreAux" required value="<?php echo $cot[0]['contact_name']; ?>">
+              <input type="hidden" name="contact_id" id="contact_id" value="<?php echo $cot[0]['contact_id']; ?>">
             <!-- </div>
             <div class="col-sm-4">
               <a href="#" class="btn btn-default btn-block">Mostrar detalle</a> -->
@@ -314,15 +319,15 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
           <div class="row">
               <div class="col-sm-3 form-group">
                 <label for="tiempoEntrega">Tiempo de entrega:</label>
-                <input type="text" name="tiempoEntrega" class="form-control" id="tiempoEntrega" />
+                <input type="text" name="tiempoEntrega" class="form-control" id="tiempoEntrega" value="<?php echo $cot[0]['tiempo_entrega']; ?>">
               </div>
               <div class="col-sm-6 form-group">
                 <label for="lugarEntrega">Lugar de entrega:</label>
-                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega">
+                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega" value="<?php echo $cot[0]['lugar_entrega']; ?>">
               </div>
               <div class="col-sm-3 form-group">
                 <label for="formaPago">Forma de pago:</label>
-                <input type="text" name="formaPago" class="form-control" id="formaPago">
+                <input type="text" name="formaPago" class="form-control" id="formaPago" value="<?php echo $cot[0]['forma_pago']; ?>">
               </div>
           </div>
         </div>
@@ -331,53 +336,62 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
           <div class="row">
             <div class="col-sm-3 form-group">
               <label for="noSolicitud">No. de solicitud:</label>
-              <input type="text" name="noSolicitud" class="form-control" id="noSolicitud">
+              <input type="text" name="noSolicitud" class="form-control" id="noSolicitud" value="<?php echo $cot[0]['no_solicitud']; ?>">
             </div>
             <div class="col-sm-3 form-group">
               <label for="noCotizacion">No. de cotización:</label>
-              <input type="text" name="noCotizacion" class="form-control" id="noCotizacion" required>
+              <input type="text" name="noCotizacion" class="form-control" id="noCotizacion" required value="<?php echo $cot[0]['no_cotizacion']; ?>">
             </div>
             <div class="col-sm-3 form-group">
               <label for="marca">Marca:</label>
               <select type="text" name="marca" class="form-control" id="marca" required>
-                <option value="">Seleccione</option>
-                <option value="ALLIED">ALLIED</option>
-                <option value="ASTM">ASTM</option>
-                <option value="ATC">ATC</option>
-                <option value="BUSHNELL">BUSHNELL</option>
-                <option value="COLEPARMER">COLE PARMER</option>
-                <option value="DEXSIL">DEXSIL</option>
-                <option value="DEFELSKO">DEFELSKO</option>
-                <option value="ECO-SHELL">ECO-SHELL</option>
-                <option value="FIVE_STAR">FIVE STAR</option>
-                <option value="FLORIDA">FLORIDA</option>
-                <option value="FORESTRY_SUPPLIERS">FORESTRY SUPPLIERS</option>
-                <option value="GE">GE</option>
-                <option value="GILSON">GILSON</option>
-                <option value="GUNT">GUNT</option>
-                <option value="GURLEY">GURLEY</option>
-                <option value="MARSWELL">MARSWELL</option>
-                <option value="MITUTOYO">MITUTOYO</option>
-                <option value="OMEGA">OMEGA</option>
-                <option value="RUBBERART">RUBBERART</option>
-                <option value="TACC">TACC</option>
-                <option value="VAISALA">VAISALA</option>
-                <option value="VE_GROUP">VE GROUP</option>
-                <option value="YSI">YSI</option>
-                <option value="YXLON">YXLON</option>
-                <option value="ZWICK">ZWICK</option>
+                <?php $selectop = array(
+                  "" => "Seleccione",
+                  "ALLIED" => "ALLIED",
+                  "ASTM" => "ASTM",
+                  "ATC" => "ATC",
+                  "BUSHNELL" => "BUSHNELL",
+                  "COLEPARMER" => "COLE PARMER",
+                  "DEXSIL" => "DEXSIL",
+                  "DEFELSKO" => "DEFELSKO",
+                  "ECO-SHELL" => "ECO-SHELL",
+                  "FIVE_STAR" => "FIVE STAR",
+                  "FLORIDA" => "FLORIDA",
+                  "FORESTRY_SUPPLIERS" => "FORESTRY SUPPLIERS",
+                  "GE" => "GE",
+                  "GILSON" => "GILSON",
+                  "GUNT" => "GUNT",
+                  "GURLEY" => "GURLEY",
+                  "MARSWELL" => "MARSWELL",
+                  "MITUTOYO" => "MITUTOYO",
+                  "OMEGA" => "OMEGA",
+                  "RUBBERART" => "RUBBERART",
+                  "TACC" => "TACC",
+                  "VAISALA" => "VAISALA",
+                  "VE_GROUP" => "VE GROUP",
+                  "YSI" => "YSI",
+                  "YXLON" => "YXLON",
+                  "ZWICK" => "ZWICK" ); ?>
+                <?php foreach( $selectop as $opvalue => $optxt ): ?>
+                  <option value="<?php echo $opvalue; ?>" <?php echo ( $cot[0]['marca'] == $opvalue ? 'selected' : '' ); ?> ><?php echo $optxt; ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
             <div class="col-sm-3 form-group">
               <label for="fase">Fase:</label>
               <select name="fase" class="form-control" id="fase" required>
-                <option value="">Seleccione</option>
-                <option value="Comunicación inicial">Comunicación inicial</option>
-                <option value="Cotización">Cotización</option>
-                <option value="Negociación">Negociación</option>
-                <option value="Venta realizada">Venta realizada</option>
-                <option value="Cerrada perdida">Cerrada perdida</option>
-                <option value="Desierta">Desierta</option>
+                <?php $selectop = array(
+                    "" => "Seleccione",
+                    "Comunicación inicial" => "Comunicación inicial",
+                    "Cotización" => "Cotización",
+                    "Negociación" => "Negociación",
+                    "Venta realizada" => "Venta realizada",
+                    "Cerrada perdida" => "Cerrada perdida",
+                    "Desierta" => "Desierta" ); ?>
+                <?php foreach( $selectop as $opvalue => $optxt ): ?>
+                  <option value="<?php echo $opvalue; ?>" <?php echo ( $cot[0]['fase'] == $opvalue ? 'selected' : '' ); ?> ><?php echo $optxt; ?></option>
+                <?php endforeach; ?>
+              </select>
               </select>
             </div>
           </div>
@@ -408,7 +422,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             </div>
           </div>
         </li>
-        <li class="row-product">
+
+        <li class="row-product <?php echo (!empty( $cot['lines'] ) ? 'disp--hide' : '' ); ?> ">
           <div class="row">
             <div class="col-sm-1 form-group">
               <label for="codigoArticulo1">Código del artículo:</label>
@@ -472,6 +487,73 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             </div>
           </div>
         </li>
+
+        <?php foreach ($cot['lines'] as $index => $linea) :?>
+          <li class="row-product">
+          <div class="row">
+            <div class="col-sm-1 form-group">
+              <label for="codigoArticul<?php echo $index + 2; ?>">Código del artículo:</label>
+              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticul<?php echo $index + 2; ?>" value="<?php echo $linea['codigo_articulo']; ?>" >
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="nombreArticul<?php echo $index + 2; ?>">Nombre del artículo:</label>
+              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticul<?php echo $index + 2; ?>" value="<?php echo $linea['nombre_articulo']; ?>">
+            </div>
+             <div class="col-sm-2 form-group">
+              <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">ver de Inventario</button>
+            </div>
+            <!-- <div class="col-sm-1 form-group border--full">
+              <select type="number" data-name="factorLinea" class="form-control" id="factorLine<?php echo $index + 2; ?>">
+                <option value="factor_1">factor_1</option>
+                <option value="factor_2">factor_2</option>
+                <option value="factor_3">factor_3</option>
+              </select>
+            </div> -->
+            <div class="col-sm-1 form-group border--full">
+              <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantida<?php echo $index + 2; ?>" value="<?php echo $linea['cantidad']; ?>">
+            </div>
+            <div class="col-sm-1 form-group border--full">
+              <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedid<?php echo $index + 2; ?>" value="<?php echo $linea['unidad_medida']; ?>">
+            </div>
+            <div class="col-sm-2 form-group border--full">
+              <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitari<?php echo $index + 2; ?>" value="<?php echo $linea['precio']; ?>">
+            </div>
+            <div class="col-sm-1 form-group border--full">
+              <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuent<?php echo $index + 2; ?>" value="<?php echo $linea['descuento_porcentaje']; ?>">
+            </div>
+            <div class="col-sm-1 form-group border--full">
+              <input type="hidden" data-name="monto" class="op-hidden-monto" id="mont<?php echo $index + 2; ?>" value="<?php echo $linea['monto']; ?>">
+              <p class="op-total">
+                <b class="op-total-monto">0</b>
+              </p>
+              <span>
+            </div>
+          </div>
+          <div class="wrapper-collapse">
+            <div class="content-collapse">
+              <div class="row">
+                <div class="col-sm-6 form-group">
+                  <label for="descripcionArticul<?php echo $index + 2; ?>">Descripción:</label>
+                  <textarea data-name="descripcionArticulo" name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticul<?php echo $index + 2; ?>"><?php echo $linea['descripcion']; ?></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="btns-wrapper">
+                  <div class="btns-actions">
+                    <a href="#" class="btn-action--delete">Eliminar</a>
+                  </div>
+                  <div class="btns-collapse">
+                    <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
+                    <a href="#" class="hide-collapse">Ocultar detalle</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <? endforeach; ?>
         <li class="row-foot">
           <div class="row">
             <div class="col-sm-3 cell-collapse">
@@ -518,11 +600,11 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       <div class="row">
         <div class="col-sm-6 form-group">
           <label for="notas1">Notas Cotización:</label>
-          <textarea name="notasCotizacion" rows="4" class="form-control" id="notasCotizacion"></textarea>
+          <textarea name="notasCotizacion" rows="4" class="form-control" id="notasCotizacion"><?php  echo $cot[0]['notas']; ?></textarea>
         </div>
         <div class="col-sm-6 form-group">
           <label for="notas2">Notas CRM:</label>
-          <textarea name="notasCRM" rows="4" class="form-control" id="notasCRM"></textarea>
+          <textarea name="notasCRM" rows="4" class="form-control" id="notasCRM"><?php  echo $cot[0]['notas_crm']; ?></textarea>
         </div>
       </div>
       <div class="row">
