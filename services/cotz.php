@@ -115,32 +115,6 @@
 						
 			break;
 
-		case 'print_cot':
-				$data = $_REQUEST['data'];
-				$params = array();
-				parse_str($data, $params);
-				$params['contacto_info'] = dbAdmin::getInstancia()->getAllFromPersonById($params['contact_id']);
-				$params['salesperson_info'] = dbAdmin::getInstancia()->getAllFromPersonById($params['userid']);
-				$params['company_info'] = dbAdmin::getInstancia()->getInfoFromCompanyById($params['company_id']);
-				$params['lineas'] = json_decode($params['lineas'], true);
-
-				if( isset( $params['incluirFirma'] ) ){
-					$firmasPath =  AS_PATH . '/assets/images/firmas/';
-					switch( $params['userid'] ){
-						case 7:
-							$params['usersignature'] = $firmasPath . 'alonso_vargas.png';
-						break;
-					}
-				}
-
-				try {
-					echo PDF::printPDF($params);
-				}
-				catch(Exception $e){
-					echo $e;
-				}
-			break;
-
 		case 'term_company':
 				
 				$term = $_REQUEST['term'];

@@ -736,7 +736,9 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           </div>
 
     </form> <!-- /container -->
-  <a href="" id="downloadFile" download target="_black"></a>
+    <form id="downloadFile" method="post" action="/cotz/downloadPdf.php" target="_black" class="hide">
+      <input type="hidden" name="data">
+    </form>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>

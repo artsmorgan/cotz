@@ -482,19 +482,22 @@ function gotoList(username){
         e.preventDefault();
         var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
 
-        $.ajax({
-                url: "../cotz/services/cotz.php",
-                data: { data: data, action: 'print_cot' },
-                type: "POST"
-            })
-            .done(function(data){
-               $('#downloadFile').attr('href', data);
-               $('#downloadFile').get(0).click();
-                console.log('data',data);
-              })
-            .fail(function(e){
-              console.log('fail',e);
-            });
+        $('#downloadFile').find('[name=data]').val(data);
+        $('#downloadFile').submit();
+
+        // $.ajax({
+        //         url: "../cotz/services/cotz.php",
+        //         data: { data: data, action: 'print_cot' },
+        //         type: "POST"
+        //     })
+        //     .done(function(data){
+        //        $('#downloadFile').attr('href', data);
+        //        $('#downloadFile').get(0).click();
+        //         console.log('data',data);
+        //       })
+        //     .fail(function(e){
+        //       console.log('fail',e);
+        //     });
     });
 
     $('.btn-save').on('click', function(e){

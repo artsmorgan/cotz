@@ -274,24 +274,18 @@ class PDF {
         return ob_get_clean();
     }
 
-    public static function printPDF($data, $orientation = "P", $format = "A4", $lang = "es"){
+    public static function printPDF($data, $filename = 'cotizacion.pdf', $orientation = "P", $format = "A4", $lang = "es"){
         
         $content = self::generateHtml($data);
-        $dt = new DateTime();
-        $fileName = 'cotizacion_' . $data['userid'] . '_' . $dt->format('Y-m-d His') . '.pdf';
-        $filePath = '/archive_pdfs/' . $fileName;
         try
         {
-            
             $html2pdf = new HTML2PDF($orientation, $format, $lang);
             $html2pdf->WriteHTML($content);
-            $html2pdf->Output( AS_PATH . $filePath, 'F');
+            $html2pdf->Output( $filename, 'D');
         }
         catch(HTML2PDF_exception $e){
-            return 'error';
+            echo 'error';
         }
-
-        return '/cotz/' . $filePath;
 
     }
 }
