@@ -269,7 +269,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="col-sm-3 form-group">
               <label for="moneda">Moneda:</label>
               <select name="moneda" class="form-control" id="moneda">
-                <?php $selectop = array( 'dolares' => '$', 'colones' => '₡', 'euro' => '€' ); ?>
+                <?php $selectop = array( 'dolares' => '$', 'colones' => '¢', 'euro' => '€' ); ?>
                 <?php foreach( $selectop as $opvalue => $optxt ): ?>
                   <option value="<?php echo $opvalue; ?>" <?php echo ( $cot[0]['moneda'] == $opvalue ? 'selected' : '' ); ?> ><?php echo $optxt; ?></option>
                 <?php endforeach; ?>
@@ -444,13 +444,15 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-2 form-group border--full">
               <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario1">
+              <input type="hidden" data-name="precioUnitarioFormated" class="op-hidden-formated">
             </div>
             <div class="col-sm-1 form-group border--full">
               <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento1">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1">
               <p class="op-total">
+                <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1">
+                <input type="hidden" data-name="montoFormated" class="op-hidden-formated">
                 <b class="op-total-monto">0</b>
               </p>
               <span>
@@ -461,7 +463,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               <div class="row">
                 <div class="col-sm-6 form-group">
                   <label for="descripcionArticulo1">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
+                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
                 </div>
               </div>
             </div>
@@ -510,13 +512,15 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-2 form-group border--full">
               <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario<?php echo $index + 1; ?>" value="<?php echo $linea['precio']; ?>">
+              <input type="hidden" data-name="precioUnitarioFormated" class="op-hidden-formated">
             </div>
             <div class="col-sm-1 form-group border--full">
               <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento<?php echo $index + 1; ?>" value="<?php echo $linea['descuento_porcentaje']; ?>">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto<?php echo $index + 1; ?>" value="<?php echo $linea['monto']; ?>">
               <p class="op-total">
+                <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto<?php echo $index + 1; ?>" value="<?php echo $linea['monto']; ?>">
+                <input type="hidden" data-name="montoFormated" class="op-hidden-formated">
                 <b class="op-total-monto">0</b>
               </p>
               <span>
@@ -527,7 +531,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               <div class="row">
                 <div class="col-sm-6 form-group">
                   <label for="descripcionArticulo<?php echo $index + 1; ?>">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo<?php echo $index + 1; ?>"><?php echo $linea['descripcion']; ?></textarea>
+                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo<?php echo $index + 1; ?>"><?php echo $linea['descripcion']; ?></textarea>
                 </div>
               </div>
             </div>
@@ -557,6 +561,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-1 op-total">
               <input type="hidden" name="subtotal" class="op-hidden-subtotal">
+              <input type="hidden" name="subtotalFormated" class="op-hidden-formated">
               <b class="op-total-subtotal">0</b>
             </div>
           </div>
@@ -566,6 +571,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-1 op-total">
               <input type="hidden" name="totalDescuento" class="op-hidden-descuento">
+              <input type="hidden" name="totalDescuentoFormated" class="op-hidden-formated">
               <b class="op-total-descuento">0</b>
             </div>
           </div>
@@ -575,6 +581,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-1 op-total">
               <input type="hidden" name="totalIva" class="op-hidden-iva">
+              <input type="hidden" name="totalIvaFormated" class="op-hidden-formated">
               <b class="op-total-iva">0</b>
             </div>
           </div>
@@ -584,6 +591,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-1 op-total">
               <input type="hidden" name="total" class="op-hidden-total">
+              <input type="hidden" name="totalFormated" class="op-hidden-formated">
               <b class="op-total-total">0</b>
             </div>
           </div>
@@ -601,7 +609,14 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-offset-11 col-sm-1">
+        <div class="col-sm-offset-5 col-md-offset-8 col-sm-3  col-md-2 txt-right">
+          <label for="firma">Incluir firma</label>
+          <input type="checkbox" name="incluirFirma" id="firma" value="yes">
+        </div>
+        <div class="col-sm-2 col-md-1">
+          <a href="#" class="btn btn-default btn-block btn-print">Imprimir</a>
+        </div>
+        <div class="col-sm-2 col-md-1">
           <a href="#" class="btn btn-default btn-block btn-save">Guardar</a>
         </div>
       </div>
@@ -721,7 +736,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           </div>
 
     </form> <!-- /container -->
-
+  <a href="" id="downloadFile" download target="_black"></a>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>

@@ -96,7 +96,19 @@ function gotoList(username){
 
   function updateFormatCurrency(){
     $('.op-total b') .formatCurrency({
-      symbol: $('#moneda option:selected').text()
+      symbol: $('#moneda option:selected').text() + ' '
+    });
+
+    $('.op-total b').each(function(){
+      $(this).parent().find('.op-hidden-formated').val( $(this).text() );
+    });
+
+    $('.art-precioUni').each(function(){
+      $priceFormated = $(this).parent().find('.op-hidden-formated');
+
+      $(this).formatCurrency( $priceFormated, {
+        symbol: $('#moneda option:selected').text() + ' '
+      });
     });
   }
 
@@ -466,6 +478,25 @@ function gotoList(username){
       }
     });
 
+    $('.btn-print').on('click', function(e){
+        e.preventDefault();
+        var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
+
+        $.ajax({
+                url: "../cotz/services/cotz.php",
+                data: { data: data, action: 'print_cot' },
+                type: "POST"
+            })
+            .done(function(data){
+               $('#downloadFile').attr('href', data);
+               $('#downloadFile').get(0).click();
+                console.log('data',data);
+              })
+            .fail(function(e){
+              console.log('fail',e);
+            });
+    });
+
     $('.btn-save').on('click', function(e){
             e.preventDefault();
             var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON(),
@@ -495,7 +526,7 @@ function gotoList(username){
               })
             .fail(function(e){
               console.log('fail',e);
-            })
+            });
           
     });        
 

@@ -77,6 +77,23 @@ class dbAdmin {
         return $result;    
     }
 
+    public function getAllFromPersonById($id){
+        try {
+            $sql ='SELECT concat(p.firstname, " ", p.lastname ) as completename, p.jobtitle, 
+            p.mobilephone, p.officephone, p.officefax, e.emailaddress
+            FROM person p inner join email e on p.primaryaddress_address_id = e.id where p.id = ?';
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql, $id);
+           
+            
+            $result = $rs->fetchRow();
+         }catch(Exception $e ){
+            $this->closeConnection();
+        }
+
+        return $result;    
+    }
+
     
 
     private function generateToken(){
@@ -88,6 +105,21 @@ class dbAdmin {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return md5($randomString);
+    }
+
+    public function getInfoFromCompanyById($id){
+        try {
+            $sql ='SELECT a.name, a.officephone, a.officefax, a.cedula_juridcstm FROM account a where a.id = ?';
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql, $id);
+           
+            
+            $result = $rs->fetchRow();
+         }catch(Exception $e ){
+            $this->closeConnection();
+        }
+
+        return $result;  
     }
 
 

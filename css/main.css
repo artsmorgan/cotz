@@ -40,6 +40,10 @@
  display: block;
 }
 
+.form-container input[type=checkbox]{
+  font-size: 13px;
+}
+
 .form-container .form-control{
  height: 28px;
  font-size: 13px;
@@ -218,4 +222,10 @@ ul.ui-autocomplete{
 
 #user-table td{
   padding: 10px 0;
+}
+
+@media (min-width: 768px){
+  .txt-right{
+    text-align: right;
+  }
 }
