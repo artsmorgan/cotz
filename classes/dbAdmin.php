@@ -336,12 +336,65 @@ class dbAdmin {
 
     }
 
+    public function insertHeaderImport
+    (   $vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
+        $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
+        $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio, $externalID,
+        $externalContact, $externalAccount, $externalCreateId, $version){
+
+        $sql = 'insert INTO `cotz_header`
+                (`vendedor_id`,`fecha_cotizacion`,`fecha_vencimiento`,`tasa_impuestos`,`moneda`,
+                `factor_redondeo`,`no_solicitud`,`no_cotizacion`,`account_id`,`contact_id`,`tiempo_entrega`,
+                `lugar_entrega`,`forma_pago`,`marca`,`fase`,`notas`,`notas_crm`,`fecha_creacion`,
+                `fecha_modificacion`,`modificado_por`,`subtotal`,`descuento`,`impuesto`,`total`, `tasa_cambio`, `external_cot_id`, `external_contact`, `external_account`, `external_create_id`, `version`)
+                VALUES("'.$vendedor_id.'",now(),"'.$fecha_vencimiento.'",
+                "'.$tasa_impuestos.'","'.$moneda.'","'.$factor_redondeo.'","'.$no_solicitud.'",
+                "'.$no_cotizacion.'","'.$account_id.'","'.$contact_id.'","'.$tiempo_entrega.'",
+                "'.$lugar_entrega.'","'.$forma_pago.'","'.$marca.'","'.$fase.'","'.$notas.'",
+                "'.$notas_crm.'",now(),"","","'.$subtotal.'","'.$descuento.'","'.$impuesto.'","'.$total.'","'.$tasa_cambio.'","'.$externalID.'","'.$externalContact.'","'.$externalAccount.'","'.$externalCreateId.'","'.$version.'");';
+                // echo $sql;die();
+                // $sql = 'select 1 as test';
+
+
+
+        $this->getConnection();
+        $rs = $this->_adoconn->Execute($sql);   
+        $id = $this->_adoconn->Insert_ID();
+        $this->closeConnection();
+       
+
+        return $id;        
+
+
+    }
+
     public function insertRow($id_header, $codigo_articulo,$nombre_articulo,$descripcion,$cantidad,$unidad_medida,$precio,$descuento_porcentaje,$monto){
         
         $sql = 'insert INTO `cotz_detail` (`id_header`,`codigo_articulo`,`nombre_articulo`,`descripcion`,
                             `cantidad`,`unidad_medida`,`precio`,`descuento_porcentaje`,`monto`)  VALUES
                             ("'.$id_header.'","'.$codigo_articulo.'","'.$nombre_articulo.'","'.$descripcion.'",
                             "'.$cantidad.'","'.$unidad_medida.'","'.$precio.'","'.$descuento_porcentaje.'","'.$monto.'");';
+                // echo $sql;die();
+                // $sql = 'select 1 as test';
+        $this->getConnection();
+        $rs = $this->_adoconn->Execute($sql);   
+        $id = $this->_adoconn->Insert_ID();
+        $this->closeConnection();
+       
+
+        return $id;        
+
+
+    }
+
+
+    public function insertRowImport($id_header, $codigo_articulo,$nombre_articulo,$descripcion,$cantidad,$unidad_medida,$precio,$descuento_porcentaje,$monto, $externalId){
+        
+        $sql = 'insert INTO `cotz_detail` (`id_header`,`codigo_articulo`,`nombre_articulo`,`descripcion`,
+                            `cantidad`,`unidad_medida`,`precio`,`descuento_porcentaje`,`monto`,`id_external`,`version`)  VALUES
+                            ("'.$id_header.'","'.$codigo_articulo.'","'.$nombre_articulo.'","'.$descripcion.'",
+                            "'.$cantidad.'","'.$unidad_medida.'","'.$precio.'","'.$descuento_porcentaje.'","'.$monto.'"
+                            ,"'.$externalId.'","zoho");';
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
         $this->getConnection();
