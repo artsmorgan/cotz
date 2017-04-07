@@ -1,27 +1,21 @@
 <?php
 include 'conspath.php';
 include_once (AS_PATH.'/classes/dbAdmin.php');
-
 // $path = "'".PATH."'";
 $path = "'"."http://".$_SERVER['SERVER_NAME']."'";
 $username = $_GET['u'];
 $cotid = $_GET['cotId'];
-
 $userlist = dbAdmin::getInstancia()->getAllFromUser();
-
 $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
-
 $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 // print_all($userlist);
 // echo '---------------------------';
 // print_all($userdata);
-
-
 // echo $username;
 ?>
 
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" langpo  =""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
@@ -48,8 +42,6 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body class="form-page">
-<?php var_dump($cot ); ?>
-
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -246,7 +238,8 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           </div>
         </div>
       <!-- <button class="btn btn-primary" onclick="gotoList()">Regresar al listado</button> -->
-    <form class="container-fluid form-container">
+    <form class="container-fluid form-container is-update">
+      <input type="hidden" value="<?php echo $cotid; ?>" name="cotId">
       <div class="row">
         <div class="col-sm-6 info-cotizacion float--active">
 
@@ -276,7 +269,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="col-sm-3 form-group">
               <label for="moneda">Moneda:</label>
               <select name="moneda" class="form-control" id="moneda">
-                <?php $selectop = array( 'dolares' => '$', 'colones' => '₡', 'euro' => '€' ); ?>
+                <?php $selectop = array( 'dolares' => '$', 'colones' => '¢', 'euro' => '€' ); ?>
                 <?php foreach( $selectop as $opvalue => $optxt ): ?>
                   <option value="<?php echo $opvalue; ?>" <?php echo ( $cot[0]['moneda'] == $opvalue ? 'selected' : '' ); ?> ><?php echo $optxt; ?></option>
                 <?php endforeach; ?>
@@ -451,13 +444,15 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-2 form-group border--full">
               <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario1">
+              <input type="hidden" data-name="precioUnitarioFormated" class="op-hidden-formated">
             </div>
             <div class="col-sm-1 form-group border--full">
               <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento1">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1">
               <p class="op-total">
+                <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1">
+                <input type="hidden" data-name="montoFormated" class="op-hidden-formated">
                 <b class="op-total-monto">0</b>
               </p>
               <span>
@@ -468,7 +463,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               <div class="row">
                 <div class="col-sm-6 form-group">
                   <label for="descripcionArticulo1">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
+                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
                 </div>
               </div>
             </div>
@@ -492,38 +487,40 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           <li class="row-product">
           <div class="row">
             <div class="col-sm-1 form-group">
-              <label for="codigoArticul<?php echo $index + 2; ?>">Código del artículo:</label>
-              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticul<?php echo $index + 2; ?>" value="<?php echo $linea['codigo_articulo']; ?>" >
+              <label for="codigoArticulo<?php echo $index + 1; ?>">Código del artículo:</label>
+              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo<?php echo $index + 1; ?>" value="<?php echo $linea['codigo_articulo']; ?>" >
             </div>
             <div class="col-sm-3 form-group">
-              <label for="nombreArticul<?php echo $index + 2; ?>">Nombre del artículo:</label>
-              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticul<?php echo $index + 2; ?>" value="<?php echo $linea['nombre_articulo']; ?>">
+              <label for="nombreArticulo<?php echo $index + 1; ?>">Nombre del artículo:</label>
+              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo<?php echo $index + 1; ?>" value="<?php echo $linea['nombre_articulo']; ?>">
             </div>
              <div class="col-sm-2 form-group">
               <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">ver de Inventario</button>
             </div>
             <!-- <div class="col-sm-1 form-group border--full">
-              <select type="number" data-name="factorLinea" class="form-control" id="factorLine<?php echo $index + 2; ?>">
+              <select type="number" data-name="factorLinea" class="form-control" id="factorLinea<?php echo $index + 1; ?>">
                 <option value="factor_1">factor_1</option>
                 <option value="factor_2">factor_2</option>
                 <option value="factor_3">factor_3</option>
               </select>
             </div> -->
             <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantida<?php echo $index + 2; ?>" value="<?php echo $linea['cantidad']; ?>">
+              <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad<?php echo $index + 1; ?>" value="<?php echo $linea['cantidad']; ?>">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedid<?php echo $index + 2; ?>" value="<?php echo $linea['unidad_medida']; ?>">
+              <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedida<?php echo $index + 1; ?>" value="<?php echo $linea['unidad_medida']; ?>">
             </div>
             <div class="col-sm-2 form-group border--full">
-              <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitari<?php echo $index + 2; ?>" value="<?php echo $linea['precio']; ?>">
+              <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario<?php echo $index + 1; ?>" value="<?php echo $linea['precio']; ?>">
+              <input type="hidden" data-name="precioUnitarioFormated" class="op-hidden-formated">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuent<?php echo $index + 2; ?>" value="<?php echo $linea['descuento_porcentaje']; ?>">
+              <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento<?php echo $index + 1; ?>" value="<?php echo $linea['descuento_porcentaje']; ?>">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="hidden" data-name="monto" class="op-hidden-monto" id="mont<?php echo $index + 2; ?>" value="<?php echo $linea['monto']; ?>">
               <p class="op-total">
+                <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto<?php echo $index + 1; ?>" value="<?php echo $linea['monto']; ?>">
+                <input type="hidden" data-name="montoFormated" class="op-hidden-formated">
                 <b class="op-total-monto">0</b>
               </p>
               <span>
@@ -533,8 +530,8 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="content-collapse">
               <div class="row">
                 <div class="col-sm-6 form-group">
-                  <label for="descripcionArticul<?php echo $index + 2; ?>">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticul<?php echo $index + 2; ?>"><?php echo $linea['descripcion']; ?></textarea>
+                  <label for="descripcionArticulo<?php echo $index + 1; ?>">Descripción:</label>
+                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo<?php echo $index + 1; ?>"><?php echo $linea['descripcion']; ?></textarea>
                 </div>
               </div>
             </div>
@@ -564,6 +561,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-1 op-total">
               <input type="hidden" name="subtotal" class="op-hidden-subtotal">
+              <input type="hidden" name="subtotalFormated" class="op-hidden-formated">
               <b class="op-total-subtotal">0</b>
             </div>
           </div>
@@ -573,6 +571,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-1 op-total">
               <input type="hidden" name="totalDescuento" class="op-hidden-descuento">
+              <input type="hidden" name="totalDescuentoFormated" class="op-hidden-formated">
               <b class="op-total-descuento">0</b>
             </div>
           </div>
@@ -582,6 +581,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-1 op-total">
               <input type="hidden" name="totalIva" class="op-hidden-iva">
+              <input type="hidden" name="totalIvaFormated" class="op-hidden-formated">
               <b class="op-total-iva">0</b>
             </div>
           </div>
@@ -591,6 +591,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-1 op-total">
               <input type="hidden" name="total" class="op-hidden-total">
+              <input type="hidden" name="totalFormated" class="op-hidden-formated">
               <b class="op-total-total">0</b>
             </div>
           </div>
@@ -608,7 +609,14 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-offset-11 col-sm-1">
+        <div class="col-sm-offset-5 col-md-offset-8 col-sm-3  col-md-2 txt-right">
+          <label for="firma">Incluir firma</label>
+          <input type="checkbox" name="incluirFirma" id="firma" value="yes">
+        </div>
+        <div class="col-sm-2 col-md-1">
+          <a href="#" class="btn btn-default btn-block btn-print">Imprimir</a>
+        </div>
+        <div class="col-sm-2 col-md-1">
           <a href="#" class="btn btn-default btn-block btn-save">Guardar</a>
         </div>
       </div>
@@ -728,7 +736,9 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           </div>
 
     </form> <!-- /container -->
-
+    <form id="downloadFile" method="post" action="/cotz/downloadPdf.php" target="_black" class="hide">
+      <input type="hidden" name="data">
+    </form>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
