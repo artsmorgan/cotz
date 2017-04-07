@@ -510,7 +510,7 @@ class dbAdmin {
                           inner join `account` as acc on cot.account_id = acc.id 
                           inner join `contact` as con on cot.contact_id = con.id 
                           inner join `person` as contactp on con.person_id = contactp.id 
-                          inner join `person` as salesp on cot.vendedor_id = salesp.id where cot.id = ?;';
+                          left join `person` as salesp on cot.vendedor_id = salesp.id where cot.id = ?;';
 
             $this->getConnection();
             $rs = $this->_adoconn->Execute($sql, $id);

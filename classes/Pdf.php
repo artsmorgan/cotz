@@ -111,7 +111,7 @@ class PDF {
         }
 
         .section_content{
-            margin-top: 40px;
+            width: 100%;
             border-top: 2px solid #808080;
         }
 
@@ -158,9 +158,7 @@ class PDF {
                     </td>
                 </tr>
             </table>
-
             <p>En atención a su solicitud, es un gusto presentarle la siguiente oferta:</p>
-
             <table class="cot_lines">
                 <thead>
                     <tr>
@@ -172,7 +170,6 @@ class PDF {
                     </tr>
                 </thead>
             <?php for($i = 0, $count = count($lineas);  $i < $count ;$i++ ): ?>
-
                 <tr class="cot_line_content">
                     <td>
                         <b><?php  echo $i +1; ?></b>
@@ -194,10 +191,7 @@ class PDF {
                         <p><?php echo $lineas[$i]['montoFormated']; ?></p>
                     </td>
                 </tr>
-
             <? endfor; ?>
-
-                
                     <tr>
                         <td></td>
                         <td></td>
@@ -242,33 +236,43 @@ class PDF {
                             <p><?php echo $totalFormated; ?></p>
                         </td>
                     </tr>
-                
-
+            </table> <!-- lines end  -->
+            <br>
+            <br>
+            <br>
+            <table>
+                <tr>
+                    <td class="section_content">
+                        <h2>Términos y condiciones</h2>
+                        <p><b>Tiempo de entrega:</b> <?php echo $tiempoEntrega; ?></p>
+                        <p><b>Lugar de entrega:</b> <?php echo $lugarEntrega; ?></p>
+                        <p><b>Forma de pago:</b> <?php echo $formaPago; ?></p>
+                    </td>
+                </tr>
             </table>
-            <!-- lines end  -->
-            <div class="section_content">
-                <h2>Términos y condiciones</h2>
-                <p><b>Tiempo de entrega:</b> <?php echo $tiempoEntrega; ?></p>
-                <p><b>Lugar de entrega:</b> <?php echo $lugarEntrega; ?></p>
-                <p><b>Forma de pago:</b> <?php echo $formaPago; ?></p>
-            </div>
-
-            <div class="section_content">
-                <br>
-                <br>
-                <p>Esperamos que esta propuesta sea de su agrado. No dude en contactarnos para cualquier consulta adicional</p>
-                <br>
-                <br>
-                <p class="txt_center">Cordialmente</p>
-                <?php if( $incluirFirma ): ?>
-                    <p class="txt_center"><img src="<?php echo $usersignature; ?>"></p>
-                <?php endif; ?>
-                <p class="salesperson"><b><?php echo $salesperson_info['completename'];?> <? echo ( !empty( $salesperson_info['jobtitle'] ) ? ' - '. $salesperson_info['jobtitle'] : '' ); ?> </b></p>
-                <p class="txt_center">Teleforno: <?php echo $salesperson_info['officephone'];?> - Fax:  <?php echo $salesperson_info['officefax'];?>  - Celular: <?php echo $salesperson_info['mobilephone'];?> </p>
-                <p class="txt_center">Correo: <?php echo $salesperson_info['emailaddress'];?>  - Visitenos en <a href="http://www.tecnosagot.com">www.tecnosagot.com</a></p>
-                <p class="txt_center">TecnoSagot S.A - Cédula jurídica: 3-101-077573</p>
-                <p class="txt_center">La Uruca, frente al Centro Cormercial San José 2000, Autopista General Cañas</p>
-            </div>
+            <br>
+            <br>
+            <br>
+            <table>
+                <tr>
+                    <td class="section_content">
+                        <br>
+                        <br>
+                        <p>Esperamos que esta propuesta sea de su agrado. No dude en contactarnos para cualquier consulta adicional</p>
+                        <br>
+                        <br>
+                        <p class="txt_center">Cordialmente</p>
+                        <?php if( $incluirFirma && $usersignature ): ?>
+                            <p class="txt_center"><img src="<?php echo $usersignature; ?>"></p>
+                        <?php endif; ?>
+                        <p class="salesperson"><b><?php echo $salesperson_info['completename'];?> <? echo ( !empty( $salesperson_info['jobtitle'] ) ? ' - '. $salesperson_info['jobtitle'] : '' ); ?> </b></p>
+                        <p class="txt_center">Teleforno: <?php echo $salesperson_info['officephone'];?> - Fax:  <?php echo $salesperson_info['officefax'];?>  - Celular: <?php echo $salesperson_info['mobilephone'];?> </p>
+                        <p class="txt_center">Correo: <?php echo $salesperson_info['emailaddress'];?>  - Visitenos en <a href="http://www.tecnosagot.com">www.tecnosagot.com</a></p>
+                        <p class="txt_center">TecnoSagot S.A - Cédula jurídica: 3-101-077573</p>
+                        <p class="txt_center">La Uruca, frente al Centro Cormercial San José 2000, Autopista General Cañas</p>
+                    </td>
+                </tr>
+            </table>
         </page>
         <?php
         return ob_get_clean();

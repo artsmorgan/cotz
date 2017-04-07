@@ -24,7 +24,7 @@ if( isset( $params['incluirFirma'] ) ){
     $firmasPath =  AS_PATH . '/assets/images/firmas/';
     switch( $params['userid'] ){
         case 7:
-            $params['usersignature'] = $firmasPath . 'alonso_vargas.png';
+            $params['signaturepath'] = $firmasPath . 'alonso_vargas.png';
         break;
     }
 }
