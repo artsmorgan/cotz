@@ -1,55 +1,6 @@
 var SERVER_PROD = 'http://tecnosagot.united-crm.com';
 var SERVER_DEV = 'http://crm.local/';
 
-
-
-var salesPersons = [{
-  id: 0,
-  name: 'Roberto Castro Araya'
-},
-  {
-  id: 1,
-  name: 'Patricia Valverde Test'
-},
-{
-  id: 2,
-  name: 'Carme Herra Roldan'
-},
-{
-  id: 3,
-  name: 'Tomas Calderon Arias'
-},
-{
-  id: 4,
-  name: 'Cecilia Hernandez Ramirez'
-},
-{
-  id: 5,
-  name: 'Pablo Test Uva'
-}
-];
-
-
-var clients = [
-  {
-    id: 123456,
-    name: 'Dos pinos'
-  },
-  {
-    id: 7891011,
-    name: 'Dos pin'
-  },
-  {
-    id: 1234789,
-    name: 'pinitos'
-  },
-  {
-    id: 7890125,
-    name: 'un coral'
-  }
-];
-
-
 function gotoList(username){
     window.location.href = "index.php?u="+username;
     parent.iframeLoaded();
@@ -223,7 +174,7 @@ function gotoList(username){
     method = method || $('#redondeo').val();
     var round = roundMethods[method][factor];
 
-    return roundTo(number, round);
+    return roundTo(number, round).toFixed(2);
   }
 
   function roundTo(number, round ){
@@ -281,6 +232,7 @@ function gotoList(username){
          getContactsByAccount(id, function(data){
             console.log(data);
             data = data.result;
+            $('.account_list_by_company').empty();
             for(var i = 0; i < data.length; i++){
            
                 $('.account_list_by_company').append('<tr><td class="c_acc_name">'+data[i].firstname+' '+data[i].lastname+'</td>'+
@@ -295,6 +247,7 @@ function gotoList(username){
                 var name = $(this).parent().parent().find('.c_acc_name').text();
 
                 $('#clienteNombreAux').val(name);
+                $('#clienteNombreAux').trigger('input');
                 $("#contact_id").val(id);
                 $('#clientesModal').modal('hide');
               })
@@ -429,19 +382,25 @@ function gotoList(username){
       });
     });
 
-    var today = new Date(),
-        todayStr =  today.getFullYear()+ '-' + ( today.getMonth() + 1 ) + '-' + today.getDate();
-    $('#fechaCotizacion').val( todayStr );
-
-    $('.datepicker,#fechaCotizacion').datepicker({
-      format: 'yy-mm-dd',
-      startDate: today
+    $('.datepicker').datepicker({
+      dateFormat: 'yy-mm-dd',
+      startDate: new Date()
     });
 
+    if (!$('.is-update').length){
+      var today = new Date(),
+          todayDateFormated = today.getUTCFullYear() + '-' + ('0' + (today.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + today.getUTCDate()).slice(-2);
+          todayTimeFormated = ('0' + today.getHours()).slice(-2) + ':' + ('0' + today.getMinutes()).slice(-2) + ':' + ('0' + today.getSeconds()).slice(-2);
+          
+          $('#altFechaCotizacion').val( todayDateFormated + ' ' + todayTimeFormated );
+          $('#fechaCotizacion').datepicker('setDate', todayDateFormated);
+    }
+    else{
+      $('#fechaCotizacion').datepicker('setDate', $('#fechaCotizacion').val() );
+    }
 
-
+    $('.datepicker').datepicker("option","minDate", $('#fechaCotizacion').val() );
     
-
     $('input[type=number]').on('input',function(){
       var $this = $(this),
           maxlength = $this.attr('maxlength'),
@@ -480,6 +439,10 @@ function gotoList(username){
 
     $('.btn-print').on('click', function(e){
         e.preventDefault();
+        var allValid = validInputs();
+
+        if(!allValid) return;
+
         var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
 
         $('#downloadFile').find('[name=data]').val(data);
@@ -500,37 +463,49 @@ function gotoList(username){
         //     });
     });
 
+    function validInputs(){
+      var allValid = true,
+          elems = $('[required]');
+
+      for(var i = 0; i < elems.length; i++){
+          var $elem = $(elems[i]);
+          if ( !$elem.val() ){
+            $elem.closest('.form-group').addClass('hasErrors');
+            if( allValid ){
+              $elem.focus();
+            }
+            allValid = false;
+          }
+        }
+
+        return allValid;
+
+    }
+
     $('.btn-save').on('click', function(e){
             e.preventDefault();
             var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON(),
-                allValid = true,
-                elems = $('[required]'),
+                allValid = validInputs(),
                 isUpdate = $('.form-container').hasClass('is-update'),
                 action = isUpdate ? 'update_cot':'save_cot';
 
-            for(var i = 0; i < elems.length; i++){
-              var $elem = $(elems[i]);
-              if ( !$elem.val() ){
-                $elem.closest('.form-group').addClass('hasErrors');
-                if( allValid ){
-                  $elem.focus();
-                }
-                allValid = false;
-              }
-            }
-            console.log('data',data);
-            $.ajax({
+            
+            if(allValid){
+              $.ajax({
                 url: "../cotz/services/cotz.php",
                 data: { data: data, action: action },
                 type: "POST"
-            })
-            .done(function(data){
-                console.log('data',data);
               })
-            .fail(function(e){
-              console.log('fail',e);
-            });
-          
+              .done(function(data){
+                  console.log('data',data);
+                  if( action == 'save_cot' ){
+                    $('.btn-backToList').trigger('click');
+                  }
+                })
+              .fail(function(e){
+                console.log('fail',e);
+              });
+            }
     });        
 
 
@@ -551,28 +526,28 @@ function gotoList(username){
       $(this).closest('.row-product').find('[data-name=precioUnitario]').trigger( 'input' );
     });
 
-    $('#vendedor').autocomplete({
-      minLength: 3,
-      source: function(request, response) {
-        var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
-        response($.grep(salesPersons, function(value) {
-            return matcher.test(value.name);
-        }));
-      },
-      focus: function( event, ui ){
-        $('#vendedor').val( ui.item.name );
-        return false;
-      },
-      select: function( event, ui ){
-        $('#vendedor').attr( 'data-id', ui.item.id );
-        $('#vendedor').val( ui.item.name );
-        return false;
-      }
-    }).autocomplete('instance')._renderItem = function( ul, item ){
-      return $( "<li>" )
-        .append( '<div class="small">' + item.name + '</div>'  )
-        .appendTo( ul );
-    };
+    // $('#vendedor').autocomplete({
+    //   minLength: 3,
+    //   source: function(request, response) {
+    //     var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+    //     response($.grep(salesPersons, function(value) {
+    //         return matcher.test(value.name);
+    //     }));
+    //   },
+    //   focus: function( event, ui ){
+    //     $('#vendedor').val( ui.item.name );
+    //     return false;
+    //   },
+    //   select: function( event, ui ){
+    //     $('#vendedor').attr( 'data-id', ui.item.id );
+    //     $('#vendedor').val( ui.item.name );
+    //     return false;
+    //   }
+    // }).autocomplete('instance')._renderItem = function( ul, item ){
+    //   return $( "<li>" )
+    //     .append( '<div class="small">' + item.name + '</div>'  )
+    //     .appendTo( ul );
+    // };
 
     $('#codigoCliente, #codigoClienteAux, #nombreCliente').each(function(){
       $(this).autocomplete({
@@ -644,6 +619,7 @@ $('.add_compania').on('click', function(e){
   e.preventDefault();
   $('#company_id').val($('.id_compania').text());
   $('#cuentaNombreAux').val($('.nombre_compania').text());
+  $('#cuentaNombreAux').trigger('input');
   $('#companiasModal').modal('hide');
 
 

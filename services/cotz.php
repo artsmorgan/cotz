@@ -1,12 +1,9 @@
 <?php
+	ini_set('memory_limit', '1024M');
 	include_once ('../conspath.php');
 	include_once (AS_PATH.'/classes/dbAdmin.php');
-	include_once (AS_PATH.'/classes/Pdf.php');
 
 	$action = $_REQUEST['action'];
-
-
-	
 
 	switch ($action) {
 		case 'save_cot':
@@ -14,6 +11,8 @@
 				$data = $_REQUEST['data'];
 				$params = array();
 				parse_str($data, $params);
+
+				//$params = dbAdmin::getInstancia()->changeCharset($params, 'utf-8', 'latin1');
 				
 				$vendedor_id		 = $params['userid'];
 				$fecha_cotizacion	 = $params['fechaCotizacion'];
@@ -60,6 +59,8 @@
 				$data = $_REQUEST['data'];
 				$params = array();
 				parse_str($data, $params);
+
+				//$params = dbAdmin::getInstancia()->changeCharset($params, 'utf-8', 'latin1');
 				
 				$vendedor_id		 = $params['userid'];
 				$fecha_cotizacion	 = $params['fechaCotizacion'];
@@ -172,20 +173,18 @@
 		case 'get_cotizacionesAll':
 			
 			$results = dbAdmin::getInstancia()->getCotizacionHeaderByCustomerAll();
-			echo json_encode($results);
 			
+			echo json_encode($results);		
 			break;
 
 
 		case 'get_cotizacionesAllMIN':
-			
 			$results = dbAdmin::getInstancia()->getCotizacionHeaderByCustomerAllMIN();
-			echo json_encode($results);
-			
+			echo json_encode($results);		
 			break;
+	
+}
 
-		
 
-	}
 
 ?>

@@ -58,7 +58,7 @@ class dbAdmin {
             $this->closeConnection();
         }
 
-        return $result;    
+        return $this->changeCharset($result);    
     }
     
     public function getAllFromUserByUsername($username){
@@ -74,14 +74,14 @@ class dbAdmin {
             $this->closeConnection();
         }
 
-        return $result;    
+        return $this->changeCharset($result);    
     }
 
     public function getAllFromPersonById($id){
         try {
             $sql ='SELECT concat(p.firstname, " ", p.lastname ) as completename, p.jobtitle, 
             p.mobilephone, p.officephone, p.officefax, e.emailaddress
-            FROM person p inner join email e on p.primaryaddress_address_id = e.id where p.id = ?';
+            FROM person p left join email e on p.primaryaddress_address_id = e.id where p.id = ?';
             $this->getConnection();
             $rs = $this->_adoconn->Execute($sql, $id);
            
@@ -91,7 +91,24 @@ class dbAdmin {
             $this->closeConnection();
         }
 
-        return $result;    
+        return $this->changeCharset($result);    
+    }
+
+    public function getContactInfoById($id){
+        try {
+            $sql ='SELECT concat(p.firstname, " ", p.lastname ) as completename, 
+            p.mobilephone, p.officephone, p.officefax, e.emailaddress
+            FROM contact c inner join person p on c.person_id = p.id left join email e on p.primaryemail_email_id = e.id where c.id = ?';
+            $this->getConnection();
+            $rs = $this->_adoconn->Execute($sql, $id);
+           
+            
+            $result = $rs->fetchRow();
+         }catch(Exception $e ){
+            $this->closeConnection();
+        }
+
+        return $this->changeCharset($result);    
     }
 
     
@@ -109,17 +126,17 @@ class dbAdmin {
 
     public function getInfoFromCompanyById($id){
         try {
-            $sql ='SELECT a.name, a.officephone, a.officefax, a.cedula_juridcstm FROM account a where a.id = ?';
+            $sql ='SELECT acc.name, acc.officephone, acc.officefax, acc.cedula_juridcstm, acc.cuentascstm, e.emailaddress
+                FROM account acc left join email e on acc.primaryemail_email_id = e.id where acc.id = ?';
             $this->getConnection();
             $rs = $this->_adoconn->Execute($sql, $id);
            
-            
             $result = $rs->fetchRow();
          }catch(Exception $e ){
             $this->closeConnection();
         }
 
-        return $result;  
+        return $this->changeCharset($result);  
     }
 
 
@@ -135,7 +152,7 @@ class dbAdmin {
             
             $result = $rs->getRows();
 
-            return $result;
+            return $this->changeCharset($result);
        
     }
 
@@ -167,13 +184,13 @@ class dbAdmin {
                 $rs = $this->_adoconn->Execute($userSql, $id);     
                 $result = $rs->getRows();
 
-                 return $result;
+                 return $this->changeCharset($result);
 
 
             }
 
 
-            return $result;
+            return $this->changeCharset($result);
        
     }
 
@@ -191,7 +208,8 @@ class dbAdmin {
             
 
             //echo $sql; die();
-             $this->getConnection();
+            $sql = $this->changeCharset($sql, 'utf-8', 'latin1');
+            $this->getConnection();
             $rs = $this->_adoconn->Execute($sql);
             $this->closeConnection();
 
@@ -207,7 +225,6 @@ class dbAdmin {
 
             $sql ='update account set external_owner_id = "'.$ownerId.'", external_id="'.$externalId.'" where id = '.$accountId.';';
 
-            
 
             //echo $sql; die();
              $this->getConnection();
@@ -228,7 +245,6 @@ class dbAdmin {
             $sql ='update account set external_owner_id = "'.$ownerId.'", external_id="'.$externalId.'" where id = '.$accountId.';';
 
             
-
             //echo $sql; die();
              $this->getConnection();
             $rs = $this->_adoconn->Execute($sql);
@@ -252,7 +268,7 @@ class dbAdmin {
             $result = $rs->getRows();
             $this->closeConnection();
                     
-            return $result;
+            return $this->changeCharset($result);
        
     }
 
@@ -272,7 +288,7 @@ class dbAdmin {
             $result = $rs->getRows();
             $this->closeConnection();
                     
-            return $result;
+            return $this->changeCharset($result);
        
     }
 
@@ -287,7 +303,7 @@ class dbAdmin {
         $result = $rs->getRows();
         $this->closeConnection();
                 
-        return $result;        
+        return $this->changeCharset($result);        
     }
 
 
@@ -337,7 +353,7 @@ class dbAdmin {
         $result = $rs->getRows();
         $this->closeConnection();
                 
-        return $result;        
+        return $this->changeCharset($result);        
     }
 
 
@@ -357,6 +373,9 @@ class dbAdmin {
                 "'.$notas_crm.'",now(),"","","'.$subtotal.'","'.$descuento.'","'.$impuesto.'","'.$total.'","'.$tasa_cambio.'");';
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
+
+        $sql = $this->changeCharset($sql, 'utf-8', 'latin1');
+
         $this->getConnection();
         $rs = $this->_adoconn->Execute($sql);   
         $id = $this->_adoconn->Insert_ID();
@@ -387,6 +406,8 @@ class dbAdmin {
                 "'.$notas_crm.'",now(),"","","'.$subtotal.'","'.$descuento.'","'.$impuesto.'","'.$total.'","'.$tasa_cambio.'","'.$externalID.'","'.$externalContact.'","'.$externalAccount.'","'.$externalCreateId.'","'.$version.'");';
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
+
+        $sql = $this->changeCharset($sql, 'utf-8', 'latin1');
 
              $this->getConnection();
                     $rs = $this->_adoconn->Execute($sql);   
@@ -432,6 +453,8 @@ class dbAdmin {
                 WHERE `id` ='.$id;
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
+
+        $sql = $this->changeCharset($sql, 'utf-8', 'latin1');
         $this->getConnection();
         $rs = $this->_adoconn->Execute($sql); 
         $this->closeConnection();
@@ -467,6 +490,8 @@ class dbAdmin {
                             "'.$cantidad.'","'.$unidad_medida.'","'.$precio.'","'.$descuento_porcentaje.'","'.$monto.'");';
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
+        $sql = $this->changeCharset($sql, 'utf-8', 'latin1');
+
         $this->getConnection();
         $rs = $this->_adoconn->Execute($sql);   
         $id = $this->_adoconn->Insert_ID();
@@ -488,6 +513,7 @@ class dbAdmin {
                             ,"'.$externalId.'","zoho");';
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
+        $sql = $this->changeCharset($sql, 'utf-8', 'latin1');
         $this->getConnection();
         $rs = $this->_adoconn->Execute($sql);   
         $id = $this->_adoconn->Insert_ID();
@@ -527,7 +553,7 @@ class dbAdmin {
             $result['lines'] = $lines;
             
 
-            return $result;
+            return $this->changeCharset($result);
        
     }
 
@@ -550,7 +576,7 @@ class dbAdmin {
             $this->closeConnection();
 
 
-            return $result;
+            return $this->changeCharset($result);
        
     }
 
@@ -571,7 +597,7 @@ class dbAdmin {
             $this->closeConnection();
 
 
-            return $result;
+            return $this->changeCharset($result);
        
     }
 
@@ -580,21 +606,22 @@ class dbAdmin {
 
             $result = 0;
 
-            $sql ='select c.id, c.marca, c.fase, c.total, c.fecha_cotizacion, 
-                    u.username, p.firstname, p.lastname, a.name from cotz_header c 
-                    inner join _user u on c.vendedor_id = u.id
-                    inner join account a on c.account_id = a.id
-                    inner join contact co on c.contact_id = co.id
-                    inner join person p on   co.person_id = p.id;';
-
+            // $sql ='select c.id, c.marca, c.fase, c.total, c.fecha_cotizacion, 
+            //         u.username, p.firstname, p.lastname, a.name from cotz_header c 
+            //         inner join _user u on c.vendedor_id = u.id
+            //         inner join account a on c.account_id = a.id
+            //         inner join contact co on c.contact_id = co.id
+            //         inner join person p on   co.person_id = p.id limit 100 ;';
+	        
+            $sql ="select c.id, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, c.tasa_cambio, c.fecha_cotizacion, u.username, p.firstname, p.lastname, a.name from cotz_header c inner join _user u on c.vendedor_id = u.id inner join account a on c.account_id = a.id inner join contact co on c.contact_id = co.id inner join person p on co.person_id = p.id ORDER BY DATE(c.fecha_cotizacion) DESC, c.fecha_cotizacion DESC limit 100";
             $this->getConnection();
             $rs = $this->_adoconn->Execute($sql);
             
             $result = $rs->getRows();
             $this->closeConnection();
 
-
-            return $result;
+	
+            return $this->changeCharset($result);
        
     }
 
@@ -615,7 +642,7 @@ class dbAdmin {
             $this->closeConnection();
 
 
-            return $result;        
+            return $this->changeCharset($result);        
 
     }
 
@@ -653,7 +680,7 @@ class dbAdmin {
             $this->closeConnection();
 
 
-            return $result;        
+            return $this->changeCharset($result);        
 
     }
 
@@ -673,6 +700,19 @@ class dbAdmin {
        
     }
 
-
+    public function changeCharset($data, $charsetFrom = 'latin1', $charsetTo = 'utf-8' ){
+        if(is_array($data)){
+            array_walk_recursive($data, function(&$value, $key) use ($charsetFrom, $charsetTo) {
+                if (is_string($value) ) {
+                    $value = iconv($charsetFrom, $charsetTo, $value);
+                }
+            });
+        }
+        else if(is_string($data)){
+            $data = iconv($charsetFrom, $charsetTo, $data);
+        }
+        
+        return $data;
+    }
 }
 ?>
