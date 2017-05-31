@@ -53,6 +53,10 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
     <div class="filter-by-data">
       <p><h3>Filtros </h3> Desde: <input type="text" id="datepicker_from"> Hasta: <input type="text" id="datepicker_to"> <a href="#" class="btn btn-default">Filtrar</a></p>
     </div>
+    <div id="toolbar" style="text-align: right;">
+      <label for="export_all">Exportar todas</label>
+        <input type="checkbox" value="all" id="export_all">
+    </div>
     <br>
 
         <!--[if lt IE 8]>
@@ -153,20 +157,35 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         }
 
          parent.iframeLoaded();
-          var jsonData = {},
-            $table = $('#table').bootstrapTable({
-             url: <?php echo $path; ?>+'/cotz/services/cotz.php?action=get_cotizacionesAllMIN',
-             onDblClickRow: function(row, $element, field){
-              var cotID = row['id'];
-             },
-             onLoadSuccess: function(){
-               jsonData = $table.bootstrapTable('getData');
-               (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
-             },
-             onAll: function(name, args){
-                (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
-             }
-          });
+         var jsonData = null,
+              bootstrapTableOpt = {
+                url: <?php echo $path; ?>+'/cotz/services/cotz.php?action=get_cotizacionesAllMIN',
+                onDblClickRow: function(row, $element, field){
+                  var cotID = row['id'];
+                },
+                onLoadSuccess: function(){
+                  jsonData = $table.bootstrapTable('getData');
+                  bootstrapTableOpt['data'] = jsonData;
+                  delete bootstrapTableOpt.url;
+
+                  (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
+                },
+                onAll: function(name, args){
+                    (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
+                }
+              }, 
+            $table = $('#table').bootstrapTable(bootstrapTableOpt);
+
+            $('#toolbar input').on('change', function(){
+              var value = $(this).is(':checked') ? $(this).val() : '';
+              bootstrapTableOpt['exportDataType'] = value;
+
+              $table.bootstrapTable('destroy').bootstrapTable(bootstrapTableOpt);
+              applyFilters();
+              $('.fixed-table-toolbar').prepend(createCotBtn);          
+            });
+
+
           $('.fixed-table-toolbar').prepend(createCotBtn);
 
           

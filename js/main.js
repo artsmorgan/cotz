@@ -198,16 +198,18 @@ function gotoList(username){
     parentIframeLoaded();
     //$( '.fixed-table-toolbar' ).prepend(createCotBtn);
 
-   $( '#table' ).bootstrapTable({
+    var bootstrapTableOpt = {
       url: SERVER_PROD+'/cotz/api/inv.json',
       onLoadSuccess: function(){
         parentIframeLoaded();
       },
       onAll: function(name, args){
          parentIframeLoaded();
-      }
-    });
+      },
+      exportDataType: 'all'
+    };
 
+   $( '#table' ).bootstrapTable(bootstrapTableOpt);
 
 
   $('#vendedor').on('click', function(e){
