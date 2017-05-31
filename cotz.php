@@ -441,7 +441,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <b>Cant</b>
             </div>
             <div class="col-sm-1 border--full">
-              <b>U/ medida</b>
+              <b>U.M</b>
             </div>
             <div class="col-sm-2 border--full">
               <b>Precio u.</b>

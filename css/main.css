@@ -26,6 +26,11 @@
 .transactions-list li{
  list-style-type: none;
 }
+
+.form-container{
+  font-family: Tahoma, Geneva, sans-serif;
+}
+
 .form-container .row{
  font-size: 0;
 }

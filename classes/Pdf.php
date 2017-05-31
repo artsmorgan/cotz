@@ -44,6 +44,10 @@ class PDF {
         ob_start();
         ?>
         <style type="text/Css">
+        body {
+            font-family: Tahoma, Geneva, sans-serif;
+        }
+
         h2{
             font-size: 18px;
             margin: 10px 0;
@@ -133,6 +137,14 @@ class PDF {
             border-top: 2px solid #808080;
         }
 
+        .section_content h2{
+            margin-top: 20px;
+        }
+
+        .no-border{
+            border: none;
+        }
+
         .border_bottom, .border_bottom td{
             border-bottom: 1px solid #d0d0d0;
         }
@@ -183,7 +195,7 @@ class PDF {
                         <th class="cot_hline_no">Línea</th>
                         <th class="cot_hline_desc">Descripción</th>
                         <th class="cot_hline_amount">Cant.</th>
-                        <th class="cot_hline_measure">U/ <br>medida</th>
+                        <th class="cot_hline_measure">U.M</th>
                         <th class="cot_hline_uprice">Precio <br>unitario</th>
                         <th class="cot_hline_tprice">Precio <br>total</th>
                     </tr>
@@ -223,7 +235,7 @@ class PDF {
                             <p>Sub-total</p>
                         </td>
                         <td>
-                            <p><b><?php echo $subtotalFormated; ?></b></p>
+                            <p><?php echo $subtotalFormated; ?></p>
                         </td>
                     </tr>
                     <tr>
@@ -263,6 +275,18 @@ class PDF {
                         </td>
                     </tr>
             </table> <!-- lines end  -->
+            <?php if( !empty($notasCotizacion) ) :?>
+                <br>
+                <br>
+                <table>
+                    <tr>
+                        <td class="section_content no-border">
+                            <h2>Observaciones</h2>
+                            <p><?php echo preg_replace( "/\r|\n/", "<br>", $notasCotizacion ); ?></p>
+                        </td>
+                    </tr>
+                </table>
+            <?php endif; ?>
             <br>
             <br>
             <br>
@@ -294,10 +318,10 @@ class PDF {
                             <p class="txt_center"><img src="<?php echo $usersignature; ?>"></p>
                         <?php endif; ?>
                         <p class="salesperson"><b><?php echo $salesperson_info['completename'];?> <?php echo ( !empty( $salesperson_info['jobtitle'] ) ? ' - '. $salesperson_info['jobtitle'] : '' ); ?> </b></p>
-                        <p class="txt_center">Teleforno: <?php echo $salesperson_info['officephone'];?> - Celular: <?php echo $salesperson_info['mobilephone'];?> </p>
+                        <p class="txt_center">Teléfono: <?php echo $salesperson_info['officephone'];?> - Celular: <?php echo $salesperson_info['mobilephone'];?> </p>
                         <p class="txt_center">Correo: <?php echo $salesperson_info['emailaddress'];?> - Visitenos en <a href="http://www.tecnosagot.com">www.tecnosagot.com</a></p>
                         <p class="txt_center">TecnoSagot S.A. - Cédula jurídica: 3-101-077573</p>
-                        <p class="txt_center">La Uruca, frente al Centro Cormercial San José 2000, Autopista General Cañas</p>
+                        <p class="txt_center">La Uruca. San José. Costado sur de la rotonda Juan Pablo II. Autopista General Cañas.</p>
                     </td>
                 </tr>
             </table>
