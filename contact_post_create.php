@@ -22,14 +22,14 @@ $headers = array(
 
 // Load Json File
 // $json_url = "json_clients.single.json"; // TEST ONLY
-$json_url = "json_clients.json"; // json_clients
+$json_url = "json/prod/clients.json"; // json_clients
 $json = file_get_contents($json_url);
 $data = json_decode($json, TRUE);
 // echo count($data); die();
 // print_all($data[0]);die();
 $data_count = count($data);
 $counter = 0;
-echo "Total de objetos: " . $data_count .'<br><br>';
+echo "Total de clientes: " . $data_count ."\n";
 
  foreach ($data as $key => $value) {
     $counter++;
@@ -69,10 +69,10 @@ echo "Total de objetos: " . $data_count .'<br><br>';
                                                              $value['ID_de_Contacto'], 
                                                              $value['ID_de_Compania'],
                                                              $contact['id']);
-             echo 'Contact created id: ' . $contact['id'] .' | '.$counter.' de '.$data_count.' Agregado. \n';    
+             echo 'Contact created id: ' . $contact['id'] .' | '.$counter.' de '.$data_count.' Agregado'."\n";    
              
              if($counter == $data_count){
-                echo "<br> ----------------------- FINISH -------------------------------";
+                echo " ----------------------- FINISH -------------------------------";
              }
 
         }
@@ -81,6 +81,7 @@ echo "Total de objetos: " . $data_count .'<br><br>';
             // Error
             $errors = $response['errors'];
             // Do something with errors, show them to user
+            print_r($errors);
         }
 }
 

@@ -10,7 +10,7 @@ $contacts = dbAdmin::getInstancia()->getContactIds();
 //cross fingers 
 
 foreach ($contacts as $key => $value) {
-    print_all($value);
+    // print_all($value);
     
   $update = dbAdmin::getInstancia()->updateCompanyOwnerById($value['u_id'] , $value['ownedsecurableitem_id']);
   echo "my ownedsecurableitem_id is ".$value['ownedsecurableitem_id']." and my owner id is ". $value['u_id']."<br>";

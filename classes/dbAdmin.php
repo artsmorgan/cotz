@@ -399,7 +399,7 @@ class dbAdmin {
                 `factor_redondeo`,`no_solicitud`,`no_cotizacion`,`account_id`,`contact_id`,`tiempo_entrega`,
                 `lugar_entrega`,`forma_pago`,`marca`,`fase`,`notas`,`notas_crm`,`fecha_creacion`,
                 `fecha_modificacion`,`modificado_por`,`subtotal`,`descuento`,`impuesto`,`total`, `tasa_cambio`, `external_cot_id`, `external_contact`, `external_account`, `external_create_id`, `version`)
-                VALUES("'.$vendedor_id.'",now(),"'.$fecha_vencimiento.'",
+                VALUES("'.$vendedor_id.'","'.$fecha_cotizacion.'","'.$fecha_vencimiento.'",
                 "'.$tasa_impuestos.'","'.$moneda.'","'.$factor_redondeo.'","'.$no_solicitud.'",
                 "'.$no_cotizacion.'","'.$account_id.'","'.$contact_id.'","'.$tiempo_entrega.'",
                 "'.$lugar_entrega.'","'.$forma_pago.'","'.$marca.'","'.$fase.'","'.$notas.'",
@@ -407,7 +407,7 @@ class dbAdmin {
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
 
-        $sql = $this->changeCharset($sql, 'utf-8', 'latin1');
+        // $sql = $this->changeCharset($sql, 'utf-8', 'latin1');
 
              $this->getConnection();
                     $rs = $this->_adoconn->Execute($sql);   
@@ -513,7 +513,7 @@ class dbAdmin {
                             ,"'.$externalId.'","zoho");';
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
-        $sql = $this->changeCharset($sql, 'utf-8', 'latin1');
+        // $sql = $this->changeCharset($sql, 'utf-8', 'latin1');
         $this->getConnection();
         $rs = $this->_adoconn->Execute($sql);   
         $id = $this->_adoconn->Insert_ID();
@@ -700,7 +700,7 @@ class dbAdmin {
        
     }
 
-    public function changeCharset($data, $charsetFrom = 'latin1', $charsetTo = 'utf-8' ){
+    public function changeCharset($data, $charsetFrom = 'latin1', $charsetTo = 'utf-8//TRANSLIT' ){
         if(is_array($data)){
             array_walk_recursive($data, function(&$value, $key) use ($charsetFrom, $charsetTo) {
                 if (is_string($value) ) {

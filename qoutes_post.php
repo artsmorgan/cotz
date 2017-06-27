@@ -5,9 +5,7 @@ include 'conspath.php';
 require (AS_PATH.'/classes/dbAdmin.php');
 
 $data = array(
-			"C:/AppServ/www/crmtecnosagot/cotz/json/quotes_1_5000.json",
-			"C:/AppServ/www/crmtecnosagot/cotz/json/quotes_5000_10000.json",
-			"C:/AppServ/www/crmtecnosagot/cotz/json/quotes_10000.json"
+			"json/june/quotes.json"
 		);
 
 
@@ -25,21 +23,38 @@ for ($i = 0; $i < count($data); $i++) {
         foreach ($json_data as $key => $params) {
 
         		$vendedor_id		 = "";
-				$fecha_cotizacion	 = "now()";
+				$fecha_cotizacion_ex	 = $params['created_at'];
 				$fecha_vencimiento_ex= $params['vencimiento'];
+
+                
 				
 				if($fecha_vencimiento_ex != '' ){
 					$fechaSlice 		 = explode("/", $fecha_vencimiento_ex);
-					$fecha_vencimiento	 = $fechaSlice[2].'-'.$fechaSlice[0].'-'.$fechaSlice[1];
+                    // print_r($fechaSlice);
+					$fecha_vencimiento	 = $fechaSlice[2].'-'.$fechaSlice[0].'-'.$fechaSlice[1]; //YYYYMMDD
 				}else{
 					$fecha_vencimiento	 = "now()";
 				}
+
+                if($fecha_cotizacion_ex != '' ){
+                    $fechaSlice          = explode("/", $fecha_cotizacion_ex);
+                    // print_r($fechaSlice);
+                    $fix = explode(" ", $fechaSlice[2]);
+                    // print_r($fix);
+                    $fecha_cotizacion   = $fix[0].'-'.$fechaSlice[0].'-'.$fechaSlice[1];
+                }else{
+                    $fecha_cotizacion   = "now()";
+                }
+
+                // echo '$fecha_cotizacion : ' . $fecha_cotizacion ."\n";
+                // echo '$fecha_vencimiento : ' . $fecha_vencimiento ."\n";
+                // die();
 								
-				$tasa_impuestos 	 = $params['Impuesto'];
+				$tasa_impuestos 	 = $params['tasa_de_impuestos'];
 				$moneda 			 = "colones";
 				$factor_redondeo 	 = "";
                 $no_solicitud 		 = $params['Solicitud_No'];
-                $no_cotizacion 	 	 = number_format($params['no_cotizacion'],0, '.', '');
+                $no_cotizacion 	 	 = $params['Asunto'];//number_format($params['no_cotizacion'],0, '.', '');
                 $account_id 		 = "";
                 $contact_id 		 = "";
                 $tiempo_entrega 	 = $params['tiempo_de_entrega'];
@@ -49,8 +64,8 @@ for ($i = 0; $i < count($data); $i++) {
                 $fase 				 = $params['Fase'];
                 $notas 				 = $params['descripcion'];
                 $notas_crm 			 = "";
-                $subtotal 			 = $params['Subtotal'];
-                $descuento 		     = $params['Descuento'];
+                $subtotal 			 = $params['subtotal_antes_descuento'];
+                $descuento 		     = $params['Descuentos'];
                 $impuesto 			 = $params['Impuesto'];
                 $total				 = $params['total'];
                 $tasa_cambio		 = "";
@@ -67,6 +82,7 @@ for ($i = 0; $i < count($data); $i++) {
                            );
 
                 echo "new id inserted ".$cot_id ."\n";
+                // die();
         }
 
 
