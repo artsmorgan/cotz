@@ -47,11 +47,12 @@
 				    
 				    $row = dbAdmin::getInstancia()->insertRow($cot_id, $val['codigoArticulo'],$val['nombreArticulo'],
 				    										  $val['descripcionArticulo'],$val['cantidad'],$val['unidadMedida'],$val['precioUnitario'],
-				    										 $val['porcentajeDescuento'],$val['monto']);
+				    										 $val['porcentajeDescuento'],$val['monto'], $val['exonerado']);
 				}
 
 				
-				echo json_encode($cot_id);
+				//echo json_encode($cot_id);
+				echo json_encode($params);
 			break;
 
 		case 'update_cot':
@@ -85,20 +86,20 @@
                 $total				 = $params['total'];
                 $tasa_cambio		 = $params['tasaCambio'];
                 $lineas				 = $params['lineas'];
-                $id				 = $params['cotId'];
+                $id				 	= $params['cotId'];
                 $lineasObj			 = json_decode($lineas, true);
 
                 $cot_id = dbAdmin::getInstancia()->updateHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
                                 $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
                                 $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio,$id);
                 
-                 $deleteRows = dbAdmin::getInstancia()->deleteRows($id);
+                $deleteRows = dbAdmin::getInstancia()->deleteRows($id);
 
                 foreach ($lineasObj as $key => $val) {
 				    
 				    $row = dbAdmin::getInstancia()->insertRow($id, $val['codigoArticulo'],$val['nombreArticulo'],
 				    										  $val['descripcionArticulo'],$val['cantidad'],$val['unidadMedida'],$val['precioUnitario'],
-				    										 $val['porcentajeDescuento'],$val['monto']);
+				    										 $val['porcentajeDescuento'],$val['monto'], $val['exonerado']);
 				}
 
 				
@@ -183,6 +184,9 @@
 			echo json_encode($results);		
 			break;
 	
+case 'test':
+var_dump(dbAdmin::getInstancia()->getCotizacionHeaderByCustomerAllMIN());
+break;
 }
 
 

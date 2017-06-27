@@ -38,6 +38,7 @@
  font-size: 10px;
  float: none;
  display: inline-block;
+ vertical-align: bottom;
 }
 
 .form-container .float--active{
