@@ -267,7 +267,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
           <div class="row">
             <div class="col-sm-3 form-group">
               <label for="tasaImpuestos">Tasa de impuestos:</label>
-              <input type="number" name="tasaImpuestos" min="1" max="99" maxlength="2" class="form-control" id="tasaImpuestos">
+              <input type="number" name="tasaImpuestos" min="1" max="99" maxlength="7" class="form-control" id="tasaImpuestos">
             </div>
             <div class="col-sm-3 form-group">
               <label for="moneda">Moneda:</label>
@@ -441,7 +441,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <b>Cant</b>
             </div>
             <div class="col-sm-1 border--full">
-              <b>U.M</b>
+              <b>U/ medida</b>
             </div>
             <div class="col-sm-2 border--full">
               <b>Precio u.</b>
@@ -465,7 +465,15 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
             </div>
              <div class="col-sm-2 form-group">
-              <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">ver de Inventario</button>
+               <div class="row">
+                  <div class="col-sm-12">
+                    <label for="exonerado1">Exonerado</label>
+                    <input type="checkbox" data-name="exonerado" id="exonerado1" value="true">
+                  </div>
+                  <div class="col-sm-12">
+                    <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">Ver el inventario</button>
+                  </div>
+                </div>
             </div>
             <!-- <div class="col-sm-1 form-group border--full">
               <select type="number" data-name="factorLinea" class="form-control" id="factorLinea1">

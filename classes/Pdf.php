@@ -141,6 +141,10 @@ class PDF {
             margin-top: 20px;
         }
 
+        .section_content p{
+            line-height: 18px;
+        }
+
         .no-border{
             border: none;
         }
@@ -287,6 +291,19 @@ class PDF {
                     </tr>
                 </table>
             <?php endif; ?>
+            <br>
+            <br>
+            <br>
+            <table>
+                <tr>
+                    <td class="section_content">
+                        <h2>Observaciones</h2>
+                        <p>1. Toda anulación de pedido con trámite de importación directa, tiene un cargo de 25% sobre el valor total de la orden de compra si el pedido ya se encuentra procesado en fábrica o está listo para despacharse.</p>
+                        <p>2. Cantidades sujetas a las existencias en bodega al momento de realizar la compra.</p>
+                        <p>3. Precios válidos por las cantidades e ítems indicados en esta cotización.</p>
+                    </td>
+                </tr>
+            </table>
             <br>
             <br>
             <br>
