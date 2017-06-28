@@ -9,7 +9,7 @@ $userlist = dbAdmin::getInstancia()->getAllFromUser();
 $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 
-print_all($cot);
+// print_all($cot);
 
 // print_all($userlist);
 // echo '---------------------------';
