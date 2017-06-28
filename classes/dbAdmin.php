@@ -535,12 +535,13 @@ class dbAdmin {
             $result = 0;
 
             $sql ='select cot.*, acc.name as account_name, concat(contactp.firstname, " ", contactp.lastname ) as contact_name, 
-                          concat( salesp.firstname, " ", salesp.lastname ) as vendedor_nombre 
-                          from `cotz_header` as cot 
-                          inner join `account` as acc on cot.account_id = acc.id 
-                          inner join `contact` as con on cot.contact_id = con.id 
-                          inner join `person` as contactp on con.person_id = contactp.id 
-                          left join `person` as salesp on cot.vendedor_id = salesp.id where cot.id = ?;';
+                    concat( salesp.firstname, " ", salesp.lastname ) as vendedor_nombre 
+                    from  cotz_header as cot 
+                    left join account as acc on cot.account_id = acc.id 
+                    left join contact as con on cot.contact_id = con.id 
+                    left join person as contactp on con.person_id = contactp.id 
+                    left join _user u on  cot.vendedor_id = u.id
+                    left join person as salesp on u.person_id = salesp.id where cot.id = ?;';
 
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
