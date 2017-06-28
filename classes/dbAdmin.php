@@ -51,6 +51,7 @@ class dbAdmin {
         try {
             $sql ='SELECT u.username, u.role_id, p.* FROM _user u inner join person p where u.person_id = p.id;';
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
            
             $result = $rs->getRows();
@@ -66,6 +67,7 @@ class dbAdmin {
         try {
             $sql ='SELECT u.username, u.role_id, p.* FROM _user u inner join person p where u.person_id = p.id and u.username = ?';
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql, $username);
            
             
@@ -81,8 +83,27 @@ class dbAdmin {
         try {
             $sql ='SELECT concat(p.firstname, " ", p.lastname ) as completename, p.jobtitle, 
             p.mobilephone, p.officephone, p.officefax, e.emailaddress
-            FROM person p inner join email e on p.primaryaddress_address_id = e.id where p.id = ?';
+            FROM person p left join email e on p.primaryemail_email_id = e.id where p.id = ?';
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
+            $rs = $this->_adoconn->Execute($sql, $id);
+           
+            
+            $result = $rs->fetchRow();
+         }catch(Exception $e ){
+            $this->closeConnection();
+        }
+
+        return $result;    
+    }
+
+    public function getContactInfoById($id){
+        try {
+            $sql ='SELECT concat(p.firstname, " ", p.lastname ) as completename, 
+            p.mobilephone, p.officephone, p.officefax, e.emailaddress
+            FROM contact c inner join person p on c.person_id = p.id left join email e on p.primaryemail_email_id = e.id where c.id = ?';
+            $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql, $id);
            
             
@@ -109,11 +130,12 @@ class dbAdmin {
 
     public function getInfoFromCompanyById($id){
         try {
-            $sql ='SELECT a.name, a.officephone, a.officefax, a.cedula_juridcstm FROM account a where a.id = ?';
+            $sql ='SELECT acc.name, acc.officephone, acc.officefax, acc.cedula_juridcstm, acc.cuentascstm, e.emailaddress
+                FROM account acc left join email e on acc.primaryemail_email_id = e.id where acc.id = ?';
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql, $id);
            
-            
             $result = $rs->fetchRow();
          }catch(Exception $e ){
             $this->closeConnection();
@@ -130,6 +152,7 @@ class dbAdmin {
             // echo $sql;
 
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
            
             
@@ -164,6 +187,7 @@ class dbAdmin {
                             inner join email e on p.primaryemail_email_id = e.id
                             where ac.accountaffiliation_account_id = ?;";
                 $this->getConnection();
+                $this->_adoconn->Execute("SET CHARSET 'utf8';");
                 $rs = $this->_adoconn->Execute($userSql, $id);     
                 $result = $rs->getRows();
 
@@ -191,7 +215,8 @@ class dbAdmin {
             
 
             //echo $sql; die();
-             $this->getConnection();
+            $this->getConnection();
+            $this->_adoconn->Execute("SET NAMES 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
             $this->closeConnection();
 
@@ -207,7 +232,6 @@ class dbAdmin {
 
             $sql ='update account set external_owner_id = "'.$ownerId.'", external_id="'.$externalId.'" where id = '.$accountId.';';
 
-            
 
             //echo $sql; die();
              $this->getConnection();
@@ -228,7 +252,6 @@ class dbAdmin {
             $sql ='update account set external_owner_id = "'.$ownerId.'", external_id="'.$externalId.'" where id = '.$accountId.';';
 
             
-
             //echo $sql; die();
              $this->getConnection();
             $rs = $this->_adoconn->Execute($sql);
@@ -247,6 +270,7 @@ class dbAdmin {
                     from account a inner join _user u on a.external_owner_id = u.external_id;';
 
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
             
             $result = $rs->getRows();
@@ -267,6 +291,7 @@ class dbAdmin {
                     inner join _user u on c.external_owner_id = u.external_id;';
 
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
             
             $result = $rs->getRows();
@@ -282,6 +307,7 @@ class dbAdmin {
                 from account a inner join contact c on c.external_company_id = a.external_id;';
 
         $this->getConnection();
+        $this->_adoconn->Execute("SET CHARSET 'utf8';");
         $rs = $this->_adoconn->Execute($sql);
         
         $result = $rs->getRows();
@@ -332,6 +358,7 @@ class dbAdmin {
                 where c.account_id = '.$acount_id.';';
 
         $this->getConnection();
+        $this->_adoconn->Execute("SET CHARSET 'utf8';");
         $rs = $this->_adoconn->Execute($sql);
         
         $result = $rs->getRows();
@@ -345,24 +372,20 @@ class dbAdmin {
     public function insertHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
                                 $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
                                 $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio){
+
         $sql = 'insert INTO `cotz_header`
                 (`vendedor_id`,`fecha_cotizacion`,`fecha_vencimiento`,`tasa_impuestos`,`moneda`,
                 `factor_redondeo`,`no_solicitud`,`no_cotizacion`,`account_id`,`contact_id`,`tiempo_entrega`,
                 `lugar_entrega`,`forma_pago`,`marca`,`fase`,`notas`,`notas_crm`,`fecha_creacion`,
                 `fecha_modificacion`,`modificado_por`,`subtotal`,`descuento`,`impuesto`,`total`, `tasa_cambio`)
-                VALUES("'.$vendedor_id.'","'.$fecha_cotizacion.'","'.$fecha_vencimiento.'",
-                "'.$tasa_impuestos.'","'.$moneda.'","'.$factor_redondeo.'","'.$no_solicitud.'",
-                "'.$no_cotizacion.'","'.$account_id.'","'.$contact_id.'","'.$tiempo_entrega.'",
-                "'.$lugar_entrega.'","'.$forma_pago.'","'.$marca.'","'.$fase.'","'.$notas.'",
-                "'.$notas_crm.'",now(),"","","'.$subtotal.'","'.$descuento.'","'.$impuesto.'","'.$total.'","'.$tasa_cambio.'");';
-                // echo $sql;die();
-                // $sql = 'select 1 as test';
+                VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(),"","", ?, ?, ?, ?, ?);';
+
         $this->getConnection();
-        $rs = $this->_adoconn->Execute($sql);   
+        $this->_adoconn->Execute("SET NAMES 'utf8';");
+        $rs = $this->_adoconn->Execute($sql, func_get_args());
         $id = $this->_adoconn->Insert_ID();
         $this->closeConnection();
        
-
         return $id;        
 
 
@@ -389,12 +412,13 @@ class dbAdmin {
                 // $sql = 'select 1 as test';
 
              $this->getConnection();
-                    $rs = $this->_adoconn->Execute($sql);   
-                    $id = $this->_adoconn->Insert_ID();
-                    $this->closeConnection();
-                   
+             $this->_adoconn->Execute("SET NAMES 'utf8';");
+            $rs = $this->_adoconn->Execute($sql);   
+            $id = $this->_adoconn->Insert_ID();
+            $this->closeConnection();
+            
 
-                    return $id;        
+            return $id;        
 
 
     }
@@ -403,43 +427,46 @@ class dbAdmin {
     public function updateHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
                                 $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
                                 $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio, $id){
-        $sql = 'update `cotz_header`
-                SET
-                `vendedor_id` = "'.$vendedor_id.'",
-                `fecha_cotizacion` = "'.$fecha_cotizacion.'",
-                `fecha_vencimiento` = "'.$fecha_vencimiento.'",
-                `tasa_impuestos` = "'.$tasa_impuestos.'",
-                `moneda` = "'.$moneda.'",
-                `factor_redondeo` = "'.$factor_redondeo.'",
-                `no_solicitud` = "'.$no_solicitud.'",
-                `no_cotizacion` = "'.$no_cotizacion.'",
-                `account_id` = "'.$account_id.'",
-                `contact_id` = "'.$contact_id.'",
-                `tiempo_entrega` = "'.$tiempo_entrega.'",
-                `lugar_entrega` = "'.$lugar_entrega.'",
-                `forma_pago` = "'.$forma_pago.'",
-                `marca` = "'.$marca.'",
-                `fase` = "'.$fase.'",
-                `notas` = "'.$notas.'",
-                `notas_crm` = "'.$notas_crm.'",
-                `fecha_modificacion` = now(),
-                `modificado_por` = "'.$vendedor_id.'",
-                `subtotal` = "'.$subtotal.'",
-                `descuento` = "'.$descuento.'",
-                `impuesto` = "'.$impuesto.'",
-                `total` = "'.$total.'",
-                `tasa_cambio` = "'.$tasa_cambio.'"
-                WHERE `id` ='.$id;
-                // echo $sql;die();
-                // $sql = 'select 1 as test';
+        
+        $args = array(
+            'vendedor_id' => $vendedor_id,
+            'fecha_cotizacion' => $fecha_cotizacion,
+            'fecha_vencimiento' => $fecha_vencimiento,
+            'tasa_impuestos' => $tasa_impuestos,
+            'moneda' => $moneda,
+            'factor_redondeo' => $factor_redondeo,
+            'no_solicitud' => $no_solicitud,
+            'no_cotizacion' => $no_cotizacion,
+            'account_id' => $account_id,
+            'contact_id' => $contact_id,
+            'tiempo_entrega' => $tiempo_entrega,
+            'lugar_entrega' => $lugar_entrega,
+            'forma_pago' => $forma_pago,
+            'marca' => $marca,
+            'fase' =>  $fase,
+            'notas' => $notas,
+            'notas_crm' => $notas_crm,
+            'subtotal' => $subtotal,
+            'descuento' => $descuento,
+            'impuesto' => $impuesto,
+            'total' => $total,
+            'tasa_cambio' => $tasa_cambio,
+            'modificado_por' => $vendedor_id,
+            'id' => $id
+        );
+
+        // $sql = 'UPDATE cotz_header SET vendedor_id = "?", fecha_cotizacion = "?", fecha_vencimiento = ?, tasa_impuestos = ?, 
+        // -- moneda = ?, factor_redondeo = ?, no_solicitud = ?, no_cotizacion = ?, account_id = ?, contact_id = ?, tiempo_entrega + ?,
+        // -- lugar_entrega = ?, forma_pago = ?, marca = ?, fase = ?, notas = ?, notas_crm = ?, subtotal = ?, descuento = ?, impuesto = ?,
+        // -- total = ?, tasa_cambio = ?, modificado_por = ?, fecha_modificacion = now() WHERE id = ?';
+
         $this->getConnection();
-        $rs = $this->_adoconn->Execute($sql); 
+        $this->_adoconn->Execute("SET NAMES 'utf8';");
+        $rs = $this->_adoconn->Replace( 'cotz_header', $args, 'id', true );
+        $this->_adoconn->Replace( 'cotz_header', array('fecha_modificacion' => 'now()', 'id' => $id), 'id' );
         $this->closeConnection();
        
-
-        return true;        
-
-
+        return true;
     }
 
     public function deleteRows($id){
@@ -459,20 +486,20 @@ class dbAdmin {
 
     }
 
-    public function insertRow($id_header, $codigo_articulo,$nombre_articulo,$descripcion,$cantidad,$unidad_medida,$precio,$descuento_porcentaje,$monto){
-        
-        $sql = 'insert INTO `cotz_detail` (`id_header`,`codigo_articulo`,`nombre_articulo`,`descripcion`,
-                            `cantidad`,`unidad_medida`,`precio`,`descuento_porcentaje`,`monto`)  VALUES
-                            ("'.$id_header.'","'.$codigo_articulo.'","'.$nombre_articulo.'","'.$descripcion.'",
-                            "'.$cantidad.'","'.$unidad_medida.'","'.$precio.'","'.$descuento_porcentaje.'","'.$monto.'");';
+    public function insertRow($id_header, $codigo_articulo,$nombre_articulo,$descripcion,$cantidad,$unidad_medida,$precio,$descuento_porcentaje,$monto,$exonerado){
+
+        $sql = 'INSERT INTO `cotz_detail` (`id_header`,`codigo_articulo`,`nombre_articulo`,`descripcion`,
+                            `cantidad`,`unidad_medida`,`precio`,`descuento_porcentaje`,`monto`,`exonerado`)  VALUES
+                            ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );';
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
+
         $this->getConnection();
-        $rs = $this->_adoconn->Execute($sql);   
+        $this->_adoconn->Execute("SET NAMES 'utf8';");
+        $rs = $this->_adoconn->Execute($sql, func_get_args());
         $id = $this->_adoconn->Insert_ID();
         $this->closeConnection();
        
-
         return $id;        
 
 
@@ -488,7 +515,9 @@ class dbAdmin {
                             ,"'.$externalId.'","zoho");';
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
+
         $this->getConnection();
+        $this->_adoconn->Execute("SET NAMES 'utf8';");
         $rs = $this->_adoconn->Execute($sql);   
         $id = $this->_adoconn->Insert_ID();
         $this->closeConnection();
@@ -513,6 +542,7 @@ class dbAdmin {
                           left join `person` as salesp on cot.vendedor_id = salesp.id where cot.id = ?;';
 
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql, $id);
             
             $result = $rs->getRows();
@@ -521,12 +551,12 @@ class dbAdmin {
     
             $userSql = "select * from cotz_detail where id_header = ?;";
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($userSql, $id);     
             $lines = $rs->getRows();
 
             $result['lines'] = $lines;
             
-
             return $result;
        
     }
@@ -544,6 +574,7 @@ class dbAdmin {
                     where c.id = ?;';
 
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql, $id);
             
             $result = $rs->getRows();
@@ -565,6 +596,7 @@ class dbAdmin {
                     inner join person p on   co.person_id = p.id;';
 
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
             
             $result = $rs->getRows();
@@ -580,20 +612,28 @@ class dbAdmin {
 
             $result = 0;
 
-            $sql ='select c.id, c.marca, c.fase, c.total, c.fecha_cotizacion, 
-                    u.username, p.firstname, p.lastname, a.name from cotz_header c 
-                    inner join _user u on c.vendedor_id = u.id
-                    inner join account a on c.account_id = a.id
-                    inner join contact co on c.contact_id = co.id
-                    inner join person p on   co.person_id = p.id;';
+            // $sql ='select c.id, c.marca, c.fase, c.total, c.fecha_cotizacion, 
+            //         u.username, p.firstname, p.lastname, a.name from cotz_header c 
+            //         inner join _user u on c.vendedor_id = u.id
+            //         inner join account a on c.account_id = a.id
+            //         inner join contact co on c.contact_id = co.id
+            //         inner join person p on   co.person_id = p.id limit 100 ;';
 
+            $sql ="select c.id, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, c.tasa_cambio, c.fecha_cotizacion, u.username, p.firstname, p.lastname, a.name 
+            from cotz_header c 
+            left join _user u on c.vendedor_id = u.person_id
+            inner join account a on c.account_id = a.id 
+            inner join contact co on c.contact_id = co.id
+            inner join person p on co.person_id = p.id
+            ORDER BY DATE(c.fecha_cotizacion) DESC, c.fecha_cotizacion DESC";
             $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
             
             $result = $rs->getRows();
             $this->closeConnection();
 
-
+	
             return $result;
        
     }
@@ -609,13 +649,14 @@ class dbAdmin {
                 inner join _user u on cot.external_create_id = u.external_id;";
 
         $this->getConnection();
-            $rs = $this->_adoconn->Execute($sql);
-            
-            $result = $rs->getRows();
-            $this->closeConnection();
+        $this->_adoconn->Execute("SET CHARSET 'utf8';");
+        $rs = $this->_adoconn->Execute($sql);
+        
+        $result = $rs->getRows();
+        $this->closeConnection();
 
 
-            return $result;        
+        return $result;        
 
     }
 
@@ -647,16 +688,16 @@ class dbAdmin {
                 inner join cotz_header h on l.header_external = h.external_cot_id;";
 
         $this->getConnection();
-            $rs = $this->_adoconn->Execute($sql);
-            
-            $result = $rs->getRows();
-            $this->closeConnection();
+        $this->_adoconn->Execute("SET CHARSET 'utf8';");
+        $rs = $this->_adoconn->Execute($sql);
+        
+        $result = $rs->getRows();
+        $this->closeConnection();
 
 
-            return $result;        
+        return $result;        
 
     }
-
 
     public function updateCotzDetailWithExternal($id_header, $idRow) {
 
@@ -673,6 +714,19 @@ class dbAdmin {
        
     }
 
-
+    public function changeCharset($data, $charsetFrom = 'latin1', $charsetTo = 'utf-8' ){
+        if(is_array($data)){
+            array_walk_recursive($data, function(&$value, $key) use ($charsetFrom, $charsetTo) {
+                if (is_string($value) ) {
+                    $value = iconv($charsetFrom, $charsetTo, $value);
+                }
+            });
+        }
+        else if(is_string($data)){
+            $data = iconv($charsetFrom, $charsetTo, $data);
+        }
+        
+        return $data;
+    }
 }
 ?>

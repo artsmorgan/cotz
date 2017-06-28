@@ -1,12 +1,9 @@
 <?php
+	ini_set('memory_limit', '1024M');
 	include_once ('../conspath.php');
 	include_once (AS_PATH.'/classes/dbAdmin.php');
-	include_once (AS_PATH.'/classes/Pdf.php');
 
 	$action = $_REQUEST['action'];
-
-
-	
 
 	switch ($action) {
 		case 'save_cot':
@@ -14,6 +11,8 @@
 				$data = $_REQUEST['data'];
 				$params = array();
 				parse_str($data, $params);
+
+				//$params = dbAdmin::getInstancia()->changeCharset($params, 'utf-8', 'latin1');
 				
 				$vendedor_id		 = $params['userid'];
 				$fecha_cotizacion	 = $params['fechaCotizacion'];
@@ -48,11 +47,12 @@
 				    
 				    $row = dbAdmin::getInstancia()->insertRow($cot_id, $val['codigoArticulo'],$val['nombreArticulo'],
 				    										  $val['descripcionArticulo'],$val['cantidad'],$val['unidadMedida'],$val['precioUnitario'],
-				    										 $val['porcentajeDescuento'],$val['monto']);
+				    										 $val['porcentajeDescuento'],$val['monto'], $val['exonerado']);
 				}
 
 				
-				echo json_encode($cot_id);
+				//echo json_encode($cot_id);
+				echo json_encode($params);
 			break;
 
 		case 'update_cot':
@@ -60,6 +60,8 @@
 				$data = $_REQUEST['data'];
 				$params = array();
 				parse_str($data, $params);
+
+				//$params = dbAdmin::getInstancia()->changeCharset($params, 'utf-8', 'latin1');
 				
 				$vendedor_id		 = $params['userid'];
 				$fecha_cotizacion	 = $params['fechaCotizacion'];
@@ -84,20 +86,20 @@
                 $total				 = $params['total'];
                 $tasa_cambio		 = $params['tasaCambio'];
                 $lineas				 = $params['lineas'];
-                $id				 = $params['cotId'];
+                $id				 	= $params['cotId'];
                 $lineasObj			 = json_decode($lineas, true);
 
                 $cot_id = dbAdmin::getInstancia()->updateHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
                                 $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
                                 $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio,$id);
                 
-                 $deleteRows = dbAdmin::getInstancia()->deleteRows($id);
+                $deleteRows = dbAdmin::getInstancia()->deleteRows($id);
 
                 foreach ($lineasObj as $key => $val) {
 				    
 				    $row = dbAdmin::getInstancia()->insertRow($id, $val['codigoArticulo'],$val['nombreArticulo'],
 				    										  $val['descripcionArticulo'],$val['cantidad'],$val['unidadMedida'],$val['precioUnitario'],
-				    										 $val['porcentajeDescuento'],$val['monto']);
+				    										 $val['porcentajeDescuento'],$val['monto'], $val['exonerado']);
 				}
 
 				
@@ -172,20 +174,21 @@
 		case 'get_cotizacionesAll':
 			
 			$results = dbAdmin::getInstancia()->getCotizacionHeaderByCustomerAll();
-			echo json_encode($results);
 			
+			echo json_encode($results);		
 			break;
 
 
 		case 'get_cotizacionesAllMIN':
-			
 			$results = dbAdmin::getInstancia()->getCotizacionHeaderByCustomerAllMIN();
-			echo json_encode($results);
-			
+			echo json_encode($results);		
 			break;
+	
+case 'test':
+var_dump(dbAdmin::getInstancia()->getCotizacionHeaderByCustomerAllMIN());
+break;
+}
 
-		
 
-	}
 
 ?>

@@ -30,14 +30,14 @@ class Excel {
                     "Apellidos" => $value[1],
                     "Bodega" => $value[2],
                     "Codigo" => $value[3],
-                    "NombreDelArticulo" =>  mb_convert_encoding( $value[4], 'UTF-8' ),
+                    "NombreDelArticulo" =>  iconv('WINDOWS-1252', 'UTF-8', $value[4]),
                     "Linea" => $value[5],
                     "NoDeParte" => $value[6],
                     "Unidad" => $value[7],
                     "CantidadDisponible" => $value[8],
                     "Precio" => $value[9],
                     "Provedor" => $value[10],
-                    "DetallesDelArticulo" => mb_convert_encoding( $value[11], 'UTF-8' ),
+                    "DetallesDelArticulo" => iconv( 'WINDOWS-1252', 'UTF-8', $value[11] ),
                 );
                 array_push($arrRst, $obj);
             }    

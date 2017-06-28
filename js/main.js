@@ -1,55 +1,6 @@
 var SERVER_PROD = 'http://tecnosagot.united-crm.com';
 var SERVER_DEV = 'http://crm.local/';
 
-
-
-var salesPersons = [{
-  id: 0,
-  name: 'Roberto Castro Araya'
-},
-  {
-  id: 1,
-  name: 'Patricia Valverde Test'
-},
-{
-  id: 2,
-  name: 'Carme Herra Roldan'
-},
-{
-  id: 3,
-  name: 'Tomas Calderon Arias'
-},
-{
-  id: 4,
-  name: 'Cecilia Hernandez Ramirez'
-},
-{
-  id: 5,
-  name: 'Pablo Test Uva'
-}
-];
-
-
-var clients = [
-  {
-    id: 123456,
-    name: 'Dos pinos'
-  },
-  {
-    id: 7891011,
-    name: 'Dos pin'
-  },
-  {
-    id: 1234789,
-    name: 'pinitos'
-  },
-  {
-    id: 7890125,
-    name: 'un coral'
-  }
-];
-
-
 function gotoList(username){
     window.location.href = "index.php?u="+username;
     parent.iframeLoaded();
@@ -75,23 +26,31 @@ function gotoList(username){
   };
 
   function updateConsecutiveAttr( consecutive, $item){
-    $('.form-control, label', $item).each(function(){
+    $('.form-control, label, :checkbox, :radio', $item).each(function(){
       var $this = $(this),
           attrAux = '';
 
-      if( $this.is( '.form-control' ) ){
-        if( $this.attr( 'id' ) ){
-          attrAux = $this.attr( 'id' ).replace( /\d+/, consecutive );
-          $this.attr('id', attrAux);
-        }
-      }
-      else{
+      if( $this.is( 'label' ) ){
         if( $this.attr( 'for' ) ){
           attrAux = $this.attr( 'for' ).replace( /\d+/, consecutive );
           $this.attr( 'for', attrAux );
         }
       }
+      else{
+        if( $this.attr( 'id' ) ){
+          attrAux = $this.attr( 'id' ).replace( /\d+/, consecutive );
+          $this.attr('id', attrAux);
+        }
+      }
     });
+  }
+
+  function containerScroll(to){
+    var $container = parent.$('html, body');
+
+    $container.animate({
+      scrollTop: to
+    }, 500);
   }
 
   function updateFormatCurrency(){
@@ -116,7 +75,8 @@ function gotoList(username){
     var cantidad = $productRow.find( '.art-cantidad' ).val(),
         precioUnitario = $productRow.find( '.art-precioUni' ).val();
         $dispMonto = $productRow.find( '.op-total-monto' ),
-        method = $productRow.find('[data-name=factorLinea]').val();
+        method = $productRow.find('[data-name=factorLinea]').val(),
+        exonerado = $productRow.find('[data-name=exonerado]').is(':checked');
 
         cantidad = cantidad ? cantidad : 0;
         precioUnitario = precioUnitario ? precioUnitario : 0;
@@ -126,41 +86,52 @@ function gotoList(username){
         monto = applyRoundFactor(monto, 'total', method);
 
         $productRow.find( '.op-hidden-monto' ).val( monto );
-        $dispMonto.text( monto );
+
+        $dispMonto.text( monto ).toggleClass( 'exonerado', exonerado );;
   }
 
   function updateSubtotal(){
-    var subtotal = 0;
+    var subtotal = 0,
+        subtotalTaxes = 0;
     $('.row-product .op-total-monto').each(function(){
       subtotal += $(this).asNumber();
+      if( !$(this).hasClass('exonerado') ){
+        subtotalTaxes += $(this).asNumber();
+      }
     });
 
     subtotal = applyRoundFactor(subtotal, 'total');
 
     $('.op-hidden-subtotal').val(subtotal);
-    $('.op-total-subtotal').text(subtotal);
+    $('.op-total-subtotal').text(subtotal).data('withTaxes', subtotalTaxes);
   }
 
   function updateDescuento(){
     var descuento = 0,
+        descuentoTaxes = 0,
         porcentaje = 0;
 
     $('.row-product').each(function(){
       porcentaje = $(this).find('.art-descuento').val() / 100;
       descuento += $(this).find('.op-total-monto').asNumber() * porcentaje;
+      if( !$(this).find('.op-total-monto').hasClass('exonerado') ){
+        descuentoTaxes += $(this).find('.op-total-monto').asNumber() * porcentaje;
+      }
     });
 
     descuento = applyRoundFactor(descuento, 'total');
 
     $('.op-hidden-descuento').val(descuento);
-    $('.op-total-descuento').text(descuento);
+    $('.op-total-descuento').text(descuento).data('withTaxes', descuentoTaxes);
   }
 
   function updateIVA(){
-    var iva = 13 / 100,
-        subtotal = $('.op-total-subtotal').asNumber(),
-        descuento = $('.op-total-descuento').asNumber()
-        totalIva = ( subtotal - descuento ) * iva;
+    var impuesto = Number( $('#tasaImpuestos').val() );
+    impuesto = Object.is(impuesto, NaN) ? 0 : impuesto;
+    var iva = impuesto / 100,
+        subtotalTaxes = $('.op-total-subtotal').data('withTaxes'),
+        descuentoTaxes = $('.op-total-descuento').data('withTaxes'),
+        totalIva = ( subtotalTaxes - descuentoTaxes ) * iva;
 
     totalIva = applyRoundFactor(totalIva, 'total');
 
@@ -185,20 +156,18 @@ function gotoList(username){
 
     $( '.row-product' ).each(function(){
       var product = {};
-      $()
-      $( 'input', this ).each(function(){
+      
+      $( 'input, textarea', this ).each(function(){
         var $input = $( this ),
             key = $input.data( 'name' );
 
-        product[key] = $input.val();
-
-      });
-
-      $( 'textarea', this ).each(function(){
-        var $input = $( this ),
-            key = $input.data( 'name' );
-
-        product[key] = $input.val();
+        if( $input.is(':radio, :checkbox') ){
+          product[key] = $input.is(':checked') ? $input.val(): null;
+        }
+        else{
+          product[key] = $input.val();
+        }
+        
 
       });
 
@@ -209,9 +178,9 @@ function gotoList(username){
     return encodeURIComponent(JSON.stringify(data));
   }
 
-  function parentIframeLoaded(){
+  function parentIframeLoaded(scroll){
     if( typeof parent.iframeLoaded == 'function' ){
-      parent.iframeLoaded();
+      parent.iframeLoaded(scroll);
     }
   }
 
@@ -223,7 +192,7 @@ function gotoList(username){
     method = method || $('#redondeo').val();
     var round = roundMethods[method][factor];
 
-    return roundTo(number, round);
+    return roundTo(number, round).toFixed(2);
   }
 
   function roundTo(number, round ){
@@ -235,26 +204,51 @@ function gotoList(username){
     $('#userid').val(id);
   }
 
+  function updateAll(){
+    $('.row-product').each(function(){
+        updateMonto( $(this) );
+      });
+
+      updateSubtotal();
+      updateDescuento();
+      updateIVA();
+      updateTotal();
+      updateFormatCurrency();
+  }
+
   $( document ).ready(function(){
 
     var $productForm = $( '.row-product:first' ).clone().addClass( 'disp--hide' ),
         $productRow = {},
         productData = {};
 
+    $productForm.find('input,textarea').val('');
+    $productForm.find('.op-total-monto').text('');
+
     $( '.row-product.disp--hide' ).remove();
 
     updateFormatCurrency();
-    parentIframeLoaded();
+    parentIframeLoaded(true);
     //$( '.fixed-table-toolbar' ).prepend(createCotBtn);
 
-   $( '#table' ).bootstrapTable({
+    var bootstrapTableOpt = {
       url: SERVER_PROD+'/cotz/api/inv.json',
       onLoadSuccess: function(){
-        parentIframeLoaded();
+        parentIframeLoaded(true);
       },
       onAll: function(name, args){
-         parentIframeLoaded();
-      }
+         parentIframeLoaded(true);
+      },
+      exportDataType: 'all'
+    };
+
+   $( '#table' ).bootstrapTable(bootstrapTableOpt);
+
+    $('#toolbar').find('select').change(function () {
+        console.log('change');
+        bootstrapTableOpt['exportDataType'] =  $(this).val();
+
+        $( '#table' ).bootstrapTable('destroy').bootstrapTable(bootstrapTableOpt);
     });
 
 
@@ -281,6 +275,7 @@ function gotoList(username){
          getContactsByAccount(id, function(data){
             console.log(data);
             data = data.result;
+            $('.account_list_by_company').empty();
             for(var i = 0; i < data.length; i++){
            
                 $('.account_list_by_company').append('<tr><td class="c_acc_name">'+data[i].firstname+' '+data[i].lastname+'</td>'+
@@ -295,6 +290,7 @@ function gotoList(username){
                 var name = $(this).parent().parent().find('.c_acc_name').text();
 
                 $('#clienteNombreAux').val(name);
+                $('#clienteNombreAux').trigger('input');
                 $("#contact_id").val(id);
                 $('#clientesModal').modal('hide');
               })
@@ -364,7 +360,7 @@ function gotoList(username){
       updateConsecutiveAttr( consecutive, $newProduct );
 
       $(this).closest( '.row-foot' ).before($newProduct);
-      $newProduct.slideDown( 400, parentIframeLoaded );
+      $newProduct.slideDown( 400, function(){ parentIframeLoaded(false) });
     });
 
     $( '.transactions-list' ).on( 'click', '.btns-collapse a', function(e){
@@ -372,7 +368,7 @@ function gotoList(username){
       var $product = $(this).closest('.row-product'),
           $contentCollapse = $product.find('.content-collapse');
 
-      $contentCollapse.slideToggle( 400, parentIframeLoaded );
+      $contentCollapse.slideToggle( 400, function(){ parentIframeLoaded(false) } );
       $product.find('.show-collapse').toggle();
       $product.find('.hide-collapse').toggle();
     });
@@ -383,7 +379,9 @@ function gotoList(username){
           $item = $(this).closest('.row-product');
 
       $modal.find('.modal-body').text('Seguro que desea eliminar este item?');
-      $modal.find('.btn-primary').text('Eliminar');
+      $modal.find('.btn-primary').text('Eliminar').next().show();
+
+      containerScroll(0);
 
       $modal.modal({ backdrop: 'static', keyboard: false })
         .one('click', '.modal-footer .btn', function (e) {
@@ -395,7 +393,7 @@ function gotoList(username){
                     updateIVA();
                     updateTotal();
                     updateFormatCurrency();
-                    parentIframeLoaded();
+                    parentIframeLoaded(false);
 
                     if( !$item.is( '.row-product:last' ) ){
                       $('.row-product').each(function(index, $item){//update all items attributes
@@ -429,19 +427,25 @@ function gotoList(username){
       });
     });
 
-    var today = new Date(),
-        todayStr =  today.getFullYear()+ '-' + ( today.getMonth() + 1 ) + '-' + today.getDate();
-    $('#fechaCotizacion').val( todayStr );
-
-    $('.datepicker,#fechaCotizacion').datepicker({
-      format: 'yy-mm-dd',
-      startDate: today
+    $('.datepicker').datepicker({
+      dateFormat: 'yy-mm-dd',
+      startDate: new Date()
     });
 
+    if (!$('.is-update').length){
+      var today = new Date(),
+          todayDateFormated = today.getUTCFullYear() + '-' + ('0' + (today.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + today.getUTCDate()).slice(-2);
+          todayTimeFormated = ('0' + today.getHours()).slice(-2) + ':' + ('0' + today.getMinutes()).slice(-2) + ':' + ('0' + today.getSeconds()).slice(-2);
+          
+          $('#altFechaCotizacion').val( todayDateFormated + ' ' + todayTimeFormated );
+          $('#fechaCotizacion').datepicker('setDate', todayDateFormated);
+    }
+    else{
+      $('#fechaCotizacion').datepicker('setDate', $('#fechaCotizacion').val() );
+    }
 
-
+    $('.datepicker').datepicker("option","minDate", $('#fechaCotizacion').val() );
     
-
     $('input[type=number]').on('input',function(){
       var $this = $(this),
           maxlength = $this.attr('maxlength'),
@@ -480,6 +484,10 @@ function gotoList(username){
 
     $('.btn-print').on('click', function(e){
         e.preventDefault();
+        var allValid = validInputs();
+
+        if(!allValid) return;
+
         var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
 
         $('#downloadFile').find('[name=data]').val(data);
@@ -500,50 +508,73 @@ function gotoList(username){
         //     });
     });
 
+    function validInputs(){
+      var allValid = true,
+          elems = $('[required]');
+
+      for(var i = 0; i < elems.length; i++){
+          var $elem = $(elems[i]);
+          if ( !$elem.val() ){
+            $elem.closest('.form-group').addClass('hasErrors');
+            if( allValid ){
+              $elem.focus();
+            }
+            allValid = false;
+          }
+        }
+
+        return allValid;
+
+    }
+
+    var processingAction = false;
     $('.btn-save').on('click', function(e){
             e.preventDefault();
+            if(processingAction) return;
+            processingAction = true;
             var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON(),
-                allValid = true,
-                elems = $('[required]'),
+                allValid = validInputs(),
                 isUpdate = $('.form-container').hasClass('is-update'),
                 action = isUpdate ? 'update_cot':'save_cot';
 
-            for(var i = 0; i < elems.length; i++){
-              var $elem = $(elems[i]);
-              if ( !$elem.val() ){
-                $elem.closest('.form-group').addClass('hasErrors');
-                if( allValid ){
-                  $elem.focus();
-                }
-                allValid = false;
-              }
-            }
-            console.log('data',data);
-            $.ajax({
+            
+            if(allValid){
+              $.ajax({
                 url: "../cotz/services/cotz.php",
                 data: { data: data, action: action },
                 type: "POST"
-            })
-            .done(function(data){
-                console.log('data',data);
               })
-            .fail(function(e){
-              console.log('fail',e);
-            });
-          
+              .done(function(data){
+                  console.log('data',data);
+                  if( action == 'save_cot' ){
+                    $('.btn-backToList').trigger('click');
+                  }
+                  else{
+                    var $modal = $('#confirmModal');
+
+                    $modal.find('.modal-body').text('Cotización actualizada con éxito');
+                    $modal.find('.btn-primary').text('Ok').next().hide();
+
+                    containerScroll(0);
+
+                    $modal.modal({ backdrop: 'static', keyboard: false });
+                  }
+                })
+              .fail(function(e){
+                console.log('fail',e);
+              })
+              .always(function(){
+                processingAction = false;
+              });
+            }
     });        
 
+    $('#tasaImpuestos').on('input', function(){
+        updateAll();
+    });
 
-    $('#redondeo').on('change', function(){
-      $('.row-product').each(function(){
-        updateMonto( $(this) );
-      });
-
-      updateSubtotal();
-      updateDescuento();
-      updateIVA();
-      updateTotal();
-      updateFormatCurrency();
+    $('form').on('change', '#redondeo, [data-name=exonerado]', function(){
+        updateAll();
     });
 
     $('.transactions-list').on('change', '[data-name=factorLinea]', function(){
@@ -551,28 +582,28 @@ function gotoList(username){
       $(this).closest('.row-product').find('[data-name=precioUnitario]').trigger( 'input' );
     });
 
-    $('#vendedor').autocomplete({
-      minLength: 3,
-      source: function(request, response) {
-        var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
-        response($.grep(salesPersons, function(value) {
-            return matcher.test(value.name);
-        }));
-      },
-      focus: function( event, ui ){
-        $('#vendedor').val( ui.item.name );
-        return false;
-      },
-      select: function( event, ui ){
-        $('#vendedor').attr( 'data-id', ui.item.id );
-        $('#vendedor').val( ui.item.name );
-        return false;
-      }
-    }).autocomplete('instance')._renderItem = function( ul, item ){
-      return $( "<li>" )
-        .append( '<div class="small">' + item.name + '</div>'  )
-        .appendTo( ul );
-    };
+    // $('#vendedor').autocomplete({
+    //   minLength: 3,
+    //   source: function(request, response) {
+    //     var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+    //     response($.grep(salesPersons, function(value) {
+    //         return matcher.test(value.name);
+    //     }));
+    //   },
+    //   focus: function( event, ui ){
+    //     $('#vendedor').val( ui.item.name );
+    //     return false;
+    //   },
+    //   select: function( event, ui ){
+    //     $('#vendedor').attr( 'data-id', ui.item.id );
+    //     $('#vendedor').val( ui.item.name );
+    //     return false;
+    //   }
+    // }).autocomplete('instance')._renderItem = function( ul, item ){
+    //   return $( "<li>" )
+    //     .append( '<div class="small">' + item.name + '</div>'  )
+    //     .appendTo( ul );
+    // };
 
     $('#codigoCliente, #codigoClienteAux, #nombreCliente').each(function(){
       $(this).autocomplete({
@@ -644,6 +675,7 @@ $('.add_compania').on('click', function(e){
   e.preventDefault();
   $('#company_id').val($('.id_compania').text());
   $('#cuentaNombreAux').val($('.nombre_compania').text());
+  $('#cuentaNombreAux').trigger('input');
   $('#companiasModal').modal('hide');
 
 

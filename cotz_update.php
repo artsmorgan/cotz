@@ -33,10 +33,9 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
-        <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
         <link rel="stylesheet" href="css/jquery-ui.min.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="https://use.fontawesome.com/5b1d115124.js"></script>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
@@ -223,7 +222,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 
         <div class="toolbar">
           <div class="btn-group pull-right" role="group">
-            <button type="button" class="btn btn-default" onclick="gotoList()" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
+            <button type="button" class="btn btn-default btn-backToList" onclick="gotoList('<?php echo $username; ?>')" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
             </button>
             <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Configurar Cotizacion">
@@ -249,22 +248,23 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               <label for="vendedor">Vendedor:</label>
               <input type="text" name="vendedor" class="form-control" id="vendedor" 
                         value="<?php echo $cot[0]['vendedor_nombre']; ?>" />
-              <input type="hidden" name="userid" id="userid" value="<?php echo $cot[0]['vendedor_id']; ?>" />          
+              <input type="hidden" name="userid" id="userid" value="<?php echo htmlentities( $cot[0]['vendedor_id'] ); ?>" />          
 
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaCotizacion">Fecha de cotización:</label>
-              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion" value="<?php echo $cot[0]['fecha_cotizacion']; ?>">
+              <input type="text" placeholder="yy-mm-dd" disabled class="form-control datepicker" id="fechaCotizacion" value="<?php echo $cot[0]['fecha_cotizacion']; ?>">
+              <input type="hidden" name="fechaCotizacion"  id="altFechaCotizacion" value="<?php echo $cot[0]['fecha_cotizacion']; ?>">
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaVencimiento">Fecha de vencimiento:</label>
-              <input type="text" name="fechaVencimiento" placeholder="dd/mm/aaaa" class="form-control datepicker" id="fechaVencimiento" value="<?php echo $cot[0]['fecha_vencimiento']; ?>">
+              <input type="text" name="fechaVencimiento" placeholder="yy-mm-dd"  class="form-control datepicker" id="fechaVencimiento" value="<?php echo $cot[0]['fecha_vencimiento']; ?>">
             </div>
           </div>
           <div class="row">
             <div class="col-sm-3 form-group">
               <label for="tasaImpuestos">Tasa de impuestos:</label>
-              <input type="number" name="tasaImpuestos" min="1" max="99" maxlength="2" class="form-control" id="tasaImpuestos" value="<?php echo $cot[0]['tasa_impuestos']; ?>">
+              <input type="number" name="tasaImpuestos" min="1" max="99" maxlength="7" class="form-control" id="tasaImpuestos" value="<?php echo $cot[0]['tasa_impuestos']; ?>">
             </div>
             <div class="col-sm-3 form-group">
               <label for="moneda">Moneda:</label>
@@ -296,12 +296,12 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           <div class="row">
             <div class="col-sm-4 form-group">
               <label for="cuentaNombreAux">Compañía :</label>
-              <input type="text" class="form-control" id="cuentaNombreAux" required value="<?php echo $cot[0]['account_name']; ?>">
+              <input type="text" class="form-control" id="cuentaNombreAux" required value="<?php echo htmlentities( $cot[0]['account_name'] ); ?>">
               <input type="hidden" name="company_id" id="company_id" value="<?php echo $cot[0]['account_id']; ?>">
             </div>
             <div class="col-sm-8 form-group">
               <label for="clienteNombreAux">Contacto :</label>
-              <input type="text" class="form-control" id="clienteNombreAux" required value="<?php echo $cot[0]['contact_name']; ?>">
+              <input type="text" class="form-control" id="clienteNombreAux" required value="<?php echo htmlentities( $cot[0]['contact_name'] ); ?>">
               <input type="hidden" name="contact_id" id="contact_id" value="<?php echo $cot[0]['contact_id']; ?>">
             <!-- </div>
             <div class="col-sm-4">
@@ -312,15 +312,15 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           <div class="row">
               <div class="col-sm-3 form-group">
                 <label for="tiempoEntrega">Tiempo de entrega:</label>
-                <input type="text" name="tiempoEntrega" class="form-control" id="tiempoEntrega" value="<?php echo $cot[0]['tiempo_entrega']; ?>">
+                <input type="text" name="tiempoEntrega" class="form-control" id="tiempoEntrega" value="<?php echo htmlentities( $cot[0]['tiempo_entrega'] ); ?>">
               </div>
               <div class="col-sm-6 form-group">
                 <label for="lugarEntrega">Lugar de entrega:</label>
-                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega" value="<?php echo $cot[0]['lugar_entrega']; ?>">
+                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega" value="<?php echo htmlentities( $cot[0]['lugar_entrega'] ); ?>">
               </div>
               <div class="col-sm-3 form-group">
                 <label for="formaPago">Forma de pago:</label>
-                <input type="text" name="formaPago" class="form-control" id="formaPago" value="<?php echo $cot[0]['forma_pago']; ?>">
+                <input type="text" name="formaPago" class="form-control" id="formaPago" value="<?php echo htmlentities( $cot[0]['forma_pago']); ?>">
               </div>
           </div>
         </div>
@@ -329,44 +329,91 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           <div class="row">
             <div class="col-sm-3 form-group">
               <label for="noSolicitud">No. de solicitud:</label>
-              <input type="text" name="noSolicitud" class="form-control" id="noSolicitud" value="<?php echo $cot[0]['no_solicitud']; ?>">
+              <input type="text" name="noSolicitud" class="form-control" id="noSolicitud" value="<?php echo htmlentities($cot[0]['no_solicitud']); ?>">
             </div>
             <div class="col-sm-3 form-group">
               <label for="noCotizacion">No. de cotización:</label>
-              <input type="text" name="noCotizacion" class="form-control" id="noCotizacion" required value="<?php echo $cot[0]['no_cotizacion']; ?>">
+              <input type="text" name="noCotizacion" class="form-control" id="noCotizacion" required value="<?php echo htmlentities($cot[0]['no_cotizacion']); ?>">
             </div>
             <div class="col-sm-3 form-group">
               <label for="marca">Marca:</label>
               <select type="text" name="marca" class="form-control" id="marca" required>
                 <?php $selectop = array(
                   "" => "Seleccione",
-                  "ALLIED" => "ALLIED",
-                  "ASTM" => "ASTM",
-                  "ATC" => "ATC",
-                  "BUSHNELL" => "BUSHNELL",
-                  "COLEPARMER" => "COLE PARMER",
-                  "DEXSIL" => "DEXSIL",
-                  "DEFELSKO" => "DEFELSKO",
-                  "ECO-SHELL" => "ECO-SHELL",
-                  "FIVE_STAR" => "FIVE STAR",
-                  "FLORIDA" => "FLORIDA",
-                  "FORESTRY_SUPPLIERS" => "FORESTRY SUPPLIERS",
-                  "GE" => "GE",
-                  "GILSON" => "GILSON",
-                  "GUNT" => "GUNT",
-                  "GURLEY" => "GURLEY",
-                  "MARSWELL" => "MARSWELL",
-                  "MITUTOYO" => "MITUTOYO",
-                  "OMEGA" => "OMEGA",
-                  "RUBBERART" => "RUBBERART",
-                  "TACC" => "TACC",
-                  "VAISALA" => "VAISALA",
-                  "VE_GROUP" => "VE GROUP",
-                  "YSI" => "YSI",
-                  "YXLON" => "YXLON",
-                  "ZWICK" => "ZWICK" ); ?>
+                  'Adhesives Technology' =>  'Adhesives Technology',
+                  'Allied' =>  'Allied',
+                  'Apollo Valves' =>  'Apollo Valves',
+                  'Asbury' =>  'Asbury',
+                  'Asco' =>  'Asco',
+                  'Ashcroft' =>  'Ashcroft',
+                  'Astm' =>  'Astm',
+                  'Atc' =>  'Atc',
+                  'Bray' =>  'Bray',
+                  'Bushnell' =>  'Bushnell',
+                  'Cedazo' =>  'Cedazo',
+                  'Clark Reliance' =>  'Clark Reliance',
+                  'Cole Parmer' =>  'Cole Parmer',
+                  'Compra Local' =>  'Compra Local',
+                  'Conarco' =>  'Conarco',
+                  'Crown' =>  'Crown',
+                  'Defelsko' =>  'Defelsko',
+                  'Dexsil' =>  'Dexsil',
+                  'Dualco' =>  'Dualco',
+                  'Eco-Shell' =>  'Eco-Shell',
+                  'Elcometer' =>  'Elcometer',
+                  'Empire' =>  'Empire',
+                  'Endress+Hauser' =>  'Endress+Hauser',
+                  'Ervin' =>  'Ervin',
+                  'Esab' =>  'Esab',
+                  'Five Star' =>  'Five Star',
+                  'Florida' =>  'Florida',
+                  'Flow-Tek' =>  'Flow-Tek',
+                  'Forestry Suppliers' =>  'Forestry Suppliers',
+                  'Gardco' =>  'Gardco',
+                  'Ge' =>  'Ge',
+                  'Ge-It' =>  'Ge-It',
+                  'Gilson' =>  'Gilson',
+                  'Gunt' =>  'Gunt',
+                  'Gurley' =>  'Gurley',
+                  'Itt' =>  'Itt',
+                  'Kryton' =>  'Kryton',
+                  'La-Co' =>  'La-Co',
+                  'Laval' =>  'Laval',
+                  'Logitech' =>  'Logitech',
+                  'Lovejoy' =>  'Lovejoy',
+                  'Magnaflux' =>  'Magnaflux',
+                  'Marswell' =>  'Marswell',
+                  'Mitutoyo' =>  'Mitutoyo',
+                  'Monti' =>  'Monti',
+                  'Omega' =>  'Omega',
+                  'Opta Minerals' =>  'Opta Minerals',
+                  'Otros' =>  'Otros',
+                  'Phelps' =>  'Phelps',
+                  'Precision Brand' =>  'Precision Brand',
+                  'Quadrant' =>  'Quadrant',
+                  'Quimicos Construccion' =>  'Quimicos Construccion',
+                  'Rasstech' =>  'Rasstech',
+                  'Rimatec' =>  'Rimatec',
+                  'Ritepro' =>  'Ritepro',
+                  'Rubberart' =>  'Rubberart',
+                  'Rubberart' =>  'Rubberart',
+                  'Servicios' =>  'Servicios',
+                  'Sika' =>  'Sika',
+                  'Sinto' =>  'Sinto',
+                  'Tacc' =>  'Tacc',
+                  'Teadit' =>  'Teadit',
+                  'Tlv' =>  'Tlv',
+                  'Utex' =>  'Utex',
+                  'Vaisala' =>  'Vaisala',
+                  'Vazel' =>  'Vazel',
+                  'Ve_Group' =>  'Ve Group',
+                  'Wall Colmonoy' =>  'Wall Colmonoy',
+                  'Ysi' =>  'Ysi',
+                  'Yxlon' =>  'Yxlon',
+                  'Zinga' =>  'Zinga',
+                  'Zwick' =>  'Zwick', ); ?>
                 <?php foreach( $selectop as $opvalue => $optxt ): ?>
-                  <option value="<?php echo $opvalue; ?>" <?php echo ( $cot[0]['marca'] == $opvalue ? 'selected' : '' ); ?> ><?php echo $optxt; ?></option>
+                  <option value="<?php echo $opvalue; ?>" <?php echo ( strtolower($cot[0]['marca']) == strtolower($opvalue) ? 'selected' : '' ); ?> ><?php echo $optxt; ?></option>
                 <?php endforeach; ?>
               </select>
             </div>
@@ -427,7 +474,15 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
             </div>
              <div class="col-sm-2 form-group">
-              <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">ver de Inventario</button>
+              <div class="row">
+                  <div class="col-sm-12">
+                    <label for="exonerado1">Exonerado</label>
+                    <input type="checkbox" data-name="exonerado" id="exonerado1" value="true">
+                  </div>
+                  <div class="col-sm-12">
+                    <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">Ver el inventario</button>
+                  </div>
+                </div>
             </div>
             <!-- <div class="col-sm-1 form-group border--full">
               <select type="number" data-name="factorLinea" class="form-control" id="factorLinea1">
@@ -488,14 +543,22 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           <div class="row">
             <div class="col-sm-1 form-group">
               <label for="codigoArticulo<?php echo $index + 1; ?>">Código del artículo:</label>
-              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo<?php echo $index + 1; ?>" value="<?php echo $linea['codigo_articulo']; ?>" >
+              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo<?php echo $index + 1; ?>" value="<?php echo htmlentities($linea['codigo_articulo']); ?>" >
             </div>
             <div class="col-sm-3 form-group">
               <label for="nombreArticulo<?php echo $index + 1; ?>">Nombre del artículo:</label>
-              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo<?php echo $index + 1; ?>" value="<?php echo $linea['nombre_articulo']; ?>">
+              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo<?php echo $index + 1; ?>" value="<?php echo htmlentities($linea['nombre_articulo']); ?>">
             </div>
              <div class="col-sm-2 form-group">
-              <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">ver de Inventario</button>
+              <div class="row">
+                  <div class="col-sm-12">
+                    <label for="exonerado<?php echo $index + 1; ?>">Exonerado</label>
+                    <input type="checkbox" data-name="exonerado" id="exonerado<?php echo $index + 1;?>" value="true" <?php echo ( $linea['exonerado'] ? 'checked' : '' ); ?>>
+                  </div>
+                  <div class="col-sm-12">
+                    <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">Ver el inventario</button>
+                  </div>
+                </div>
             </div>
             <!-- <div class="col-sm-1 form-group border--full">
               <select type="number" data-name="factorLinea" class="form-control" id="factorLinea<?php echo $index + 1; ?>">
@@ -508,7 +571,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad<?php echo $index + 1; ?>" value="<?php echo $linea['cantidad']; ?>">
             </div>
             <div class="col-sm-1 form-group border--full">
-              <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedida<?php echo $index + 1; ?>" value="<?php echo $linea['unidad_medida']; ?>">
+              <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedida<?php echo $index + 1; ?>" value="<?php echo htmlentities( $linea['unidad_medida']); ?>">
             </div>
             <div class="col-sm-2 form-group border--full">
               <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario<?php echo $index + 1; ?>" value="<?php echo $linea['precio']; ?>">
@@ -531,7 +594,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               <div class="row">
                 <div class="col-sm-6 form-group">
                   <label for="descripcionArticulo<?php echo $index + 1; ?>">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo<?php echo $index + 1; ?>"><?php echo $linea['descripcion']; ?></textarea>
+                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo<?php echo $index + 1; ?>"><?php echo htmlentities( $linea['descripcion'] ); ?></textarea>
                 </div>
               </div>
             </div>
@@ -550,7 +613,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
           </div>
         </li>
-        <? endforeach; ?>
+        <?php endforeach; ?>
         <li class="row-foot">
           <div class="row">
             <div class="col-sm-3 cell-collapse">
@@ -601,11 +664,11 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
       <div class="row">
         <div class="col-sm-6 form-group">
           <label for="notas1">Notas Cotización:</label>
-          <textarea name="notasCotizacion" rows="4" class="form-control" id="notasCotizacion"><?php  echo $cot[0]['notas']; ?></textarea>
+          <textarea name="notasCotizacion" rows="4" class="form-control" id="notasCotizacion"><?php  echo htmlentities( $cot[0]['notas'] ); ?></textarea>
         </div>
         <div class="col-sm-6 form-group">
           <label for="notas2">Notas CRM:</label>
-          <textarea name="notasCRM" rows="4" class="form-control" id="notasCRM"><?php  echo $cot[0]['notas_crm']; ?></textarea>
+          <textarea name="notasCRM" rows="4" class="form-control" id="notasCRM"><?php  echo htmlentities( $cot[0]['notas_crm'] ); ?></textarea>
         </div>
       </div>
       <div class="row">
@@ -742,13 +805,12 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="js/vendor/bootstrap-datepicker.min.js"></script>
     <script src="js/vendor/jquery.formatCurrency-1.4.0.min.js"></script>
     <script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
     <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
-    <script src="js/vendor/jquery-ui.min.js"></script>
     <script src="js/main.js"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

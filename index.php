@@ -53,6 +53,10 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
     <div class="filter-by-data">
       <p><h3>Filtros </h3> Desde: <input type="text" id="datepicker_from"> Hasta: <input type="text" id="datepicker_to"> <a href="#" class="btn btn-default">Filtrar</a></p>
     </div>
+    <div id="toolbar" style="text-align: right;">
+      <label for="export_all">Exportar todas</label>
+        <input type="checkbox" value="all" id="export_all">
+    </div>
     <br>
 
         <!--[if lt IE 8]>
@@ -69,6 +73,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <th data-field="username" data-sortable="true">Vendedor</th>
         <th data-field="marca" data-sortable="true">Marca</th>
         <th data-field="fase" data-sortable="true">Fase</th>
+        <th data-field="tasa_cambio" data-sortable="true">T. cambio</th>
+        <th data-field="moneda" data-sortable="true">Moneda</th>
         <th data-field="total" data-sortable="true">Monto</th>
         <!-- <th data-field="description" data-sortable="true">Descripcion</th> -->
         <th data-field="fecha_cotizacion" data-sortable="true">Fecha de Cotizacion</th>
@@ -89,11 +95,6 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       <script type="text/javascript" src="js/vendor/tableExport/libs/FileSaver/FileSaver.min.js"></script>
       <script type="text/javascript" src="js/vendor/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
       <script type="text/javascript">
-       
-         $( function() {
-          $( "#datepicker_from" ).datepicker();
-          $( "#datepicker_to" ).datepicker();
-        } );
 
         $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
         
@@ -136,26 +137,134 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 
       $(function () {
 
-        // $.get(<?php echo $path; ?>+'/cotz/services/cotz.php?action=get_cotizacionesAllMIN')
-        //   .done(function( data ) {
-        //     console.log('?');
-        //     console.log(data);
-        //   });
+        var dateFormat = 'yy-mm-dd',
+        $from = $( "#datepicker_from" ).datepicker({dateFormat: dateFormat}).on( "change", function() {
+          $to.datepicker( "option", "minDate", getDate( this.value ) );
+        }),
+        $to = $( "#datepicker_to" ).datepicker({dateFormat: dateFormat}).on( "change", function() {
+          $from.datepicker( "option", "maxDate", getDate( this.value ) );
+        });
+
+        function getDate( value ) {
+          var date;
+          try {
+            date = $.datepicker.parseDate( dateFormat, value );
+          } catch( error ) {
+            date = null;
+          }
+
+          return date;
+        }
 
          parent.iframeLoaded();
-          $('#table').bootstrapTable({
-             url: <?php echo $path; ?>+'/cotz/services/cotz.php?action=get_cotizacionesAllMIN',
-             onDblClickRow: function(row, $element, field){
-              var cotID = row['id'];
-             },
-             onLoadSuccess: function(){
-               parent.iframeLoaded(); 
-             },
-             onAll: function(name, args){
-                parent.iframeLoaded();
-             }
-          });
+         var jsonData = null,
+              bootstrapTableOpt = {
+                url: <?php echo $path; ?>+'/cotz/services/cotz.php?action=get_cotizacionesAllMIN',
+                onDblClickRow: function(row, $element, field){
+                  var cotID = row['id'];
+                },
+                onLoadSuccess: function(){
+                  jsonData = $table.bootstrapTable('getData');
+                  bootstrapTableOpt['data'] = jsonData;
+                  delete bootstrapTableOpt.url;
+
+                  (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
+                },
+                onAll: function(name, args){
+                    (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
+                }
+              }, 
+            $table = $('#table').bootstrapTable(bootstrapTableOpt);
+
+            $('#toolbar input').on('change', function(){
+              var value = $(this).is(':checked') ? $(this).val() : '';
+              bootstrapTableOpt['exportDataType'] = value;
+
+              $table.bootstrapTable('destroy').bootstrapTable(bootstrapTableOpt);
+              applyFilters();
+              $('.fixed-table-toolbar').prepend(createCotBtn);          
+            });
+
+
           $('.fixed-table-toolbar').prepend(createCotBtn);
+
+          
+          function applyFilters(){
+            var currentJsonData = jsonData,
+                dateFilters = function(){
+              var grepFunc,
+              fromDate = getDate($from.val()),
+              toDate = getDate($to.val()),
+              itemDate = '';
+
+              if( fromDate && toDate){
+                grepFunc = function(item){
+                  itemDate = getDate( item.fecha_cotizacion );
+                  return fromDate.getTime() <= itemDate.getTime() && toDate.getTime() >= itemDate.getTime();
+                }
+              }
+              else if(fromDate){
+                grepFunc = function(item){
+                  itemDate = getDate( item.fecha_cotizacion );
+                  return fromDate.getTime() <= itemDate.getTime();
+                }
+              }
+              else if(toDate){
+                grepFunc = function(item){
+                  itemDate = getDate( item.fecha_cotizacion );
+                  return toDate.getTime() >= itemDate.getTime();
+                }
+              }
+              else{
+                return currentJsonData;
+              }
+
+              return $.grep(currentJsonData, grepFunc);
+            },
+            searchFilter = function(){
+                var grepFunc,
+                    jsonData = $table.bootstrapTable('getData'),
+                    inputValue = $.trim($('.bootstrap-table .search input').val());
+
+                if(inputValue){
+                  grepFunc = function(item){
+                  var found = false;
+
+                    $.each(item, function(_, val){
+                      if( RegExp(inputValue, 'i').test(val) ){
+                        found = true;
+                        return true;
+                        }
+                    });
+
+                    return found;
+                  };
+
+                  return $.grep(currentJsonData, grepFunc);
+                }
+                else{
+                  return currentJsonData;
+                }
+            };
+            
+            currentJsonData = dateFilters();
+            currentJsonData = searchFilter();
+
+             $table.bootstrapTable('load', currentJsonData);
+        
+      }
+
+
+          $('.filter-by-data .btn').on('click', function(e){
+            e.preventDefault();
+            applyFilters();
+          });
+
+          $('.bootstrap-table .search input').on('input', function(){
+            applyFilters(); 
+          });
+
+          
       });
 
       </script>

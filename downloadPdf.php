@@ -15,7 +15,7 @@ $dt = new DateTime();
 $fileName = 'cotizacion_' . $params['userid'] . '_' . $dt->format('Y-m-d His') . '.pdf';
 header("Content-Disposition: attachment; filename=$fileName");
 
-$params['contacto_info'] = dbAdmin::getInstancia()->getAllFromPersonById($params['contact_id']);
+$params['contacto_info'] = dbAdmin::getInstancia()->getContactInfoById($params['contact_id']);
 $params['salesperson_info'] = dbAdmin::getInstancia()->getAllFromPersonById($params['userid']);
 $params['company_info'] = dbAdmin::getInstancia()->getInfoFromCompanyById($params['company_id']);
 $params['lineas'] = json_decode($params['lineas'], true);

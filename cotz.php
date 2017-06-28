@@ -37,9 +37,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
-        <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
-        <link rel="stylesheet" href="css/jquery-ui.min.css">
+        <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="https://use.fontawesome.com/5b1d115124.js"></script>
@@ -227,7 +225,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 
         <div class="toolbar">
           <div class="btn-group pull-right" role="group">
-            <button type="button" class="btn btn-default" onclick="gotoList()" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
+            <button type="button" class="btn btn-default btn-backToList" onclick="gotoList('<?php echo $username; ?>')" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
             </button>
             <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Configurar Cotizacion">
@@ -258,17 +256,18 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaCotizacion">Fecha de cotización:</label>
-              <input type="text" name="fechaCotizacion" placeholder="dd/mm/aaaa" class="form-control" id="fechaCotizacion" >
+              <input type="text" placeholder="yy-mm-dd" disabled class="form-control datepicker" id="fechaCotizacion" >
+              <input type="hidden" name="fechaCotizacion" value="" id="altFechaCotizacion">
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaVencimiento">Fecha de vencimiento:</label>
-              <input type="text" name="fechaVencimiento" placeholder="dd/mm/aaaa" class="form-control datepicker" id="fechaVencimiento">
+              <input type="text" name="fechaVencimiento" placeholder="yy-mm-dd" class="form-control datepicker" id="fechaVencimiento">
             </div>
           </div>
           <div class="row">
             <div class="col-sm-3 form-group">
               <label for="tasaImpuestos">Tasa de impuestos:</label>
-              <input type="number" name="tasaImpuestos" min="1" max="99" maxlength="2" class="form-control" id="tasaImpuestos">
+              <input type="number" name="tasaImpuestos" min="1" max="99" maxlength="7" class="form-control" id="tasaImpuestos">
             </div>
             <div class="col-sm-3 form-group">
               <label for="moneda">Moneda:</label>
@@ -341,31 +340,78 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <label for="marca">Marca:</label>
               <select type="text" name="marca" class="form-control" id="marca" required>
                 <option value="">Seleccione</option>
-                <option value="ALLIED">ALLIED</option>
-                <option value="ASTM">ASTM</option>
-                <option value="ATC">ATC</option>
-                <option value="BUSHNELL">BUSHNELL</option>
-                <option value="COLEPARMER">COLE PARMER</option>
-                <option value="DEXSIL">DEXSIL</option>
-                <option value="DEFELSKO">DEFELSKO</option>
-                <option value="ECO-SHELL">ECO-SHELL</option>
-                <option value="FIVE_STAR">FIVE STAR</option>
-                <option value="FLORIDA">FLORIDA</option>
-                <option value="FORESTRY_SUPPLIERS">FORESTRY SUPPLIERS</option>
-                <option value="GE">GE</option>
-                <option value="GILSON">GILSON</option>
-                <option value="GUNT">GUNT</option>
-                <option value="GURLEY">GURLEY</option>
-                <option value="MARSWELL">MARSWELL</option>
-                <option value="MITUTOYO">MITUTOYO</option>
-                <option value="OMEGA">OMEGA</option>
-                <option value="RUBBERART">RUBBERART</option>
-                <option value="TACC">TACC</option>
-                <option value="VAISALA">VAISALA</option>
-                <option value="VE_GROUP">VE GROUP</option>
-                <option value="YSI">YSI</option>
-                <option value="YXLON">YXLON</option>
-                <option value="ZWICK">ZWICK</option>
+                <option value="Adhesives Technology">Adhesives Technology</option>
+                <option value="Allied">Allied</option>
+                <option value="Apollo Valves">Apollo Valves</option>
+                <option value="Asbury">Asbury</option>
+                <option value="Asco">Asco</option>
+                <option value="Ashcroft">Ashcroft</option>
+                <option value="Astm">Astm</option>
+                <option value="Atc">Atc</option>
+                <option value="Bray">Bray</option>
+                <option value="Bushnell">Bushnell</option>
+                <option value="Cedazo">Cedazo</option>
+                <option value="Clark Reliance">Clark Reliance</option>
+                <option value="Cole Parmer">Cole Parmer</option>
+                <option value="Compra Local">Compra Local</option>
+                <option value="Conarco">Conarco</option>
+                <option value="Crown">Crown</option>
+                <option value="Defelsko">Defelsko</option>
+                <option value="Dexsil">Dexsil</option>
+                <option value="Dualco">Dualco</option>
+                <option value="Eco-Shell">Eco-Shell</option>
+                <option value="Elcometer">Elcometer</option>
+                <option value="Empire">Empire</option>
+                <option value="Endress+Hauser">Endress+Hauser</option>
+                <option value="Ervin">Ervin</option>
+                <option value="Esab">Esab</option>
+                <option value="Five Star">Five Star</option>
+                <option value="Florida">Florida</option>
+                <option value="Flow-Tek">Flow-Tek</option>
+                <option value="Forestry Suppliers">Forestry Suppliers</option>
+                <option value="Gardco">Gardco</option>
+                <option value="Ge">Ge</option>
+                <option value="Ge-It">Ge-It</option>
+                <option value="Gilson">Gilson</option>
+                <option value="Gunt">Gunt</option>
+                <option value="Gurley">Gurley</option>
+                <option value="Itt">Itt</option>
+                <option value="Kryton">Kryton</option>
+                <option value="La-Co">La-Co</option>
+                <option value="Laval">Laval</option>
+                <option value="Logitech">Logitech</option>
+                <option value="Lovejoy">Lovejoy</option>
+                <option value="Magnaflux">Magnaflux</option>
+                <option value="Marswell">Marswell</option>
+                <option value="Mitutoyo">Mitutoyo</option>
+                <option value="Monti">Monti</option>
+                <option value="Omega">Omega</option>
+                <option value="Opta Minerals">Opta Minerals</option>
+                <option value="Otros">Otros</option>
+                <option value="Phelps">Phelps</option>
+                <option value="Precision Brand">Precision Brand</option>
+                <option value="Quadrant">Quadrant</option>
+                <option value="Quimicos Construccion">Quimicos Construccion</option>
+                <option value="Rasstech">Rasstech</option>
+                <option value="Rimatec">Rimatec</option>
+                <option value="Ritepro">Ritepro</option>
+                <option value="Rubberart">Rubberart</option>
+                <option value="Rubberart">Rubberart</option>
+                <option value="Servicios">Servicios</option>
+                <option value="Sika">Sika</option>
+                <option value="Sinto">Sinto</option>
+                <option value="Tacc">Tacc</option>
+                <option value="Teadit">Teadit</option>
+                <option value="Tlv">Tlv</option>
+                <option value="Utex">Utex</option>
+                <option value="Vaisala">Vaisala</option>
+                <option value="Vazel">Vazel</option>
+                <option value="Ve_Group">Ve Group</option>
+                <option value="Wall Colmonoy">Wall Colmonoy</option>
+                <option value="Ysi">Ysi</option>
+                <option value="Yxlon">Yxlon</option>
+                <option value="Zinga">Zinga</option>
+                <option value="Zwick">Zwick</option>
               </select>
             </div>
             <div class="col-sm-3 form-group">
@@ -419,7 +465,15 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
             </div>
              <div class="col-sm-2 form-group">
-              <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">ver de Inventario</button>
+               <div class="row">
+                  <div class="col-sm-12">
+                    <label for="exonerado1">Exonerado</label>
+                    <input type="checkbox" data-name="exonerado" id="exonerado1" value="true">
+                  </div>
+                  <div class="col-sm-12">
+                    <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">Ver el inventario</button>
+                  </div>
+                </div>
             </div>
             <!-- <div class="col-sm-1 form-group border--full">
               <select type="number" data-name="factorLinea" class="form-control" id="factorLinea1">
@@ -443,7 +497,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             </div>
             <div class="col-sm-1 form-group border--full">
               <p class="op-total">
-                <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto<?php echo $index + 1; ?>" value="<?php echo $linea['monto']; ?>">
+                <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1" >
                 <input type="hidden" data-name="montoFormated" class="op-hidden-formated">
                 <b class="op-total-monto">0</b>
               </p>
@@ -665,8 +719,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
     
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="js/vendor/bootstrap-datepicker.min.js"></script>
     <script src="js/vendor/jquery.formatCurrency-1.4.0.min.js"></script>
     <script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
     <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
