@@ -22,7 +22,7 @@ for ($i = 0; $i < count($data); $i++) {
        
         foreach ($json_data as $key => $params) {
 
-        		$vendedor_id		 = "";
+        		$vendedor_id		 = -1;
 				$fecha_cotizacion_ex	 = $params['created_at'];
 				$fecha_vencimiento_ex= $params['vencimiento'];
 

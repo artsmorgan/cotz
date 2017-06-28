@@ -620,13 +620,15 @@ class dbAdmin {
             //         inner join contact co on c.contact_id = co.id
             //         inner join person p on   co.person_id = p.id limit 100 ;';
 
-            $sql ="select c.id, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, c.tasa_cambio, c.fecha_cotizacion, u.username, p.firstname, p.lastname, a.name 
-            from cotz_header c 
-            left join _user u on c.vendedor_id = u.person_id
-            inner join account a on c.account_id = a.id 
-            inner join contact co on c.contact_id = co.id
-            inner join person p on co.person_id = p.id
-            ORDER BY DATE(c.fecha_cotizacion) DESC, c.fecha_cotizacion DESC";
+            $sql ="select c.id, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, 
+                    CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, 
+                    c.tasa_cambio, c.fecha_cotizacion, u.username, p.firstname, p.lastname, a.name 
+                    from cotz_header c 
+                    left join _user u on c.vendedor_id = u.id
+                    left join account a on c.account_id = a.id 
+                    left join contact co on c.contact_id = co.id
+                    left join person p on co.person_id = p.id
+                    ORDER BY DATE(c.fecha_cotizacion) DESC, c.fecha_cotizacion DESC";
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
@@ -645,9 +647,9 @@ class dbAdmin {
 
         $sql = "select cot.id as cotz_id, a.id as acount_id, c.id as contact_id, u.id as user_id
                  from cotz_header cot
-                inner join account a on cot.external_account = a.external_id
-                inner join contact c on cot.external_contact = c.external_id
-                inner join _user u on cot.external_create_id = u.external_id;";
+                left join account a on cot.external_account = a.external_id
+                left join contact c on cot.external_contact = c.external_id
+                left join _user u on cot.external_create_id = u.external_id;";
 
         $this->getConnection();
         $this->_adoconn->Execute("SET CHARSET 'utf8';");
