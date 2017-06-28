@@ -21,7 +21,7 @@ foreach ($contacts as $key => $value) {
   // echo "my ownedsecurableitem_id is ".$value['ownedsecurableitem_id']." and my owner id is ". $value['u_id']."<br>";
 
   $update = dbAdmin::getInstancia()->createCompanyOwnerRelation($value['account_id'] , $value['contact_id']);
-  echo "my companyID is ".$value['account_id']." and my id is ". $value['contact_id']."<br>";
+  echo "my companyID is ".$value['account_id']." and my id is ". $value['contact_id']."\n";
 }
 
 

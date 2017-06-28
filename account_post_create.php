@@ -21,22 +21,27 @@ $headers = array(
 //////////////////////////////////////////////////////////////////////////
 
 // Load Json File
-$json_url = "json_acc.test.json";
+$json_url = "json/june/accounts.json";
 $json = file_get_contents($json_url);
 $data = json_decode($json, TRUE);
-echo count($data); die();
+$cdata =  count($data);
+echo 'Total Results: '.$cdata."\n";
+// die();
+$errorsArr = Array();
 
-
+$iterator = 1;
 foreach ($data as $key => $value) {
     // print_all($value); die();
+    // $emailCustom = ($value['Correo_electronico']=== NULL) ? 'noemail@noemail.com' : $value['Correo_electronico'];
     $data = Array(
                     'name' => $value['Nombre_de_Compania'],
                     'officePhone' => $value['Telefono'],
                     'officeFax' => $value['Fax'],
                     'website' => $value['Sitio_web'],
-                    'description' => $value['Descripcion'],
-                    'cedula_juridcstm' => '-',
-                    'extencion_imCstm' => $value['Exencion_impuestos'],  
+                    'description' => htmlentities($value['Descripcion']),
+                    'cedula_juridCstm' => $value['cedula_juridica'],
+                    'cuentasCstm' => $value['codigo_cliente'],
+                    'extencion_imCstm' => htmlentities($value['Exencion_impuestos']),  
                     'shippingAddress' => Array(
                                 'street1' => $value['Ciudad_de_envio'],
                                 'street2' => '-',
@@ -61,9 +66,11 @@ foreach ($data as $key => $value) {
                 );
 
 
-                //echo $helper->account_create_url; die();
+                // echo $helper->account_create_url; die();
 
                 $response = $helper->createApiCall($helper->account_create_url, 'POST', $headers, array('data' => $data));
+                // print_r($response); die();
+
                 $response = json_decode($response, true);
 
 
@@ -79,18 +86,24 @@ foreach ($data as $key => $value) {
                                 ->updateAccountUserOwner( $value['ID_de_propietario_de_Compania'], 
                                                           $value['id_de_compania'], $contact['id']);
                     //Do something with contact data
-                    echo 'User created id: ' . $contact['id'] . ', nombre: '.$value['Nombre_de_Compania'].'<br>';
+                    echo 'Account created id: ' . $contact['id'] . ', nombre: '.$value['Nombre_de_Compania']. ' | ' . $iterator  .' of '.  $cdata."\n";
                 }
                 else
                 {
                     // Error
                     $errors = $response['errors'];
                     print_r($errors);
+                    array_push($errorsArr,  $value['id_de_compania']);
                     // Do something with errors, show them to user
                 }
+
+                // die();
+                $iterator++;
 }
 
-
+foreach ($errorsArr as $key => $value) {
+    echo 'Error on: ' . $value  ."\n";
+}
 // // print_all($data);
 // die();
 

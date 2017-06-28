@@ -403,13 +403,14 @@ class dbAdmin {
                 `factor_redondeo`,`no_solicitud`,`no_cotizacion`,`account_id`,`contact_id`,`tiempo_entrega`,
                 `lugar_entrega`,`forma_pago`,`marca`,`fase`,`notas`,`notas_crm`,`fecha_creacion`,
                 `fecha_modificacion`,`modificado_por`,`subtotal`,`descuento`,`impuesto`,`total`, `tasa_cambio`, `external_cot_id`, `external_contact`, `external_account`, `external_create_id`, `version`)
-                VALUES("'.$vendedor_id.'",now(),"'.$fecha_vencimiento.'",
+                VALUES("'.$vendedor_id.'","'.$fecha_cotizacion.'","'.$fecha_vencimiento.'",
                 "'.$tasa_impuestos.'","'.$moneda.'","'.$factor_redondeo.'","'.$no_solicitud.'",
                 "'.$no_cotizacion.'","'.$account_id.'","'.$contact_id.'","'.$tiempo_entrega.'",
                 "'.$lugar_entrega.'","'.$forma_pago.'","'.$marca.'","'.$fase.'","'.$notas.'",
                 "'.$notas_crm.'",now(),"","","'.$subtotal.'","'.$descuento.'","'.$impuesto.'","'.$total.'","'.$tasa_cambio.'","'.$externalID.'","'.$externalContact.'","'.$externalAccount.'","'.$externalCreateId.'","'.$version.'");';
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
+
 
              $this->getConnection();
              $this->_adoconn->Execute("SET NAMES 'utf8';");
@@ -619,14 +620,17 @@ class dbAdmin {
             //         inner join contact co on c.contact_id = co.id
             //         inner join person p on   co.person_id = p.id limit 100 ;';
 
-            $sql ="select c.id, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, c.tasa_cambio, c.fecha_cotizacion, u.username, p.firstname, p.lastname, a.name 
-            from cotz_header c 
-            left join _user u on c.vendedor_id = u.person_id
-            inner join account a on c.account_id = a.id 
-            inner join contact co on c.contact_id = co.id
-            inner join person p on co.person_id = p.id
-            ORDER BY DATE(c.fecha_cotizacion) DESC, c.fecha_cotizacion DESC";
-            $this->getConnection();
+
+            $sql ="select c.id, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, 
+                    CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, 
+                    c.tasa_cambio, c.fecha_cotizacion, u.username, p.firstname, p.lastname, a.name 
+                    from cotz_header c 
+                    left join _user u on c.vendedor_id = u.id
+                    left join account a on c.account_id = a.id 
+                    left join contact co on c.contact_id = co.id
+                    left join person p on co.person_id = p.id
+                    ORDER BY DATE(c.fecha_cotizacion) DESC, c.fecha_cotizacion DESC";
+           $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
             
@@ -644,9 +648,9 @@ class dbAdmin {
 
         $sql = "select cot.id as cotz_id, a.id as acount_id, c.id as contact_id, u.id as user_id
                  from cotz_header cot
-                inner join account a on cot.external_account = a.external_id
-                inner join contact c on cot.external_contact = c.external_id
-                inner join _user u on cot.external_create_id = u.external_id;";
+                left join account a on cot.external_account = a.external_id
+                left join contact c on cot.external_contact = c.external_id
+                left join _user u on cot.external_create_id = u.external_id;";
 
         $this->getConnection();
         $this->_adoconn->Execute("SET CHARSET 'utf8';");
@@ -715,14 +719,14 @@ class dbAdmin {
     }
 
     public function changeCharset($data, $charsetFrom = 'latin1', $charsetTo = 'utf-8' ){
-        if(is_array($data)){
+if(is_array($data)){
             array_walk_recursive($data, function(&$value, $key) use ($charsetFrom, $charsetTo) {
                 if (is_string($value) ) {
                     $value = iconv($charsetFrom, $charsetTo, $value);
                 }
             });
         }
-        else if(is_string($data)){
+			else if(is_string($data)){
             $data = iconv($charsetFrom, $charsetTo, $data);
         }
         
