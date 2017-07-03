@@ -108,7 +108,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                         <td><?php  echo $userlist[$i]['firstname'].' '. $userlist[$i]['lastname'];  ?></td>
                         <td>
                           <a href="#" class="add-vendedor btn btn-primary" 
-                                          data-id="<?php  echo $userlist[$i]['id']; ?>" 
+                                          data-id="<?php  echo $userlist[$i]['userID']; ?>" 
                                           data-username="<?php  echo $userlist[$i]['firstname'].' '. $userlist[$i]['lastname'];  ?>">
                             <i class="fa fa-user-plus" aria-hidden="true"></i> Agregar
                           </a>

@@ -6,6 +6,8 @@ include_once (AS_PATH.'/classes/dbAdmin.php');
 $path = "'"."http://".$_SERVER['SERVER_NAME']."'";
 $username = $_GET['u'];
 
+// echo 'username ' .$username;
+
 $userlist = dbAdmin::getInstancia()->getAllFromUser();
 
 $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
@@ -108,7 +110,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                         <td><?php  echo $userlist[$i]['firstname'].' '. $userlist[$i]['lastname'];  ?></td>
                         <td>
                           <a href="#" class="add-vendedor btn btn-primary" 
-                                          data-id="<?php  echo $userlist[$i]['id']; ?>" 
+                                          data-id="<?php  echo $userlist[$i]['userID']; ?>" 
                                           data-username="<?php  echo $userlist[$i]['firstname'].' '. $userlist[$i]['lastname'];  ?>">
                             <i class="fa fa-user-plus" aria-hidden="true"></i> Agregar
                           </a>
@@ -251,7 +253,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <input type="text" name="vendedor" class="form-control" id="vendedor" 
                         value="<?php echo $userdata[0]['firstname'].' '.$userdata[0]['lastname']; ?>" />
 
-              <input type="hidden" name="userid" id="userid" value="<?php echo $userdata[0]['id']; ?>" />          
+              <input type="hidden" name="userid" id="userid" value="<?php echo $userdata[0]['userID']; ?>" />          
 
             </div>
             <div class="col-sm-3 form-group">
@@ -531,7 +533,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <li class="row-foot">
           <div class="row">
             <div class="col-sm-3 cell-collapse">
-              <a href="#" class="btn btn-default">Agregar artículo</a>
+              <button class="btn btn-default">Agregar artículo</button>
             </div>
             <div class="col-sm-offset-7 col-sm-1">
               <b>Subtotal</b>

@@ -360,7 +360,7 @@ function gotoList(username){
       updateConsecutiveAttr( consecutive, $newProduct );
 
       $(this).closest( '.row-foot' ).before($newProduct);
-      $newProduct.slideDown( 400, function(){ parentIframeLoaded(false) });
+      $newProduct.slideDown( 400, function(){ parentIframeLoaded() });
     });
 
     $( '.transactions-list' ).on( 'click', '.btns-collapse a', function(e){
