@@ -49,7 +49,7 @@ class dbAdmin {
     public function getAllFromUser(){
         // var_dump($this->_adoconn);die();
         try {
-            $sql ='SELECT u.username, u.role_id, p.* FROM _user u inner join person p where u.person_id = p.id;';
+            $sql ='SELECT u.id as userID, u.username, u.role_id, p.* FROM _user u inner join person p where u.person_id = p.id;';
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
@@ -65,7 +65,7 @@ class dbAdmin {
     public function getAllFromUserByUsername($username){
         // var_dump($this->_adoconn);die();
         try {
-            $sql ='SELECT u.username, u.role_id, p.* FROM _user u inner join person p where u.person_id = p.id and u.username = ?';
+            $sql ='SELECT u.id as userID, u.username, u.role_id, p.* FROM _user u inner join person p where u.person_id = p.id and u.username = ?';
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql, $username);
