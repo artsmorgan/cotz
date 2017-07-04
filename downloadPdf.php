@@ -29,4 +29,9 @@ if( isset( $params['incluirFirma'] ) ){
     }
 }
 
+// echo '<pre>';
+// print_r($params);
+// echo '</pre>';
+// die();
+
 PDF::printPDF($params, $fileName);

@@ -82,8 +82,11 @@ class dbAdmin {
     public function getAllFromPersonById($id){
         try {
             $sql ='SELECT concat(p.firstname, " ", p.lastname ) as completename, p.jobtitle, 
-            p.mobilephone, p.officephone, p.officefax, e.emailaddress
-            FROM person p left join email e on p.primaryemail_email_id = e.id where p.id = ?';
+                    p.mobilephone, p.officephone, p.officefax, e.emailaddress
+                    FROM _user u
+                    inner join person p on u.person_id = p.id
+                    left join email e on p.primaryemail_email_id = e.id 
+                    where u.id = ? and p.id = u.person_id;';
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql, $id);
