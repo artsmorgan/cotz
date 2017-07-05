@@ -132,6 +132,11 @@ class PDF {
             padding-bottom: 10px;
         }
 
+        .table_content{
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
         .section_content{
             width: 100%;
             border-top: 2px solid #808080;
@@ -280,9 +285,7 @@ class PDF {
                     </tr>
             </table> <!-- lines end  -->
             <?php if( !empty($notasCotizacion) ) :?>
-                <br>
-                <br>
-                <table>
+                <table class="table_content">
                     <tr>
                         <td class="section_content no-border">
                             <h2>Observaciones</h2>
@@ -291,10 +294,10 @@ class PDF {
                     </tr>
                 </table>
             <?php endif; ?>
+            <!--<br>
             <br>
-            <br>
-            <br>
-            <table>
+            <br>-->
+            <table class="table_content">
                 <tr>
                     <td class="section_content">
                         <h2>Observaciones</h2>
@@ -304,10 +307,10 @@ class PDF {
                     </td>
                 </tr>
             </table>
+            <!--<br>
             <br>
-            <br>
-            <br>
-            <table>
+            <br>-->
+            <table class="table_content">
                 <tr>
                     <td class="section_content">
                         <h2>Términos y condiciones</h2>
@@ -319,10 +322,10 @@ class PDF {
                     </td>
                 </tr>
             </table>
+            <!--<br>
             <br>
-            <br>
-            <br>
-            <table>
+            <br>-->
+            <table class="table_content">
                 <tr>
                     <td class="section_content">
                         <br>
