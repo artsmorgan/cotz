@@ -69,11 +69,12 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       <thead>
       <tr>  
         <th data-field="id" data-sortable="true">Cot #</th>
+        <th data-field="no_cotizacion" data-sortable="true">No. cotización</th>
         <th data-field="name" data-sortable="true">Cliente</th>
         <th data-field="username" data-sortable="true">Vendedor</th>
         <th data-field="marca" data-sortable="true">Marca</th>
         <th data-field="fase" data-sortable="true">Fase</th>
-        <th data-field="tasa_cambio" data-sortable="true">T. cambio</th>
+        <!--<th data-field="tasa_cambio" data-sortable="true">T. cambio</th>-->
         <th data-field="moneda" data-sortable="true">Moneda</th>
         <th data-field="total" data-sortable="true">Monto</th>
         <!-- <th data-field="description" data-sortable="true">Descripcion</th> -->

@@ -626,7 +626,7 @@ class dbAdmin {
 
             $sql ="select c.id, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, 
                     CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, 
-                    c.tasa_cambio, c.fecha_cotizacion, u.username, p.firstname, p.lastname, a.name 
+                    c.tasa_cambio, c.fecha_cotizacion, c.no_cotizacion, u.username, p.firstname, p.lastname, a.name 
                     from cotz_header c 
                     left join _user u on c.vendedor_id = u.id
                     left join account a on c.account_id = a.id 
