@@ -339,7 +339,7 @@ class PDF {
                         <?php endif; ?>
                         <p class="salesperson"><b><?php echo $salesperson_info['completename'];?> <?php echo ( !empty( $salesperson_info['jobtitle'] ) ? ' - '. $salesperson_info['jobtitle'] : '' ); ?> </b></p>
                         <p class="txt_center">Teléfono: <?php echo $salesperson_info['officephone'];?> - Celular: <?php echo $salesperson_info['mobilephone'];?> </p>
-                        <p class="txt_center">Correo: <?php echo $salesperson_info['emailaddress'];?> - Visitenos en <a href="http://www.tecnosagot.com">www.tecnosagot.com</a></p>
+                        <p class="txt_center">Correo: <?php echo $salesperson_info['emailaddress'];?> - Visítenos en <a href="http://www.tecnosagot.com">www.tecnosagot.com</a></p>
                         <p class="txt_center">TecnoSagot S.A. - Cédula jurídica: 3-101-077573</p>
                         <p class="txt_center">La Uruca. San José. Costado sur de la rotonda Juan Pablo II. Autopista General Cañas.</p>
                     </td>
