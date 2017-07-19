@@ -24,9 +24,8 @@ class PDF {
         $tasaCambio		            = $data['tasaCambio'];
         $lineas				        = $data['lineas'];
         $company_info               = $data['company_info'];
-        $contacto_info              = $data['contacto_info'];
+        $contacto_info              = empty( $data['contacto_info'] ) ? array(): $data['contacto_info'];
         $salesperson_info           = $data['salesperson_info'];
-        $incluirFirma               = isset( $data['incluirFirma'] )? $data['incluirFirma']: '';
         $usersignature              = isset( $data['usersignature'] ) ? $data['usersignature']: '';
         $telefonos_contacto = array();
         
@@ -130,6 +129,11 @@ class PDF {
 
         .cot_line_codigo{
             padding-bottom: 10px;
+        }
+
+        .table_content{
+            margin-top: 40px;
+            margin-bottom: 40px;
         }
 
         .section_content{
@@ -280,9 +284,7 @@ class PDF {
                     </tr>
             </table> <!-- lines end  -->
             <?php if( !empty($notasCotizacion) ) :?>
-                <br>
-                <br>
-                <table>
+                <table class="table_content">
                     <tr>
                         <td class="section_content no-border">
                             <h2>Observaciones</h2>
@@ -291,10 +293,10 @@ class PDF {
                     </tr>
                 </table>
             <?php endif; ?>
+            <!--<br>
             <br>
-            <br>
-            <br>
-            <table>
+            <br>-->
+            <table class="table_content">
                 <tr>
                     <td class="section_content">
                         <h2>Observaciones</h2>
@@ -304,10 +306,10 @@ class PDF {
                     </td>
                 </tr>
             </table>
+            <!--<br>
             <br>
-            <br>
-            <br>
-            <table>
+            <br>-->
+            <table class="table_content">
                 <tr>
                     <td class="section_content">
                         <h2>Términos y condiciones</h2>
@@ -319,10 +321,10 @@ class PDF {
                     </td>
                 </tr>
             </table>
+            <!--<br>
             <br>
-            <br>
-            <br>
-            <table>
+            <br>-->
+            <table class="table_content">
                 <tr>
                     <td class="section_content">
                         <br>
@@ -331,12 +333,12 @@ class PDF {
                         <br>
                         <br>
                         <p class="txt_center">Cordialmente</p>
-                        <?php if( $incluirFirma && $usersignature ): ?>
+                        <?php if( $usersignature && file_exists($usersignature) ): ?>
                             <p class="txt_center"><img src="<?php echo $usersignature; ?>"></p>
                         <?php endif; ?>
                         <p class="salesperson"><b><?php echo $salesperson_info['completename'];?> <?php echo ( !empty( $salesperson_info['jobtitle'] ) ? ' - '. $salesperson_info['jobtitle'] : '' ); ?> </b></p>
                         <p class="txt_center">Teléfono: <?php echo $salesperson_info['officephone'];?> - Celular: <?php echo $salesperson_info['mobilephone'];?> </p>
-                        <p class="txt_center">Correo: <?php echo $salesperson_info['emailaddress'];?> - Visitenos en <a href="http://www.tecnosagot.com">www.tecnosagot.com</a></p>
+                        <p class="txt_center">Correo: <?php echo $salesperson_info['emailaddress'];?> - Visítenos en <a href="http://www.tecnosagot.com">www.tecnosagot.com</a></p>
                         <p class="txt_center">TecnoSagot S.A. - Cédula jurídica: 3-101-077573</p>
                         <p class="txt_center">La Uruca. San José. Costado sur de la rotonda Juan Pablo II. Autopista General Cañas.</p>
                     </td>

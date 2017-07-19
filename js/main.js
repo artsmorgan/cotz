@@ -179,8 +179,11 @@ function gotoList(username){
   }
 
   function parentIframeLoaded(scroll){
-    if( typeof parent.iframeLoaded == 'function' ){
+    if( scroll && typeof parent.iframeLoaded == 'function' ){
       parent.iframeLoaded(scroll);
+    }
+    else if( parent.$ ){
+      parent.$('#if1').attr( 'height', (  parent.$('#if1').contents().find('body').outerHeight() ) );
     }
   }
 

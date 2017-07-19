@@ -132,7 +132,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Seleccionar Vendedor</h4>
+                <h4 class="modal-title" id="myModalLabel">Seleccionar contacto</h4>
               </div>
               <div class="modal-body">
                 <div class="alert alert-danger select_client_alert" role="alert"><strong>Precaucion</strong> Debe seleccionar una compania primero</div>
@@ -272,7 +272,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="col-sm-3 form-group">
               <label for="moneda">Moneda:</label>
               <select name="moneda" class="form-control" id="moneda">
-                <?php $selectop = array( 'dolares' => '$', 'colones' => '¢', 'euro' => '€' ); ?>
+                <?php $selectop = array( 'colones' => '¢', 'dolares' => '$', 'euro' => '€' ); ?>
                 <?php foreach( $selectop as $opvalue => $optxt ): ?>
                   <option value="<?php echo $opvalue; ?>" <?php echo ( $cot[0]['moneda'] == $opvalue ? 'selected' : '' ); ?> ><?php echo $optxt; ?></option>
                 <?php endforeach; ?>
@@ -304,7 +304,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-8 form-group">
               <label for="clienteNombreAux">Contacto :</label>
-              <input type="text" class="form-control" id="clienteNombreAux" required value="<?php echo htmlentities( $cot[0]['contact_name'] ); ?>">
+              <input type="text" class="form-control" id="clienteNombreAux" value="<?php echo htmlentities( $cot[0]['contact_name'] ); ?>">
               <input type="hidden" name="contact_id" id="contact_id" value="<?php echo $cot[0]['contact_id']; ?>">
             <!-- </div>
             <div class="col-sm-4">
@@ -405,7 +405,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                   'Sinto' =>  'Sinto',
                   'Tacc' =>  'Tacc',
                   'Teadit' =>  'Teadit',
-                  'Tlv' =>  'Tlv',
+                  'Tlv' =>  'TLV',
                   'Utex' =>  'Utex',
                   'Vaisala' =>  'Vaisala',
                   'Vazel' =>  'Vazel',
@@ -675,11 +675,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-offset-5 col-md-offset-8 col-sm-3  col-md-2 txt-right">
-          <label for="firma">Incluir firma</label>
-          <input type="checkbox" name="incluirFirma" id="firma" value="yes">
-        </div>
-        <div class="col-sm-2 col-md-1">
+        <div class="col-sm-offset-8 col-md-offset-10 col-sm-2 col-md-1">
           <a href="#" class="btn btn-default btn-block btn-print">Imprimir</a>
         </div>
         <div class="col-sm-2 col-md-1">

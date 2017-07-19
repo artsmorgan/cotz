@@ -134,7 +134,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Seleccionar Vendedor</h4>
+                <h4 class="modal-title" id="myModalLabel">Seleccionar contacto</h4>
               </div>
               <div class="modal-body">
                 <div class="alert alert-danger select_client_alert" role="alert"><strong>Precaucion</strong> Debe seleccionar una compania primero</div>
@@ -274,8 +274,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             <div class="col-sm-3 form-group">
               <label for="moneda">Moneda:</label>
               <select name="moneda" class="form-control" id="moneda">
-                <option value="dolares">$</option>
                 <option value="colones">¢</option>
+                <option value="dolares">$</option>
                 <option value="euro">€</option>
               </select>
             </div>
@@ -304,7 +304,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             </div>
             <div class="col-sm-8 form-group">
               <label for="clienteNombreAux">Contacto :</label>
-              <input type="text" class="form-control" id="clienteNombreAux" required>
+              <input type="text" class="form-control" id="clienteNombreAux">
               <input type="hidden" name="contact_id" id="contact_id">
             <!-- </div>
             <div class="col-sm-4">
@@ -404,7 +404,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                 <option value="Sinto">Sinto</option>
                 <option value="Tacc">Tacc</option>
                 <option value="Teadit">Teadit</option>
-                <option value="Tlv">Tlv</option>
+                <option value="Tlv">TLV</option>
                 <option value="Utex">Utex</option>
                 <option value="Vaisala">Vaisala</option>
                 <option value="Vazel">Vazel</option>
@@ -588,11 +588,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-offset-5 col-md-offset-8 col-sm-3  col-md-2 txt-right">
-          <label for="firma">Incluir firma</label>
-          <input type="checkbox" name="incluirFirma" id="firma" value="yes">
-        </div>
-        <div class="col-sm-2 col-md-1">
+        <div class="col-sm-offset-8 col-md-offset-10 col-sm-2 col-md-1">
           <a href="#" class="btn btn-default btn-block btn-print">Imprimir</a>
         </div>
         <div class="col-sm-2 col-md-1">
