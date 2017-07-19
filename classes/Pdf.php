@@ -24,9 +24,8 @@ class PDF {
         $tasaCambio		            = $data['tasaCambio'];
         $lineas				        = $data['lineas'];
         $company_info               = $data['company_info'];
-        $contacto_info              = $data['contacto_info'];
+        $contacto_info              = empty( $data['contacto_info'] ) ? array(): $data['contacto_info'];
         $salesperson_info           = $data['salesperson_info'];
-        $incluirFirma               = isset( $data['incluirFirma'] )? $data['incluirFirma']: '';
         $usersignature              = isset( $data['usersignature'] ) ? $data['usersignature']: '';
         $telefonos_contacto = array();
         
@@ -334,7 +333,7 @@ class PDF {
                         <br>
                         <br>
                         <p class="txt_center">Cordialmente</p>
-                        <?php if( $incluirFirma && $usersignature ): ?>
+                        <?php if( $usersignature && file_exists($usersignature) ): ?>
                             <p class="txt_center"><img src="<?php echo $usersignature; ?>"></p>
                         <?php endif; ?>
                         <p class="salesperson"><b><?php echo $salesperson_info['completename'];?> <?php echo ( !empty( $salesperson_info['jobtitle'] ) ? ' - '. $salesperson_info['jobtitle'] : '' ); ?> </b></p>
