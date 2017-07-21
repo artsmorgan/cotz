@@ -82,7 +82,7 @@ class dbAdmin {
     public function getAllFromPersonById($id){
         try {
             $sql ='SELECT concat(p.firstname, " ", p.lastname ) as completename, p.jobtitle, 
-                    p.mobilephone, p.officephone, p.officefax, e.emailaddress
+                    p.mobilephone, p.officephone, p.officefax, e.emailaddress, p.signature_img_path
                     FROM _user u
                     inner join person p on u.person_id = p.id
                     left join email e on p.primaryemail_email_id = e.id 
