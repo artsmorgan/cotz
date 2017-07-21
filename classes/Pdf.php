@@ -333,8 +333,8 @@ class PDF {
                         <br>
                         <br>
                         <p class="txt_center">Cordialmente</p>
-                        <?php if( $usersignature && file_exists($usersignature) ): ?>
-                            <p class="txt_center"><img src="<?php echo $usersignature; ?>"></p>
+                        <?php if( $salesperson_info['signature_img_path'] && file_exists( AS_PATH . $salesperson_info['signature_img_path'] ) ): ?>
+                            <p class="txt_center"><img src="<?php echo AS_PATH . $salesperson_info['signature_img_path']; ?>"></p>
                         <?php endif; ?>
                         <p class="salesperson"><b><?php echo $salesperson_info['completename'];?> <?php echo ( !empty( $salesperson_info['jobtitle'] ) ? ' - '. $salesperson_info['jobtitle'] : '' ); ?> </b></p>
                         <p class="txt_center">Teléfono: <?php echo $salesperson_info['officephone'];?> - Celular: <?php echo $salesperson_info['mobilephone'];?> </p>
