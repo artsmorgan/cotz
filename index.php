@@ -84,6 +84,22 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       </tr>
       </thead>
       </table>
+
+      <div class="modal fade" id="deleteModal" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-body">
+              <p><strong>Seguro que desea eliminar esta cotización?</strong></p>
+            </div>
+            <div class="modal-footer">
+              <a href="#" type="button" data-dismiss="modal" class="btn btn-primary" id="action-exc">Eliminar</a>
+              <a href="#" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -111,14 +127,11 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         }
 
         var editBtn = function (value) { 
-            
-           
-
              return '<a href="#" class="edit edit-cot" onclick="updateCot('+value+')" data="$id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
         };
 
-        var deletetBtn = function (value) { 
-             return '<a href="#" class="edit" data="$id"><i class="fa fa-times" aria-hidden="true"></i></a>';
+        var deletetBtn = function (value) {
+             return '<a href="#" class="edit delete-cot"  data-id="' + value + '"><i class="fa fa-times" aria-hidden="true"></i></a>';
         };
 
         var createCotBtn = function(){
@@ -137,6 +150,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         }
 
       $(function () {
+        var username = <?php echo "'$username';"; ?>
 
         var dateFormat = 'yy-mm-dd',
         $from = $( "#datepicker_from" ).datepicker({dateFormat: dateFormat}).on( "change", function() {
@@ -264,6 +278,56 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
           $('.bootstrap-table .search input').on('input', function(){
             applyFilters(); 
           });
+
+
+          var deletingCot = false;
+          $('.delete-cot').on('click', function(e){
+
+              e.preventDefault();
+
+              if(deletingCot) return;
+
+              deletingCot = true;
+
+              var cot_id = $(this).data('id');
+
+              $modal.modal({ backdrop: 'static', keyboard: false })
+              .off('click', '.modal-footer .btn').
+              .one('click', '.modal-footer .btn', function (e) {
+                if( $(this).is('#action-exc') ){
+                    $.ajax({
+                      url: "/cotz/services/cotz.php",
+                      datatype: 'json',
+                      data: {
+                          data: {
+                              id: cot_id,
+                              username: username
+                          }, 
+                          action: 'delete_cot'
+                      },
+                      type: "POST"
+                    })
+                    .done(function(data){
+                        console.log('data',data);
+                        if(data.error){
+                            return;
+                        }
+
+                        window.location.reload();
+                      
+                        }
+                      })
+                    .fail(function(e){
+                      console.log('fail',e);
+                    })
+                    .always(function(){
+                      $modal.modal('hide');
+                      deletingCot = false;
+                    });
+                }
+            });
+          
+        });
 
           
       });

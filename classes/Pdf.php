@@ -122,7 +122,7 @@ class PDF {
         .cot_line_content td{
             padding: 6px 2px;
             border-bottom: 1px solid #d0d0d0;
-            height: 158px;
+            /*height: 158px;*/
             vertical-align: top;
             font-size: 12px;  
         }
@@ -166,6 +166,11 @@ class PDF {
             text-align: center;
             padding: 10px 0;
         } 
+
+        img.signature{
+            max-width: 240px;
+            max-height: 80px;
+        }
         </style>
         <page style="font-size: 13px" backleft="8mm" backtop="5mm" backright="8mm" backbottom="5mm">
             <table class="cot_header">
@@ -288,7 +293,10 @@ class PDF {
                     <tr>
                         <td class="section_content no-border">
                             <h2>Observaciones</h2>
-                            <p><?php echo preg_replace( "/\r|\n/", "<br>", $notasCotizacion ); ?></p>
+                            <?php $notasCotizacion = preg_replace( "/\r|\n/", "<br>", $notasCotizacion ); ?>
+                            <?php foreach( explode("<br>", $notasCotizacion)  as $nota ): ?>
+                                <p><?php echo $nota; ?></p>
+                            <?php endforeach; ?>
                         </td>
                     </tr>
                 </table>
@@ -334,7 +342,7 @@ class PDF {
                         <br>
                         <p class="txt_center">Cordialmente</p>
                         <?php if( $salesperson_info['signature_img_path'] && file_exists( AS_PATH . $salesperson_info['signature_img_path'] ) ): ?>
-                            <p class="txt_center"><img src="<?php echo AS_PATH . $salesperson_info['signature_img_path']; ?>"></p>
+                            <p class="txt_center"><img class="signature" src="<?php echo AS_PATH . $salesperson_info['signature_img_path']; ?>"></p>
                         <?php endif; ?>
                         <p class="salesperson"><b><?php echo $salesperson_info['completename'];?> <?php echo ( !empty( $salesperson_info['jobtitle'] ) ? ' - '. $salesperson_info['jobtitle'] : '' ); ?> </b></p>
                         <p class="txt_center">Teléfono: <?php echo $salesperson_info['officephone'];?> - Celular: <?php echo $salesperson_info['mobilephone'];?> </p>
