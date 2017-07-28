@@ -504,7 +504,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                   <div class="col-sm-12">
                     <div class="btns-wrapper">
                       <div class="btns-actions">
-                        <a href="#" class="btn-action--delete visible-md visible-lg">Eliminar</a>
+                        <a href="#" class="btn-action--delete visible-sm visible-md visible-lg">Eliminar</a>
                       </div>
                       <div class="btns-collapse">
                         <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
@@ -557,7 +557,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="col-sm-6">
               <div class="btns-wrapper">
                 <div class="btns-actions">
-                  <a href="#" class="btn-action--delete visible-xs visible-sm">Eliminar</a>
+                  <a href="#" class="btn-action--delete visible-xs">Eliminar</a>
                 </div>
               </div>
               <!-- btns-wrapper -->
@@ -608,7 +608,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                   <div class="col-sm-12">
                     <div class="btns-wrapper">
                       <div class="btns-actions">
-                        <a href="#" class="btn-action--delete visible-md visible-lg">Eliminar</a>
+                        <a href="#" class="btn-action--delete visible-sm visible-md visible-lg">Eliminar</a>
                       </div>
                       <div class="btns-collapse">
                         <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
@@ -660,7 +660,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="col-sm-6">
               <div class="btns-wrapper">
                 <div class="btns-actions">
-                  <a href="#" class="btn-action--delete visible-xs visible-sm">Eliminar</a>
+                  <a href="#" class="btn-action--delete visible-xs">Eliminar</a>
                 </div>
               </div>
               <!-- btns-wrapper -->
