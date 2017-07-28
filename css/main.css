@@ -6,6 +6,7 @@
 
 .form-container{
   /*background-color: #f2f3f4;*/
+  clear: both;
 }
 
 .form-page{
@@ -21,6 +22,7 @@
 }
 
 .transactions-list{
+  margin-top: 10px;
  padding: 0;
 }
 .transactions-list li{
@@ -29,21 +31,6 @@
 
 .form-container{
   font-family: Tahoma, Geneva, sans-serif;
-}
-
-.form-container .row{
- font-size: 0;
-}
-.form-container [class|=col]{
- font-size: 10px;
- float: none;
- display: inline-block;
- vertical-align: bottom;
-}
-
-.form-container .float--active{
- float: left;
- display: block;
 }
 
 .form-container input[type=checkbox]{
@@ -88,16 +75,14 @@
  display: none;
 }
 
-.row-product, .row-head{
-  border-bottom: 1px solid #6d6d6d;
+.row-product{
+  border-top: solid 3px darkred;
+  padding: 20px 10px;
+  margin-bottom: 10px;
 }
 
-.row-product, .row-foot, .row-head{
+.row-foot{
  padding: 10px;
-}
-
-.cell-collapse{
-  height: 0px;
 }
 
 .row-product:nth-child(2n+1){
@@ -112,22 +97,9 @@
   position: relative;
 }
 
-.transactions-list .row, .border--full{
- position: static;
-}
 
 .transactions-list{
  position: relative;;
-}
-
-.border--full:before{
- content: "";
- position: absolute;
- top: 0;
- bottom: 0;
- border-left: 1px solid #6d6d6d;
- background-color: white;
- margin-left: -15px;
 }
 
 .confirmation-msg{
@@ -150,7 +122,7 @@
 }
 
 .transactions-list li.row-head{
-  padding: 5px;
+  padding: 10px;
     background: darkred;
     margin-top: 10px;
     color: #fff;
@@ -180,6 +152,7 @@
   min-height: 400px;
 
 }
+
 .modal:before {
   content: '';
   display: inline-block;
@@ -230,8 +203,76 @@ ul.ui-autocomplete{
   padding: 10px 0;
 }
 
+.transactions-list .row-head{
+  display: none;
+}
+
+.visible-sm{
+  display: none;
+}
+
 @media (min-width: 768px){
   .txt-right{
     text-align: right;
+  }
+
+  .form-container .row{
+    font-size: 0;
+  }
+  .form-container [class|=col]{
+    font-size: 10px;
+    float: none;
+    display: inline-block;
+    vertical-align: bottom;
+  }
+
+  .form-container .row-product [class|=col]{
+    vertical-align: top;
+  }
+
+  .form-container .row-product .cols-middle [class|=col]{
+    vertical-align: bottom;
+  }
+
+  .form-container .float--active{
+    float: left;
+    display: block;
+  }
+
+  .transactions-list .row-head{
+    display: block;
+  }
+
+  .transactions-list .row, .border--full{
+  position: static;
+  }
+
+  .border--full:before{
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid #6d6d6d;
+  background-color: white;
+  margin-left: -15px;
+  }
+
+  .cell-collapse{
+    height: 0px;
+  }
+
+  .row-product, .row-head{
+    border-top: none;
+    padding: 10px;
+    margin-bottom: 0;
+    border-bottom: 1px solid #6d6d6d;
+  }
+
+  .hidden-sm{
+    display: none;
+  }
+
+  .visible-sm{
+    display: block;
   }
 }

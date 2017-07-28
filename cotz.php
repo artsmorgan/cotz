@@ -458,25 +458,56 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         </li>
         <li class="row-product">
           <div class="row">
-            <div class="col-sm-1 form-group">
-              <label for="codigoArticulo1">Código del artículo:</label>
-              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo1">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="nombreArticulo1">Nombre del artículo:</label>
-              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
-            </div>
-             <div class="col-sm-2 form-group">
-               <div class="row">
-                  <div class="col-sm-12">
-                    <label for="exonerado1">Exonerado</label>
-                    <input type="checkbox" data-name="exonerado" id="exonerado1" value="true">
-                  </div>
-                  <div class="col-sm-12">
-                    <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">Ver el inventario</button>
+            <div class="col-sm-6">
+              <div class="row cols-middle">
+                <div class="col-sm-2 form-group">
+                  <label for="codigoArticulo1">Código del artículo:</label>
+                  <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo1">
+                </div>
+                <div class="col-sm-6 form-group">
+                  <label for="nombreArticulo1">Nombre del artículo:</label>
+                  <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
+                </div>
+                <div class="col-sm-4 form-group">
+                  <div class="row">
+                      <div class="col-sm-12">
+                        <label for="exonerado1">Exonerado</label>
+                        <input type="checkbox" data-name="exonerado" id="exonerado1" value="true">
+                      </div>
+                      <div class="col-sm-12">
+                        <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">Ver el inventario</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <!-- inner row -->
+              <div class="wrapper-collapse">
+                <div class="content-collapse">
+                  <div class="row">
+                    <div class="col-sm-12 form-group">
+                      <label for="descripcionArticulo1">Descripción:</label>
+                      <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
+                    </div>
                   </div>
                 </div>
-            </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="btns-wrapper">
+                      <div class="btns-actions">
+                        <a href="#" class="btn-action--delete visible-md visible-lg">Eliminar</a>
+                      </div>
+                      <div class="btns-collapse">
+                        <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
+                        <a href="#" class="hide-collapse">Ocultar detalle</a>
+                      </div>
+                    </div>
+                    <!-- btns-wrapper -->
+                  </div>
+                </div>
+                <!-- inner row -->
+              </div>
+              <!-- collapse  -->
+            </div>      
             <!-- <div class="col-sm-1 form-group border--full">
               <select type="number" data-name="factorLinea" class="form-control" id="factorLinea1">
                 <option value="factor_1">factor_1</option>
@@ -485,55 +516,52 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               </select>
             </div> -->
             <div class="col-sm-1 form-group border--full">
+              <label for="cantidad1" class="hidden-sm">Cantidad</label>
               <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad1">
             </div>
             <div class="col-sm-1 form-group border--full">
+              <label for="unidadMedida1" class="hidden-sm">Unidad de medida</label>
               <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedida1">
             </div>
             <div class="col-sm-2 form-group border--full">
+              <label for="precioUnitario1" class="hidden-sm">Precio unitario</label>
               <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario1">
               <input type="hidden" data-name="precioUnitarioFormated" class="op-hidden-formated">
             </div>
             <div class="col-sm-1 form-group border--full">
+              <label for="porcentajeDescuento1" class="hidden-sm">Descuento</label>
               <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento1">
             </div>
             <div class="col-sm-1 form-group border--full">
               <p class="op-total">
-                <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1" >
+                <span class="hidden-sm">Monto:</span>
+                <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1">
                 <input type="hidden" data-name="montoFormated" class="op-hidden-formated">
                 <b class="op-total-monto">0</b>
               </p>
               <span>
             </div>
           </div>
-          <div class="wrapper-collapse">
-            <div class="content-collapse">
-              <div class="row">
-                <div class="col-sm-6 form-group">
-                  <label for="descripcionArticulo1">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="btns-wrapper">
+                <div class="btns-actions">
+                  <a href="#" class="btn-action--delete visible-xs visible-sm">Eliminar</a>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="btns-wrapper">
-                  <div class="btns-actions">
-                    <a href="#" class="btn-action--delete">Eliminar</a>
-                  </div>
-                  <div class="btns-collapse">
-                    <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
-                    <a href="#" class="hide-collapse">Ocultar detalle</a>
-                  </div>
-                </div>
-              </div>
+              <!-- btns-wrapper -->
             </div>
           </div>
+          <!-- inner row -->
+          
         </li>
+
         <li class="row-foot">
           <div class="row">
             <div class="col-sm-3 cell-collapse">
               <button class="btn btn-default">Agregar artículo</button>
+              <br><br>
             </div>
             <div class="col-sm-offset-7 col-sm-1">
               <b>Subtotal</b>
