@@ -80,7 +80,9 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <!-- <th data-field="description" data-sortable="true">Descripcion</th> -->
         <th data-field="fecha_cotizacion" data-sortable="true">Fecha de<br> Cotizacion</th>
         <th data-field="id" data-events="edit" data-formatter="editBtn"></th>
-        <th data-field="delete" data-events="edit" data-formatter="deletetBtn"></th>
+        <?php if( $userdatap['role_id'] === 1 ): ?>
+        <th data-field="id" data-events="edit" data-formatter="deletetBtn"></th>
+        <?php endif; ?>
       </tr>
       </thead>
       </table>
@@ -90,7 +92,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
           <!-- Modal content-->
           <div class="modal-content">
             <div class="modal-body">
-              <p><strong>Seguro que desea eliminar esta cotización?</strong></p>
+              <p>Seguro que desea eliminar esta cotización Cot# <strong></strong>?</p>
             </div>
             <div class="modal-footer">
               <a href="#" type="button" data-dismiss="modal" class="btn btn-primary" id="action-exc">Eliminar</a>
@@ -281,7 +283,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 
 
           var deletingCot = false;
-          $('.delete-cot').on('click', function(e){
+          $('.bootstrap-table table').on('click', 'a.delete-cot', function(e){
 
               e.preventDefault();
 
@@ -289,10 +291,13 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 
               deletingCot = true;
 
-              var cot_id = $(this).data('id');
+              var cot_id = $(this).data('id'),
+                  $modal = $('#deleteModal');
+
+              $modal.find('.modal-body strong').text(cot_id);
 
               $modal.modal({ backdrop: 'static', keyboard: false })
-              .off('click', '.modal-footer .btn').
+              .off('click', '.modal-footer .btn')
               .one('click', '.modal-footer .btn', function (e) {
                 if( $(this).is('#action-exc') ){
                     $.ajax({
@@ -314,8 +319,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                         }
 
                         window.location.reload();
-                      
-                        }
+                    
                       })
                     .fail(function(e){
                       console.log('fail',e);
@@ -325,10 +329,13 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                       deletingCot = false;
                     });
                 }
+                else{
+                  console.log('deleting false');
+                  deletingCot = false;
+                }
             });
           
         });
-
           
       });
 

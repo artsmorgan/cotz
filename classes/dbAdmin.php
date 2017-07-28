@@ -709,11 +709,11 @@ class dbAdmin {
     public function deleteCot($cot_id, $username){
         $userdata = $this->getAllFromUserByUsername($username);
 
-        //if( empty ( $userdata ) || $userdata['role_id'] !== 1) return false;
+        if( empty ( $userdata ) || $userdata['role_id'] !== 1) return false;
         
         $this->deleteRows($cot_id);
         
-        $sql = 'delete from cotz_header WHERE `id_` = ' . $cot_id;
+        $sql = 'delete from cotz_header WHERE `id` = ' . $cot_id;
 
         $this->getConnection();
         $rs = $this->_adoconn->Execute($sql);
