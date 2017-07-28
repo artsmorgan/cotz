@@ -169,6 +169,7 @@ class PDF {
 
         img.signature{
             max-width: 240px;
+            max-height: 80px;
         }
         </style>
         <page style="font-size: 13px" backleft="8mm" backtop="5mm" backright="8mm" backbottom="5mm">

@@ -184,9 +184,19 @@
 			echo json_encode($results);		
 			break;
 	
-case 'test':
-var_dump(dbAdmin::getInstancia()->getCotizacionHeaderByCustomerAllMIN());
-break;
+		case 'delete_cot':
+			$response = array();
+			$data = $_REQUEST['data'];
+
+			if( empty($data)){
+				$response['error'] = true;
+			}  
+			else{
+				$response['error'] = dbAdmin::getInstancia()->deleteCot($data['id'], $data['username'] );
+			}
+
+			echo json_encode($response);	
+			break;
 }
 
 
