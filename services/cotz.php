@@ -189,10 +189,10 @@
 			$data = $_REQUEST['data'];
 
 			if( empty($data)){
-				$response['error'] = true;
+				$response['success'] = false;
 			}  
 			else{
-				$response['error'] = dbAdmin::getInstancia()->deleteCot($data['id'], $data['username'] );
+				$response['success'] = dbAdmin::getInstancia()->deleteCot($data['id'], $data['username'] );
 			}
 
 			echo json_encode($response);	
