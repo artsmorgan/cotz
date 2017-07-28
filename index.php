@@ -302,7 +302,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                 if( $(this).is('#action-exc') ){
                     $.ajax({
                       url: "/cotz/services/cotz.php",
-                      datatype: 'json',
+                      dataType: 'json',
                       data: {
                           data: {
                               id: cot_id,
@@ -314,7 +314,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                     })
                     .done(function(data){
                         console.log('data',data);
-                        if(data.error){
+                        if(data.success == false){
                             return;
                         }
 
