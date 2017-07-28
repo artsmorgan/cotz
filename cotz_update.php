@@ -468,25 +468,56 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 
         <li class="row-product <?php echo (!empty( $cot['lines'] ) ? 'disp--hide' : '' ); ?> ">
           <div class="row">
-            <div class="col-sm-1 form-group">
-              <label for="codigoArticulo1">Código del artículo:</label>
-              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo1">
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="nombreArticulo1">Nombre del artículo:</label>
-              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
-            </div>
-             <div class="col-sm-2 form-group">
-              <div class="row">
-                  <div class="col-sm-12">
-                    <label for="exonerado1">Exonerado</label>
-                    <input type="checkbox" data-name="exonerado" id="exonerado1" value="true">
-                  </div>
-                  <div class="col-sm-12">
-                    <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">Ver el inventario</button>
+            <div class="col-sm-6">
+              <div class="row cols-middle">
+                <div class="col-sm-2 form-group">
+                  <label for="codigoArticulo1">Código del artículo:</label>
+                  <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo1">
+                </div>
+                <div class="col-sm-6 form-group">
+                  <label for="nombreArticulo1">Nombre del artículo:</label>
+                  <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
+                </div>
+                <div class="col-sm-4 form-group">
+                  <div class="row">
+                      <div class="col-sm-12">
+                        <label for="exonerado1">Exonerado</label>
+                        <input type="checkbox" data-name="exonerado" id="exonerado1" value="true">
+                      </div>
+                      <div class="col-sm-12">
+                        <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">Ver el inventario</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <!-- inner row -->
+              <div class="wrapper-collapse">
+                <div class="content-collapse">
+                  <div class="row">
+                    <div class="col-sm-12 form-group">
+                      <label for="descripcionArticulo1">Descripción:</label>
+                      <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
+                    </div>
                   </div>
                 </div>
-            </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="btns-wrapper">
+                      <div class="btns-actions">
+                        <a href="#" class="btn-action--delete visible-md visible-lg">Eliminar</a>
+                      </div>
+                      <div class="btns-collapse">
+                        <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
+                        <a href="#" class="hide-collapse">Ocultar detalle</a>
+                      </div>
+                    </div>
+                    <!-- btns-wrapper -->
+                  </div>
+                </div>
+                <!-- inner row -->
+              </div>
+              <!-- collapse  -->
+            </div>      
             <!-- <div class="col-sm-1 form-group border--full">
               <select type="number" data-name="factorLinea" class="form-control" id="factorLinea1">
                 <option value="factor_1">factor_1</option>
@@ -495,20 +526,25 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               </select>
             </div> -->
             <div class="col-sm-1 form-group border--full">
+              <label for="cantidad1" class="hidden-sm">Cantidad</label>
               <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad1">
             </div>
             <div class="col-sm-1 form-group border--full">
+              <label for="unidadMedida1" class="hidden-sm">Unidad de medida</label>
               <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedida1">
             </div>
             <div class="col-sm-2 form-group border--full">
+              <label for="precioUnitario1" class="hidden-sm">Precio unitario</label>
               <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario1">
               <input type="hidden" data-name="precioUnitarioFormated" class="op-hidden-formated">
             </div>
             <div class="col-sm-1 form-group border--full">
+              <label for="porcentajeDescuento1" class="hidden-sm">Descuento</label>
               <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento1">
             </div>
             <div class="col-sm-1 form-group border--full">
               <p class="op-total">
+                <span class="hidden-sm">Monto:</span>
                 <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto1">
                 <input type="hidden" data-name="montoFormated" class="op-hidden-formated">
                 <b class="op-total-monto">0</b>
@@ -516,53 +552,76 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               <span>
             </div>
           </div>
-          <div class="wrapper-collapse">
-            <div class="content-collapse">
-              <div class="row">
-                <div class="col-sm-6 form-group">
-                  <label for="descripcionArticulo1">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo1"></textarea>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="btns-wrapper">
+                <div class="btns-actions">
+                  <a href="#" class="btn-action--delete visible-xs visible-sm">Eliminar</a>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="btns-wrapper">
-                  <div class="btns-actions">
-                    <a href="#" class="btn-action--delete">Eliminar</a>
-                  </div>
-                  <div class="btns-collapse">
-                    <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
-                    <a href="#" class="hide-collapse">Ocultar detalle</a>
-                  </div>
-                </div>
-              </div>
+              <!-- btns-wrapper -->
             </div>
           </div>
+          <!-- inner row -->
+          
         </li>
 
         <?php foreach ($cot['lines'] as $index => $linea) :?>
           <li class="row-product">
           <div class="row">
-            <div class="col-sm-1 form-group">
-              <label for="codigoArticulo<?php echo $index + 1; ?>">Código del artículo:</label>
-              <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo<?php echo $index + 1; ?>" value="<?php echo htmlentities($linea['codigo_articulo']); ?>" >
-            </div>
-            <div class="col-sm-3 form-group">
-              <label for="nombreArticulo<?php echo $index + 1; ?>">Nombre del artículo:</label>
-              <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo<?php echo $index + 1; ?>" value="<?php echo htmlentities($linea['nombre_articulo']); ?>">
-            </div>
-             <div class="col-sm-2 form-group">
-              <div class="row">
-                  <div class="col-sm-12">
-                    <label for="exonerado<?php echo $index + 1; ?>">Exonerado</label>
-                    <input type="checkbox" data-name="exonerado" id="exonerado<?php echo $index + 1;?>" value="true" <?php echo ( $linea['exonerado'] ? 'checked' : '' ); ?>>
-                  </div>
-                  <div class="col-sm-12">
-                    <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">Ver el inventario</button>
+            <div class="col-sm-6">
+              <div class="row cols-middle">
+                <div class="col-sm-2 form-group">
+                  <label for="codigoArticulo<?php echo $index + 1; ?>">Código del artículo:</label>
+                  <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo<?php echo $index + 1; ?>" value="<?php echo htmlentities($linea['codigo_articulo']); ?>" >
+                </div>
+
+                <div class="col-sm-6 form-group">
+                  <label for="nombreArticulo<?php echo $index + 1; ?>">Nombre del artículo:</label>
+                  <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo<?php echo $index + 1; ?>" value="<?php echo htmlentities($linea['nombre_articulo']); ?>">
+                </div>
+
+                <div class="col-sm-4 form-group">
+                  <div class="row">
+                      <div class="col-sm-12">
+                        <label for="exonerado<?php echo $index + 1; ?>">Exonerado</label>
+                        <input type="checkbox" data-name="exonerado" id="exonerado<?php echo $index + 1;?>" value="true" <?php echo ( $linea['exonerado'] ? 'checked' : '' ); ?>>
+                      </div>
+                      <div class="col-sm-12">
+                        <button class="btn btn-caution" type="button" data-toggle="modal" data-target="#inventarioModal">Ver el inventario</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <!-- inner row -->
+              <div class="wrapper-collapse">
+                <div class="content-collapse">
+                  <div class="row">
+                    <div class="col-sm-12 form-group">
+                      <label for="descripcionArticulo<?php echo $index + 1; ?>">Descripción:</label>
+                      <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo<?php echo $index + 1; ?>"><?php echo htmlentities( $linea['descripcion'] ); ?></textarea>
+                    </div>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="btns-wrapper">
+                      <div class="btns-actions">
+                        <a href="#" class="btn-action--delete visible-md visible-lg">Eliminar</a>
+                      </div>
+                      <div class="btns-collapse">
+                        <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
+                        <a href="#" class="hide-collapse">Ocultar detalle</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- inner row -->
+              </div>
+              <!-- collapse -->
             </div>
+            
             <!-- <div class="col-sm-1 form-group border--full">
               <select type="number" data-name="factorLinea" class="form-control" id="factorLinea<?php echo $index + 1; ?>">
                 <option value="factor_1">factor_1</option>
@@ -571,78 +630,73 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               </select>
             </div> -->
             <div class="col-sm-1 form-group border--full">
+              <label for="cantidad<?php echo $index + 1; ?>" class="hidden-sm">Cantidad</label>
               <input type="number" data-name="cantidad" class="form-control art-cantidad" id="cantidad<?php echo $index + 1; ?>" value="<?php echo $linea['cantidad']; ?>">
             </div>
             <div class="col-sm-1 form-group border--full">
+              <label for="unidadMedida<?php echo $index + 1; ?>" class="hidden-sm">Unidad de medida</label>
               <input type="text" data-name="unidadMedida" class="form-control" id="unidadMedida<?php echo $index + 1; ?>" value="<?php echo htmlentities( $linea['unidad_medida']); ?>">
             </div>
             <div class="col-sm-2 form-group border--full">
+              <label for="precioUnitario<?php echo $index + 1; ?>" class="hidden-sm">Precio unitario</label>
               <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario<?php echo $index + 1; ?>" value="<?php echo $linea['precio']; ?>">
               <input type="hidden" data-name="precioUnitarioFormated" class="op-hidden-formated">
             </div>
             <div class="col-sm-1 form-group border--full">
+              <label for="porcentajeDescuento<?php echo $index + 1; ?>" class="hidden-sm">Descuento</label>
               <input type="number" data-name="porcentajeDescuento" class="form-control art-descuento" id="porcentajeDescuento<?php echo $index + 1; ?>" value="<?php echo $linea['descuento_porcentaje']; ?>">
             </div>
             <div class="col-sm-1 form-group border--full">
               <p class="op-total">
+                <span class="hidden-sm">Monto:</span>
                 <input type="hidden" data-name="monto" class="op-hidden-monto" id="monto<?php echo $index + 1; ?>" value="<?php echo $linea['monto']; ?>">
                 <input type="hidden" data-name="montoFormated" class="op-hidden-formated">
                 <b class="op-total-monto">0</b>
               </p>
-              <span>
             </div>
           </div>
-          <div class="wrapper-collapse">
-            <div class="content-collapse">
-              <div class="row">
-                <div class="col-sm-6 form-group">
-                  <label for="descripcionArticulo<?php echo $index + 1; ?>">Descripción:</label>
-                  <textarea data-name="descripcionArticulo" rows="4" class="form-control" id="descripcionArticulo<?php echo $index + 1; ?>"><?php echo htmlentities( $linea['descripcion'] ); ?></textarea>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="btns-wrapper">
+                <div class="btns-actions">
+                  <a href="#" class="btn-action--delete visible-xs visible-sm">Eliminar</a>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="btns-wrapper">
-                  <div class="btns-actions">
-                    <a href="#" class="btn-action--delete">Eliminar</a>
-                  </div>
-                  <div class="btns-collapse">
-                    <a href="#" class="show-collapse disp--hide">Mostar detalle</a>
-                    <a href="#" class="hide-collapse">Ocultar detalle</a>
-                  </div>
-                </div>
-              </div>
+              <!-- btns-wrapper -->
             </div>
           </div>
+          <!-- inner row -->
+          
         </li>
         <?php endforeach; ?>
         <li class="row-foot">
           <div class="row">
             <div class="col-sm-3 cell-collapse">
               <a href="#" class="btn btn-default">Agregar artículo</a>
+              <br><br>
             </div>
-            <div class="col-sm-offset-7 col-sm-1">
+            <div class="col-xs-6 col-sm-offset-7 col-sm-1">
               <b>Subtotal</b>
             </div>
-            <div class="col-sm-1 op-total">
+            <div class="col-xs-6 col-sm-1 op-total">
               <input type="hidden" name="subtotal" class="op-hidden-subtotal">
               <input type="hidden" name="subtotalFormated" class="op-hidden-formated">
               <b class="op-total-subtotal">0</b>
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-offset-10 col-sm-1">
+            <div class="col-xs-6 col-sm-offset-10 col-sm-1">
               <b>Descuento</b>
             </div>
-            <div class="col-sm-1 op-total">
+            <div class="col-xs-6 col-sm-1 op-total">
               <input type="hidden" name="totalDescuento" class="op-hidden-descuento">
               <input type="hidden" name="totalDescuentoFormated" class="op-hidden-formated">
               <b class="op-total-descuento">0</b>
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-offset-10 col-sm-1">
+            <div class="col-xs-6 col-sm-offset-10 col-sm-1">
               <b>I.V.A</b>
             </div>
             <div class="col-sm-1 op-total">
@@ -652,10 +706,10 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-offset-10 col-sm-1">
+            <div class="col-xs-6 col-sm-offset-10 col-sm-1">
               <b>Total</b>
             </div>
-            <div class="col-sm-1 op-total">
+            <div class="col-xs-6 col-sm-1 op-total">
               <input type="hidden" name="total" class="op-hidden-total">
               <input type="hidden" name="totalFormated" class="op-hidden-formated">
               <b class="op-total-total">0</b>

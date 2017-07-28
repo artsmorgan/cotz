@@ -723,4 +723,9 @@ $("#companiaInput").autocomplete({
         .appendTo( ul );
     };
 
+
+    $(window).on('resize', function(e){
+        parentIframeLoaded(false);
+    });
+
 })(jQuery);
