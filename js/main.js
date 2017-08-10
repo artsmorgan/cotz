@@ -328,13 +328,12 @@ function gotoList(username){
 
 
     $( '#table' ).on( 'click-row.bs.table', function( e, item, $tr ){
-      productData = item;
-      $( '[type=radio]', $tr ).prop( 'checked', true );
-      $( '#inventarioModal button.btn-primary' ).prop( 'disabled', false );
+      $( '[type=radio]', $tr ).prop( 'checked', true ).trigger('click');
     });
 
-    $( '#table' ).on( 'click', '.bs-checkbox [type=radio]', function(){
-      $(this).closest('td').trigger('click');
+    $( '#table' ).on( 'check.bs.table', function(e, item){
+      productData = item;
+      $( '#inventarioModal button.btn-primary' ).prop( 'disabled', false );
     });
 
     $( '#inventarioModal' ).on( 'click', 'button.btn-primary', function(){
