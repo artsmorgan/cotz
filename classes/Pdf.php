@@ -132,8 +132,8 @@ class PDF {
         }
 
         .table_content{
-            margin-top: 40px;
-            margin-bottom: 40px;
+            margin-top: 30px;
+            /*margin-bottom: 40px;*/
         }
 
         .section_content{
@@ -170,6 +170,10 @@ class PDF {
         img.signature{
             max-width: 240px;
             max-height: 80px;
+        }
+
+        .mrg-top{
+            margin-top: 20px;
         }
         </style>
         <page style="font-size: 13px" backleft="8mm" backtop="5mm" backright="8mm" backbottom="5mm">
@@ -301,9 +305,6 @@ class PDF {
                     </tr>
                 </table>
             <?php endif; ?>
-            <!--<br>
-            <br>
-            <br>-->
             <table class="table_content">
                 <tr>
                     <td class="section_content">
@@ -314,9 +315,6 @@ class PDF {
                     </td>
                 </tr>
             </table>
-            <!--<br>
-            <br>
-            <br>-->
             <table class="table_content">
                 <tr>
                     <td class="section_content">
@@ -329,18 +327,11 @@ class PDF {
                     </td>
                 </tr>
             </table>
-            <!--<br>
-            <br>
-            <br>-->
             <table class="table_content">
                 <tr>
                     <td class="section_content">
-                        <br>
-                        <br>
-                        <p>Esperamos que esta propuesta sea de su agrado. No dude en contactarnos para cualquier consulta adicional</p>
-                        <br>
-                        <br>
-                        <p class="txt_center">Cordialmente</p>
+                        <p class="mrg-top">Esperamos que esta propuesta sea de su agrado. No dude en contactarnos para cualquier consulta adicional</p>
+                        <p class="txt_center mrg-top">Cordialmente</p>
                         <?php if( $salesperson_info['signature_img_path'] && file_exists( AS_PATH . $salesperson_info['signature_img_path'] ) ): ?>
                             <p class="txt_center"><img class="signature" src="<?php echo AS_PATH . $salesperson_info['signature_img_path']; ?>"></p>
                         <?php endif; ?>
