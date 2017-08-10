@@ -333,6 +333,10 @@ function gotoList(username){
       $( '#inventarioModal button.btn-primary' ).prop( 'disabled', false );
     });
 
+    $( '#table' ).on( 'click', '.bs-checkbox [type=radio]', function(){
+      $(this).closest('td').trigger('click');
+    });
+
     $( '#inventarioModal' ).on( 'click', 'button.btn-primary', function(){
       $( '[data-name=codigoArticulo]', $productRow ).val( productData.Codigo );
       $( '[data-name=nombreArticulo]', $productRow ).val( productData.NombreDelArticulo );
