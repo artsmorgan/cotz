@@ -80,7 +80,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <!-- <th data-field="description" data-sortable="true">Descripcion</th> -->
         <th data-field="fecha_cotizacion" data-sortable="true">Fecha de<br> Cotizacion</th>
         <th data-field="id" data-events="edit" data-formatter="editBtn"></th>
-        <?php if( $userdata['role_id'] == '1' ): ?>
+        <?php if( !empty($userdata[0]) && $userdata[0]['role_id'] == '1'  ): ?>
         <th data-field="id" data-events="edit" data-formatter="deletetBtn"></th>
         <?php endif; ?>
       </tr>
