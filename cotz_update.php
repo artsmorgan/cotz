@@ -228,7 +228,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <button type="button" class="btn btn-default btn-backToList" onclick="gotoList('<?php echo $username; ?>')" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
             </button>
-            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Configurar Cotizacion">
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Configurar Cotización">
               <i class="fa fa-cogs" aria-hidden="true"></i>
             </button>
             <button type="button" class="btn btn-default"  data-toggle="tooltip" data-placement="bottom" title="Datos del Cliente">
@@ -298,12 +298,12 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           <h4 class="f-section-title">Datos del cliente</h4>
           <div class="row">
             <div class="col-sm-4 form-group">
-              <label for="cuentaNombreAux">Compañía :</label>
+              <label for="cuentaNombreAux">Compañía:</label>
               <input type="text" class="form-control" id="cuentaNombreAux" required value="<?php echo htmlentities( $cot[0]['account_name'] ); ?>">
               <input type="hidden" name="company_id" id="company_id" value="<?php echo $cot[0]['account_id']; ?>">
             </div>
             <div class="col-sm-8 form-group">
-              <label for="clienteNombreAux">Contacto :</label>
+              <label for="clienteNombreAux">Contacto:</label>
               <input type="text" class="form-control" id="clienteNombreAux" value="<?php echo htmlentities( $cot[0]['contact_name'] ); ?>">
               <input type="hidden" name="contact_id" id="contact_id" value="<?php echo $cot[0]['contact_id']; ?>">
             <!-- </div>
