@@ -230,7 +230,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             <button type="button" class="btn btn-default btn-backToList" onclick="gotoList('<?php echo $username; ?>')" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
             </button>
-            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Configurar Cotizacion">
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Configurar Cotización">
               <i class="fa fa-cogs" aria-hidden="true"></i>
             </button>
             <button type="button" class="btn btn-default"  data-toggle="tooltip" data-placement="bottom" title="Datos del Cliente">
@@ -298,12 +298,12 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
           <h4 class="f-section-title">Datos del cliente</h4>
           <div class="row">
             <div class="col-sm-4 form-group">
-              <label for="cuentaNombreAux">Compañía :</label>
+              <label for="cuentaNombreAux">Compañía:</label>
               <input type="text" class="form-control" id="cuentaNombreAux" required>
               <input type="hidden" name="company_id" id="company_id">
             </div>
             <div class="col-sm-8 form-group">
-              <label for="clienteNombreAux">Contacto :</label>
+              <label for="clienteNombreAux">Contacto:</label>
               <input type="text" class="form-control" id="clienteNombreAux">
               <input type="hidden" name="contact_id" id="contact_id">
             <!-- </div>

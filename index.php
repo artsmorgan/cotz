@@ -75,10 +75,10 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <th data-field="marca" data-sortable="true">Marca</th>
         <th data-field="fase" data-sortable="true">Fase</th>
         <!--<th data-field="tasa_cambio" data-sortable="true">T. cambio</th>-->
-        <th data-field="moneda" data-sortable="true">Mo</th>
+        <th data-field="moneda" data-sortable="true" title="Moneda">Moneda</th>
         <th data-field="total" data-sortable="true">Monto</th>
         <!-- <th data-field="description" data-sortable="true">Descripcion</th> -->
-        <th data-field="fecha_cotizacion" data-sortable="true">Fecha de<br> Cotizacion</th>
+        <th data-field="fecha_cotizacion" data-sortable="true">Fecha de<br> Cotizacón</th>
         <th data-field="id" data-events="edit" data-formatter="editBtn"></th>
         <?php if( !empty($userdata[0]) && $userdata[0]['role_id'] == '1'  ): ?>
         <th data-field="id" data-events="edit" data-formatter="deletetBtn"></th>
@@ -139,7 +139,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         var createCotBtn = function(){
           var username = <?php echo json_encode($username) ?>;
           // console.log(typeof username);
-          return '<button class="btn btn-primary" onclick="gotoCotz(`'+username+'`)" type="button" aria-expanded="false"><i class="fa fa-plus-circle"></i> Crear Cotizacion</button>';
+          return '<button class="btn btn-primary" onclick="gotoCotz(`'+username+'`)" type="button" aria-expanded="false"><i class="fa fa-plus-circle"></i> Crear Cotización</button>';
         }
 
         function gotoCotz(id){

@@ -57,7 +57,7 @@ class PDF {
             border-collapse: collapse;
         }
 
-        table p, .section_content p{
+        table p, p.section_content{
             padding: 2px 0;
             margin: 0;
         }
@@ -131,21 +131,12 @@ class PDF {
             padding-bottom: 10px;
         }
 
-        .table_content{
-            margin-top: 30px;
-            /*margin-bottom: 40px;*/
-        }
-
-        .section_content{
-            width: 100%;
+        h2.section_content{
             border-top: 2px solid #808080;
+            margin-top: 30px;
         }
 
-        .section_content h2{
-            margin-top: 20px;
-        }
-
-        .section_content p{
+        p.section_content{
             line-height: 18px;
         }
 
@@ -173,7 +164,7 @@ class PDF {
         }
 
         .mrg-top{
-            margin-top: 20px;
+            margin-top: 30px;
         }
         </style>
         <page style="font-size: 13px" backleft="8mm" backtop="5mm" backright="8mm" backbottom="5mm">
@@ -293,53 +284,40 @@ class PDF {
                     </tr>
             </table> <!-- lines end  -->
             <?php if( !empty($notasCotizacion) ) :?>
-                <table class="table_content">
-                    <tr>
-                        <td class="section_content no-border">
-                            <h2>Observaciones</h2>
-                            <?php $notasCotizacion = preg_replace( "/\r|\n/", "<br>", $notasCotizacion ); ?>
-                            <?php foreach( explode("<br>", $notasCotizacion)  as $nota ): ?>
-                                <p><?php echo $nota; ?></p>
-                            <?php endforeach; ?>
-                        </td>
-                    </tr>
-                </table>
+                <h2 class="section_content">Observaciones</h2>
+                <?php $notasCotizacion = preg_replace( "/\r|\n/", "<br>", $notasCotizacion ); ?>
+                <?php foreach( explode("<br>", $notasCotizacion)  as $nota ): ?>
+                    <p class="section_content"><?php echo $nota; ?></p>
+                <?php endforeach; ?>
             <?php endif; ?>
+
+            <h2 class="section_content">Observaciones</h2>
+            <p class="section_content">1. Toda anulación de pedido con trámite de importación directa, tiene un cargo de 25% sobre el valor total de la orden de compra si el pedido ya se encuentra procesado en fábrica o está listo para despacharse.</p>
+            <p class="section_content">2. Cantidades sujetas a las existencias en bodega al momento de realizar la compra.</p>
+            <p class="section_content">3. Precios válidos por las cantidades e ítems indicados en esta cotización.</p>
+
+
+            <h2 class="section_content">Términos y condiciones</h2>
+            <p class="section_content"><b>Tiempo de entrega:</b> <?php echo $tiempoEntrega; ?></p>
+            <p class="section_content"><b>Lugar de entrega:</b> <?php echo $lugarEntrega; ?></p>
+            <p class="section_content"><b>Forma de pago:</b> <?php echo $formaPago; ?></p>
+            <p class="section_content"><b>Cuentas bancarias:</b> Banco Nacional COLONES No. 100-01-000-195665-5 / CLIENTE 15100010011956657; DÓLARES No. 100-02-000-613588-3 / CLIENTE 15100010026135883. Banco Costa Rica COLONES No. 001-0223717-2 / CLIENTE 15201001022371722. DaVivienda COLONES No. 91423031919 / CLIENTE 10400003472040113. Scotiabank COLONES No. 013000662300 / CLIENTE 12300130006623006; DÓLARES No. 013000662301 / CLIENTE 12300130006623012 . BAC San José COLONES No. 900554270 / CLIENTE 10200009005542707.</p>
+            <p class="section_content"><b>Pagos desde el exterior:</b> Para pagos realizados desde el exterior favor agregar comisión bancaria local según indicaciones de nuestros asesores e indicar a su Banco que a TecnoSagot S.A. le debe llegar el monto asegurado, cancelando por su parte la comisión correspondiente. El producto será despachado una vez se confirme la transacción con el banco.</p>
+
+
             <table class="table_content">
                 <tr>
-                    <td class="section_content">
-                        <h2>Observaciones</h2>
-                        <p>1. Toda anulación de pedido con trámite de importación directa, tiene un cargo de 25% sobre el valor total de la orden de compra si el pedido ya se encuentra procesado en fábrica o está listo para despacharse.</p>
-                        <p>2. Cantidades sujetas a las existencias en bodega al momento de realizar la compra.</p>
-                        <p>3. Precios válidos por las cantidades e ítems indicados en esta cotización.</p>
-                    </td>
-                </tr>
-            </table>
-            <table class="table_content">
-                <tr>
-                    <td class="section_content">
-                        <h2>Términos y condiciones</h2>
-                        <p><b>Tiempo de entrega:</b> <?php echo $tiempoEntrega; ?></p>
-                        <p><b>Lugar de entrega:</b> <?php echo $lugarEntrega; ?></p>
-                        <p><b>Forma de pago:</b> <?php echo $formaPago; ?></p>
-                        <p><b>Cuentas bancarias:</b> Banco Nacional COLONES No. 100-01-000-195665-5 / CLIENTE 15100010011956657; DÓLARES No. 100-02-000-613588-3 / CLIENTE 15100010026135883. Banco Costa Rica COLONES No. 001-0223717-2 / CLIENTE 15201001022371722. DaVivienda COLONES No. 91423031919 / CLIENTE 10400003472040113. Scotiabank COLONES No. 013000662300 / CLIENTE 12300130006623006; DÓLARES No. 013000662301 / CLIENTE 12300130006623012 . BAC San José COLONES No. 900554270 / CLIENTE 10200009005542707.</p>
-                        <p><b>Pagos desde el exterior:</b> Para pagos realizados desde el exterior favor agregar comisión bancaria local según indicaciones de nuestros asesores e indicar a su Banco que a TecnoSagot S.A. le debe llegar el monto asegurado, cancelando por su parte la comisión correspondiente. El producto será despachado una vez se confirme la transacción con el banco.</p>
-                    </td>
-                </tr>
-            </table>
-            <table class="table_content">
-                <tr>
-                    <td class="section_content">
-                        <p class="mrg-top">Esperamos que esta propuesta sea de su agrado. No dude en contactarnos para cualquier consulta adicional</p>
-                        <p class="txt_center mrg-top">Cordialmente</p>
+                    <td>
+                        <p class="mrg-top section_content">Esperamos que esta propuesta sea de su agrado. No dude en contactarnos para cualquier consulta adicional</p>
+                        <p class="txt_center mrg-top section_content">Cordialmente</p>
                         <?php if( $salesperson_info['signature_img_path'] && file_exists( AS_PATH . $salesperson_info['signature_img_path'] ) ): ?>
-                            <p class="txt_center"><img class="signature" src="<?php echo AS_PATH . $salesperson_info['signature_img_path']; ?>"></p>
+                            <p class="txt_center section_content"><img class="signature" src="<?php echo AS_PATH . $salesperson_info['signature_img_path']; ?>"></p>
                         <?php endif; ?>
-                        <p class="salesperson"><b><?php echo $salesperson_info['completename'];?> <?php echo ( !empty( $salesperson_info['jobtitle'] ) ? ' - '. $salesperson_info['jobtitle'] : '' ); ?> </b></p>
-                        <p class="txt_center">Teléfono: <?php echo $salesperson_info['officephone'];?> - Celular: <?php echo $salesperson_info['mobilephone'];?> </p>
-                        <p class="txt_center">Correo: <?php echo $salesperson_info['emailaddress'];?> - Visítenos en <a href="http://www.tecnosagot.com">www.tecnosagot.com</a></p>
-                        <p class="txt_center">TecnoSagot S.A. - Cédula jurídica: 3-101-077573</p>
-                        <p class="txt_center">La Uruca. San José. Costado sur de la rotonda Juan Pablo II. Autopista General Cañas.</p>
+                        <p class="salesperson section_content"><b><?php echo $salesperson_info['completename'];?> <?php echo ( !empty( $salesperson_info['jobtitle'] ) ? ' - '. $salesperson_info['jobtitle'] : '' ); ?> </b></p>
+                        <p class="txt_center section_content">Teléfono: <?php echo $salesperson_info['officephone'];?> - Celular: <?php echo $salesperson_info['mobilephone'];?> </p>
+                        <p class="txt_center section_content">Correo: <?php echo $salesperson_info['emailaddress'];?> - Visítenos en <a href="http://www.tecnosagot.com">www.tecnosagot.com</a></p>
+                        <p class="txt_center section_content">TecnoSagot S.A. - Cédula jurídica: 3-101-077573</p>
+                        <p class="txt_center section_content">La Uruca. San José. Costado sur de la rotonda Juan Pablo II. Autopista General Cañas.</p>
                     </td>
                 </tr>
             </table>
