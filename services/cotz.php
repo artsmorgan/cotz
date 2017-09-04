@@ -52,7 +52,7 @@
 
 				
 				//echo json_encode($cot_id);
-				echo json_encode($params);
+				echo json_encode( array( 'id' => $cot_id ) );
 			break;
 
 		case 'update_cot':

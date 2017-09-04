@@ -211,6 +211,23 @@ ul.ui-autocomplete{
   display: none;
 }
 
+.companiaAutocomplete{
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.companiaAutocomplete .ui-menu-item-wrapper:hover{
+    border: 1px solid #003eff;
+    background: #007fff;
+    font-weight: normal;
+    color: #ffffff;
+}
+
+#RecentlyViewedView{
+  display: none;
+}
+
 @media (min-width: 768px){
   .txt-right{
     text-align: right;
