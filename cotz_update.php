@@ -39,6 +39,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
         <link rel="stylesheet" href="css/jquery-ui.min.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="css/select2.min.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="https://use.fontawesome.com/5b1d115124.js"></script>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
@@ -95,6 +96,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                 <h4 class="modal-title" id="myModalLabel">Seleccionar Vendedor</h4>
               </div>
               <div class="modal-body">
+                <input type="text" placeholder="Buscar" class="pull-right custom-tablesearch" data-fields="username">
                 <table id="user-table" class="table table-striped">
                     <thead>
                     <tr>
@@ -136,6 +138,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               </div>
               <div class="modal-body">
                 <div class="alert alert-danger select_client_alert" role="alert"><strong>Precaucion</strong> Debe seleccionar una compania primero</div>
+                <input type="text" placeholder="Buscar" class="pull-right custom-tablesearch" data-fields="acc_name acc_email acc_officephone">
                 <table id="user-table" class="table table-striped">
                     <thead>
                     <tr>
@@ -155,6 +158,30 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 
         <!-- End clientesModal-->
 
+        <!-- Modal Print Configuration -->
+        <div class="modal fade" id="printConfig" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Opciones de impresión</h4>
+            </div>
+              <div class="modal-body">
+                <form>
+                <label>
+                  <input type="checkbox" name="showObservations" value="1" checked> Mostrar observaciones
+                </label>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <a href="#" type="button" data-dismiss="modal" class="btn btn-primary" id="action-exc">Imprimir</a>
+                <a href="#" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- End printConfig -->
 
           <!-- Modal companiasModal lists -->
         <div class="modal fade" id="companiasModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -313,17 +340,159 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           </div>
           <h4 class="f-section-title">Condiciones</h4>
           <div class="row">
-              <div class="col-sm-3 form-group">
+              <div class="col-sm-4 form-group">
                 <label for="tiempoEntrega">Tiempo de entrega:</label>
-                <input type="text" name="tiempoEntrega" class="form-control" id="tiempoEntrega" value="<?php echo htmlentities( $cot[0]['tiempo_entrega'] ); ?>">
+                <select data-select-add-custom name="tiempoEntrega" class="form-control cl-select2" id="tiempoEntrega" >
+                    <?php 
+                        $options = array(
+                            'Inmediata, salvo previa venta, a partir de recibida la OC.',
+                            '1 día hábil, salvo previa venta, a partir de recibida la OC.',
+                            '2 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '3 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '4 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '5 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '8 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '10 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '12 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '15 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '20 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '25 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '30 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '35 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '40 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '45 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '50 días hábiles, salvo previa venta, a partir de recibida la OC.',
+                            '4 semanas, a partir de recibida la OC.',
+                            '5 semanas, a partir de recibida la OC.',
+                            '6 semanas, a partir de recibida la OC.',
+                            '7 semanas, a partir de recibida la OC.',
+                            '8 semanas, a partir de recibida la OC.',
+                            '10 semanas, a partir de recibida la OC.',
+                            '12 semanas, a partir de recibida la OC.',
+                            '4-6 semanas, a partir de recibida la OC.',
+                            '5-6 semanas, a partir de recibida la OC.',
+                            '6-7 semanas, a partir de recibida la OC.',
+                            '6-8 semanas, a partir de recibida la OC.',
+                            '8-9 semanas, a partir de recibida la OC.',
+                            '8-10 semanas, a partir de recibida la OC.',
+                            '10-12 semanas, a partir de recibida la OC.',
+                            'Inmediata, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '1 día hábil, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '2 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '3 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '4 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '5 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '8 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '10 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '12 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '15 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '20 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '25 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '30 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '35 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '40 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '45 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '50 días hábiles, salvo previa venta, a partir de recibida la OC y el pago.',
+                            '4 semanas, a partir de recibida la OC y el pago.',
+                            '5 semanas, a partir de recibida la OC y el pago.',
+                            '6 semanas, a partir de recibida la OC y el pago.',
+                            '7 semanas, a partir de recibida la OC y el pago.',
+                            '8 semanas, a partir de recibida la OC y el pago.',
+                            '10 semanas, a partir de recibida la OC y el pago.',
+                            '12 semanas, a partir de recibida la OC y el pago.',
+                            '4-6 semanas, a partir de recibida la OC y el pago.',
+                            '5-6 semanas, a partir de recibida la OC y el pago.',
+                            '6-7 semanas, a partir de recibida la OC y el pago.',
+                            '6-8 semanas, a partir de recibida la OC y el pago.',
+                            '8-9 semanas, a partir de recibida la OC y el pago.',
+                            '8-10 semanas, a partir de recibida la OC y el pago.',
+                            '10-12 semanas, a partir de recibida la OC y el pago.'
+                        );
+                        $optSelected = false;
+                    ?>
+                    <?php for($i = 0, $l = count($options) - 1; $i < $l; $i++ ): ?>
+                        <?php 
+                            if( $options[$i] == $cot[0]['tiempo_entrega']  )  {
+                                $optSelected = true;
+                                echo "<option value=\"" . htmlentities( $cot[0]['tiempo_entrega'] ) . "\" selected >" . htmlentities( $cot[0]['tiempo_entrega'] ) . "</option>";
+                            }
+                            else{
+                                echo "<option value=\"" . $options[$i] . "\" >" . $options[$i] . "</option>";
+                            }                                         
+                          ?>
+                    <?php endfor; ?>
+                    <?php 
+                        if( !$optSelected ){
+                            echo "<option data-custom value=\"" . htmlentities( $cot[0]['tiempo_entrega'] ) . "\" selected >" . htmlentities( $cot[0]['tiempo_entrega'] ) . "</option>";
+                        }
+                    ?>
+                    <option value="Otro" data-other>Otro</option>
+                </select>
               </div>
-              <div class="col-sm-6 form-group">
+              <div class="col-sm-4 form-group">
                 <label for="lugarEntrega">Lugar de entrega:</label>
-                <input type="text" name="lugarEntrega" class="form-control" id="lugarEntrega" value="<?php echo htmlentities( $cot[0]['lugar_entrega'] ); ?>">
+                <select data-select-add-custom class="form-control cl-select2" name="lugarEntrega" id="lugarEntrega">
+                    <?php 
+                        $options = array(
+                            'Sus bodegas.',
+                            'Sus instalaciones.',
+                            'Su oficina.',
+                            'A convenir.',
+                            'Vía encomienda.'
+                        );
+                        $optSelected = false;
+                    ?>
+                    <?php for($i = 0, $l = count($options) - 1; $i < $l; $i++ ): ?>
+                        <?php 
+                            if( $options[$i] == $cot[0]['lugar_entrega']  )  {
+                                $optSelected = true;
+                                echo "<option value=\"" . htmlentities( $cot[0]['lugar_entrega'] ) . "\" selected >" . htmlentities( $cot[0]['lugar_entrega'] ) . "</option>";
+                            }
+                            else{
+                                echo "<option value=\"" . $options[$i] . "\" >" . $options[$i] . "</option>";
+                            }                                         
+                          ?>
+                    <?php endfor; ?>
+                    <?php 
+                        if( !$optSelected ){
+                            echo "<option data-custom value=\"" . htmlentities( $cot[0]['lugar_entrega'] ) . "\" selected >" . htmlentities( $cot[0]['lugar_entrega'] ) . "</option>";
+                        }
+                    ?>
+                    <option value="Otro" data-other>Otro</option>
+                </select>
               </div>
-              <div class="col-sm-3 form-group">
+              <div class="col-sm-4 form-group">
                 <label for="formaPago">Forma de pago:</label>
-                <input type="text" name="formaPago" class="form-control" id="formaPago" value="<?php echo htmlentities( $cot[0]['forma_pago']); ?>">
+                <select name="formaPago" class="form-control cl-select2" id="formaPago" data-select-add-custom>
+                    <?php 
+                        $options = array(
+                            'Contado contra entrega.',
+                            'Contado contra orden de compra.',
+                            'Crédito a 30 días.',
+                            '50% con la OC, 50% contra entrega de la mercadería.',
+                            '50% con la OC, 50% restante a crédito 30 días.',
+                            'Usual de la Institución.'
+                        );
+                        $optSelected = false;
+                    ?>
+                    <?php for($i = 0, $l = count($options) - 1; $i < $l; $i++ ): ?>
+                        <?php 
+                            if( $options[$i] == $cot[0]['forma_pago']  )  {
+                                $optSelected = true;
+                                echo "<option value=\"" . htmlentities( $cot[0]['forma_pago'] ) . "\" selected >" . htmlentities( $cot[0]['forma_pago'] ) . "</option>";
+                            }
+                            else{
+                                echo "<option value=\"" . $options[$i] . "\" >" . $options[$i] . "</option>";
+                            }
+                          ?>
+                    <?php endfor; ?>
+                    <?php 
+                        if( !$optSelected ){
+                            echo "<option data-custom value=\"" . htmlentities( $cot[0]['forma_pago'] ) . "\" selected >" . htmlentities( $cot[0]['forma_pago'] ) . "</option>";
+                        }
+                    ?>
+                    <option value="Otro" data-other>Otro</option>
+                </select>
               </div>
           </div>
         </div>
@@ -340,7 +509,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-3 form-group">
               <label for="marca">Marca:</label>
-              <select type="text" name="marca" class="form-control" id="marca" required>
+              <select type="text" name="marca" class="form-control cl-select2" id="marca" required>
                 <?php $selectop = array(
                   "" => "Seleccione",
                   'Adhesives Technology' =>  'Adhesives Technology',
@@ -422,7 +591,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-3 form-group">
               <label for="fase">Fase:</label>
-              <select name="fase" class="form-control" id="fase" required>
+              <select name="fase" class="form-control cl-select2" id="fase" required>
                 <?php $selectop = array(
                     "" => "Seleccione",
                     "Comunicación inicial" => "Comunicación inicial",
@@ -448,20 +617,23 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
            <!--  <div class="col-sm-offset-6 col-sm-1 border-full">
               <b>Factor de redondeo</b>
             </div> -->
-            <div class="col-sm-offset-6 col-sm-1 border--full">
-              <b>Cant</b>
+            <div class="col-sm-6">
+              <b>Descripción</b>
             </div>
             <div class="col-sm-1 border--full">
-              <b>U/ medida</b>
+              <b>Cant.</b>
+            </div>
+            <div class="col-sm-1 border--full">
+              <b>U.M.</b>
             </div>
             <div class="col-sm-2 border--full">
-              <b>Precio u.</b>
+              <b>Precio Unit.</b>
             </div>
             <div class="col-sm-1 border--full">
-              <b>% descuento</b>
+              <b>% Descto.</b>
             </div>
             <div class="col-sm-1 border--full">
-              <b>Monto</b>
+              <b>Precio Total</b>
             </div>
           </div>
         </li>
@@ -471,7 +643,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="col-sm-6">
               <div class="row cols-middle">
                 <div class="col-sm-2 form-group">
-                  <label for="codigoArticulo1">Código del artículo:</label>
+                  <label for="codigoArticulo1">Código:</label>
                   <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo1">
                 </div>
                 <div class="col-sm-6 form-group">
@@ -573,7 +745,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="col-sm-6">
               <div class="row cols-middle">
                 <div class="col-sm-2 form-group">
-                  <label for="codigoArticulo<?php echo $index + 1; ?>">Código del artículo:</label>
+                  <label for="codigoArticulo<?php echo $index + 1; ?>">Código:</label>
                   <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo<?php echo $index + 1; ?>" value="<?php echo htmlentities($linea['codigo_articulo']); ?>" >
                 </div>
 
@@ -729,10 +901,13 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-offset-8 col-md-offset-10 col-sm-2 col-md-1">
+        <div class="col-sm-offset-8 col-md-offset-6 col-sm-2 col-md-2">
+          <a href="#" class="btn btn-default btn-block btn-clone">Clonar</a>
+        </div>
+        <div class="col-sm-2 col-md-2">
           <a href="#" class="btn btn-default btn-block btn-print">Imprimir</a>
         </div>
-        <div class="col-sm-2 col-md-1">
+        <div class="col-sm-2 col-md-2">
           <a href="#" class="btn btn-default btn-block btn-save">Guardar</a>
         </div>
       </div>
@@ -852,7 +1027,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
           </div>
 
     </form> <!-- /container -->
-    <form id="downloadFile" method="post" action="/cotz/downloadPdf.php" target="_black" class="hide">
+    <form id="downloadFile" method="post" action="/cotz/downloadPdf.php" target="_blank" class="hide">
       <input type="hidden" name="data">
     </form>
 
@@ -864,6 +1039,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
     <script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
     <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
+    <script src="js/vendor/select2.full.min.js"></script>
     <script src="js/main.js"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

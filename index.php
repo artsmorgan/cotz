@@ -65,7 +65,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       <table id="table" data-pagination="true" 
                         data-show-export="true" data-export-types="['csv', 'txt', 'excel']"
                         data-search="true" data-search-on-enter-key="true"  data-smart-display="true"
-                        data-page-size="10" data-page-list="[10,25,50,100]">
+                        data-page-size="50" data-page-list="[10,25,50,100]">
       <thead>
       <tr>  
         <th data-field="id" data-sortable="true">Cot #</th>
@@ -76,7 +76,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <th data-field="fase" data-sortable="true">Fase</th>
         <!--<th data-field="tasa_cambio" data-sortable="true">T. cambio</th>-->
         <th data-field="moneda" data-sortable="true" title="Moneda">Moneda</th>
-        <th data-field="total" data-sortable="true">Monto</th>
+        <th data-field="total" data-sortable="true" data-formatter="formatPrice">Monto</th>
         <!-- <th data-field="description" data-sortable="true">Descripcion</th> -->
         <th data-field="fecha_cotizacion" data-sortable="true">Fecha de<br> Cotizacón</th>
         <th data-field="id" data-events="edit" data-formatter="editBtn"></th>

@@ -27,7 +27,8 @@ class PDF {
         $contacto_info              = empty( $data['contacto_info'] ) ? array(): $data['contacto_info'];
         $salesperson_info           = $data['salesperson_info'];
         $usersignature              = isset( $data['usersignature'] ) ? $data['usersignature']: '';
-        $telefonos_contacto = array();
+        $telefonos_contacto         = array();
+        $showObservations           = isset( $data['showObservations'] );
         
         if( isset( $contacto_info['officephone'] ) ){
             $telefonos_contacto[] = $contacto_info['officephone'];
@@ -284,18 +285,19 @@ class PDF {
                     </tr>
             </table> <!-- lines end  -->
             <?php if( !empty($notasCotizacion) ) :?>
-                <h2 class="section_content">Observaciones</h2>
+                <h2 class="section_content">Notas</h2>
                 <?php $notasCotizacion = preg_replace( "/\r|\n/", "<br>", $notasCotizacion ); ?>
                 <?php foreach( explode("<br>", $notasCotizacion)  as $nota ): ?>
                     <p class="section_content"><?php echo $nota; ?></p>
                 <?php endforeach; ?>
             <?php endif; ?>
 
-            <h2 class="section_content">Observaciones</h2>
-            <p class="section_content">1. Toda anulación de pedido con trámite de importación directa, tiene un cargo de 25% sobre el valor total de la orden de compra si el pedido ya se encuentra procesado en fábrica o está listo para despacharse.</p>
-            <p class="section_content">2. Cantidades sujetas a las existencias en bodega al momento de realizar la compra.</p>
-            <p class="section_content">3. Precios válidos por las cantidades e ítems indicados en esta cotización.</p>
-
+            <?php if( $showObservations ): ?>
+                <h2 class="section_content">Observaciones</h2>
+                <p class="section_content">1. Toda anulación de pedido con trámite de importación directa, tiene un cargo de 25% sobre el valor total de la orden de compra si el pedido ya se encuentra procesado en fábrica o está listo para despacharse.</p>
+                <p class="section_content">2. Cantidades sujetas a las existencias en bodega al momento de realizar la compra.</p>
+                <p class="section_content">3. Precios válidos por las cantidades e ítems indicados en esta cotización.</p>
+            <?php endif; ?>
 
             <h2 class="section_content">Términos y condiciones</h2>
             <p class="section_content"><b>Tiempo de entrega:</b> <?php echo $tiempoEntrega; ?></p>
@@ -331,7 +333,7 @@ class PDF {
         $content = self::generateHtml($data);
         try
         {
-            $html2pdf = new HTML2PDF($orientation, $format, $lang);
+            $html2pdf = new HTML2PDF($orientation, array(216, 279), $lang);
             $html2pdf->WriteHTML($content);
             $html2pdf->Output( $filename, 'D');
         }

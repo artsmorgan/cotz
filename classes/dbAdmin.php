@@ -118,8 +118,6 @@ class dbAdmin {
         return $result;    
     }
 
-    
-
     private function generateToken(){
         $length = 20;
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -150,13 +148,15 @@ class dbAdmin {
 
     public function getCompanyList($term) {
 
-            $sql ='SELECT id,description, name, officephone, website FROM account where name LIKE "'.$term.'%";';
+            $sql ='SELECT id,description, name, officephone, website FROM account where name LIKE ?;';
 
             // echo $sql;
 
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
-            $rs = $this->_adoconn->Execute($sql);
+
+            $term = "%$term%";
+            $rs = $this->_adoconn->Execute($sql, $term);
            
             
             $result = $rs->getRows();
@@ -381,7 +381,7 @@ class dbAdmin {
                 `factor_redondeo`,`no_solicitud`,`no_cotizacion`,`account_id`,`contact_id`,`tiempo_entrega`,
                 `lugar_entrega`,`forma_pago`,`marca`,`fase`,`notas`,`notas_crm`,`fecha_creacion`,
                 `fecha_modificacion`,`modificado_por`,`subtotal`,`descuento`,`impuesto`,`total`, `tasa_cambio`)
-                VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(),"","", ?, ?, ?, ?, ?);';
+                VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now(),"", ?, ?, ?, ?, ?);';
 
         $this->getConnection();
         $this->_adoconn->Execute("SET NAMES 'utf8';");
@@ -410,7 +410,7 @@ class dbAdmin {
                 "'.$tasa_impuestos.'","'.$moneda.'","'.$factor_redondeo.'","'.$no_solicitud.'",
                 "'.$no_cotizacion.'","'.$account_id.'","'.$contact_id.'","'.$tiempo_entrega.'",
                 "'.$lugar_entrega.'","'.$forma_pago.'","'.$marca.'","'.$fase.'","'.$notas.'",
-                "'.$notas_crm.'",now(),"","","'.$subtotal.'","'.$descuento.'","'.$impuesto.'","'.$total.'","'.$tasa_cambio.'","'.$externalID.'","'.$externalContact.'","'.$externalAccount.'","'.$externalCreateId.'","'.$version.'");';
+                "'.$notas_crm.'",now(),"","'.$subtotal.'","'.$descuento.'","'.$impuesto.'","'.$total.'","'.$tasa_cambio.'","'.$externalID.'","'.$externalContact.'","'.$externalAccount.'","'.$externalCreateId.'","'.$version.'");';
                 // echo $sql;die();
                 // $sql = 'select 1 as test';
 
@@ -710,7 +710,7 @@ class dbAdmin {
     public function deleteCot($cot_id, $username){
         $userdata = $this->getAllFromUserByUsername($username);
 
-        if( empty ( $userdata ) || $userdata['role_id'] !== 1) return false;
+        if( empty ( $userdata ) || $userdata[0]['role_id'] != '1') return false;
         
         $this->deleteRows($cot_id);
         

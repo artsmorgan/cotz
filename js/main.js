@@ -6,9 +6,15 @@ function gotoList(username){
     parent.iframeLoaded();
 }
 
+function formatPrice(value){
+  return $('<span>'+ value + '</span>').formatCurrency({symbol: ''}).html();
+}
+
 (function ($){
 
   $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
+  $.formatCurrency.regions[''].decimalSymbol = ',';
+  $.formatCurrency.regions[''].digitGroupSymbol = '.';
 
   var roundMethods = {
     factor_1: {
@@ -72,8 +78,8 @@ function gotoList(username){
   }
 
   function updateMonto( $productRow ) {
-    var cantidad = $productRow.find( '.art-cantidad' ).val(),
-        precioUnitario = $productRow.find( '.art-precioUni' ).val();
+    var cantidad = $productRow.find( '[data-name=cantidad]' ).val(),
+        precioUnitario = $productRow.find( '[data-name=precioUnitario]' ).val();
         $dispMonto = $productRow.find( '.op-total-monto' ),
         method = $productRow.find('[data-name=factorLinea]').val(),
         exonerado = $productRow.find('[data-name=exonerado]').is(':checked');
@@ -85,18 +91,18 @@ function gotoList(username){
 
         monto = applyRoundFactor(monto, 'total', method);
 
-        $productRow.find( '.op-hidden-monto' ).val( monto );
+        $productRow.find( '.op-hidden-monto' ).val( monto ).toggleClass( 'exonerado', exonerado );
 
-        $dispMonto.text( monto ).toggleClass( 'exonerado', exonerado );;
+        $dispMonto.text( monto );
   }
 
   function updateSubtotal(){
     var subtotal = 0,
         subtotalTaxes = 0;
-    $('.row-product .op-total-monto').each(function(){
-      subtotal += $(this).asNumber();
+    $('.row-product .op-hidden-monto').each(function(){
+      subtotal += Number( $(this).val() );
       if( !$(this).hasClass('exonerado') ){
-        subtotalTaxes += $(this).asNumber();
+        subtotalTaxes += Number( $(this).val() );
       }
     });
 
@@ -113,9 +119,9 @@ function gotoList(username){
 
     $('.row-product').each(function(){
       porcentaje = $(this).find('.art-descuento').val() / 100;
-      descuento += $(this).find('.op-total-monto').asNumber() * porcentaje;
+      descuento += Number(  $(this).find('.op-hidden-monto').val() ) * porcentaje;
       if( !$(this).find('.op-total-monto').hasClass('exonerado') ){
-        descuentoTaxes += $(this).find('.op-total-monto').asNumber() * porcentaje;
+        descuentoTaxes += Number(  $(this).find('.op-hidden-monto').val() ) * porcentaje;
       }
     });
 
@@ -140,9 +146,9 @@ function gotoList(username){
   }
 
   function updateTotal(){
-    var iva = $('.op-total-iva').asNumber(),
-        subtotal = $('.op-total-subtotal').asNumber(),
-        descuento = $('.op-total-descuento').asNumber(),
+    var iva = Number( $('.op-total-iva').text() ),
+        subtotal = Number( $('.op-total-subtotal').text() ),
+        descuento = Number( $('.op-total-descuento').text() ),
         total = subtotal - descuento + iva;
 
     total = applyRoundFactor(total, 'total_final');
@@ -219,7 +225,132 @@ function gotoList(username){
       updateFormatCurrency();
   }
 
+  function setCaretPosition(elem, caretPos) {
+        
+      if(elem.createTextRange) {
+          var range = elem.createTextRange();
+          range.move('character', caretPos);
+          range.select();
+      }
+      else {
+          if(elem.selectionStart) {
+              elem.focus();
+              elem.setSelectionRange(caretPos, caretPos);
+          }
+          else
+              elem.focus();
+      }
+  }
+
+  function doGetCaretPosition (oField) {
+
+        // Initialize
+        var iCaretPos = 0;
+
+        // IE Support
+        if (document.selection) {
+
+            // Set focus on the element
+            oField.focus();
+
+            // To get cursor position, get empty selection range
+            var oSel = document.selection.createRange();
+
+            // Move selection start to 0 position
+            oSel.moveStart('character', -oField.value.length);
+
+            // The caret position is selection length
+            iCaretPos = oSel.text.length;
+        }
+
+        // Firefox support
+        else if (oField.selectionStart || oField.selectionStart == '0')
+            iCaretPos = oField.selectionStart;
+
+        // Return results
+        return iCaretPos;
+    }
+
   $( document ).ready(function(){
+
+    $('.format-currency').formatCurrency({symbol: '', roundToDecimalPlace: -1});
+
+    // var deletingInput = false;
+
+    // $('.format-currency').on('keydown', function(e){
+    //   deletingInput = e.keyCode == 8;
+    // });
+
+    $('.transactions-list').on('keypress', '.format-currency', function(e){
+            
+        var str = String.fromCharCode(e.which);
+
+        if( !/\d/.test(str) || str == ','  ){
+            if( str == ',' ){
+                var indexDot = $(this).val().indexOf(str);
+
+                if(indexDot == -1){
+                  return true;
+                }
+
+                setCaretPosition($(this).get(0), indexDot + 1 );
+            
+            }
+      
+            return false;
+        }
+    });
+
+    // $('.format-currency').on('blur', function(e){
+    //   $(this).trigger('input');
+    // });
+
+    $('.transactions-list').on('input', '.format-currency', function(e){
+        // if(deletingInput) {
+        //   deletingInput = false;
+        //   return;
+        // }
+
+        // var inputElem = $(this).get(0),
+        //     inputLength = inputElem.value.length, 
+        //     caretPos = doGetCaretPosition( inputElem ),
+        //     minLength = 1;
+
+        // if( inputLength <  minLength){
+        //     inputLength = minLength;
+        // }
+
+        // inputElem.value = inputElem.value.replace( /,\d+/ , function(match){
+        //     return match.substr(0,3);
+        // });
+
+        var inputElem = $(this).get(0),
+            caretPos = doGetCaretPosition( inputElem ),
+            valLength = $(this).val().length;
+
+        if( $.trim($(this).val()).substr(-1) !== ','){
+          $(this).val($(this).asNumber()).formatCurrency({symbol: '', roundToDecimalPlace: -1});
+        }
+
+        $(this).parent().find('[type=hidden]:not(.op-hidden-formated)').val( $(this).asNumber() );
+
+        if( $(this).val().length > valLength ){
+          caretPos++;
+        }
+        else if( $(this).val().length < valLength ){
+          caretPos--;
+        }
+
+        // inputLength = inputElem.value.length - inputLength;
+        // caretPos += inputLength;
+
+        // if( caretPos > inputElem.value.indexOf(',') ){
+        //     caretPos++;
+        // }
+
+        setCaretPosition(inputElem, caretPos );
+
+    });
 
     var $productForm = $( '.row-product:first' ).clone().addClass( 'disp--hide' ),
         $productRow = {},
@@ -254,6 +385,55 @@ function gotoList(username){
         $( '#table' ).bootstrapTable('destroy').bootstrapTable(bootstrapTableOpt);
     });
 
+  $('.cl-select2').select2();
+
+  $('select[data-select-add-custom]').on('change', function(){
+      if( $(this).find('option:selected').is('[data-other]') ){
+          var $currentSelect = $(this),
+              $modal = $('#confirmModal');
+
+          $modal.find('.modal-body').html('<h4>Nueva opción</h4><input type="text" autofocus style="width: 100%;">');
+          $modal.find('.btn-primary').text('Agregar').next().show();
+
+          containerScroll(0);
+
+          $modal.modal({ backdrop: 'static', keyboard: false })
+          .one('click', '.modal-footer .btn', function (e) {
+              var $options = $currentSelect.find('option');
+
+              if( $(this).is('#action-exc') ){
+                  var value = $.trim( $modal.find('input').val() );
+                  if( value ){
+                    var valueExists = $currentSelect.find('option[value="' + value + '"]').index();
+
+                    if( valueExists == -1 ){
+                        var $newOption = $('<option data-custom value="' + value + '">' + value + '</option>');
+
+                        $currentSelect.find('[data-custom]').remove();
+                        $newOption.insertBefore($options.last());
+
+                        $currentSelect.val( $newOption.prop('selected', true).val());
+
+                        if($currentSelect.hasClass('cl-select2')){
+                          $currentSelect.select2();
+                          $currentSelect.trigger('change.select2');      
+                        }
+
+                        return;
+                    }
+                }
+                
+              }
+
+              $currentSelect.val( $options.eq(0).prop('selected', true).val() );
+
+              if($currentSelect.hasClass('cl-select2')){
+                $currentSelect.trigger('change.select2');
+              }
+          });
+      }
+  });
+
 
 
   $('#vendedor').on('click', function(e){
@@ -284,7 +464,7 @@ function gotoList(username){
                 $('.account_list_by_company').append('<tr><td class="c_acc_name">'+data[i].firstname+' '+data[i].lastname+'</td>'+
                                                     '<td>'+data[i].emailaddress+'</td>'+
                                                     '<td>'+data[i].officephone+'</td>'+
-                                                    '<td><a href="#" class="add_contact_acc btn btn-default" data-c_acc="'+data[i].id+'">Agregar</a></td></tr>');
+                                                    '<td><a href="#" class="add_contact_acc btn btn-default" data-acc_name="'+data[i].firstname+' '+data[i].lastname+ '" data-acc_email="'+data[i].emailaddress+ '" data-acc_officephone="'+data[i].officephone+ '" data-c_acc="'+data[i].id+'">Agregar</a></td></tr>');
             }
             $('.add_contact_acc').on('click', function(e){
 
@@ -323,8 +503,7 @@ function gotoList(username){
       setNewVendedor(name, id);
       // console.log('name: %d - id: %d', name, id)
       $('#vendedoresModal').modal('hide');
-
-   })
+   });
 
 
     $( '#table' ).on( 'click-row.bs.table', function( e, item, $tr ){
@@ -339,11 +518,11 @@ function gotoList(username){
     $( '#inventarioModal' ).on( 'click', 'button.btn-primary', function(){
       $( '[data-name=codigoArticulo]', $productRow ).val( productData.Codigo );
       $( '[data-name=nombreArticulo]', $productRow ).val( productData.NombreDelArticulo );
-      $( '[data-name=precioUnitario]', $productRow ).val( productData.Precio );
+      $( '.art-precioUni', $productRow ).val( productData.Precio );
       $( '[data-name=descripcionArticulo]', $productRow ).val( productData.DetallesDelArticulo );
       $( '[data-name=cantidad]', $productRow ).val(1);
 
-      $( '[data-name=precioUnitario]', $productRow ).trigger( 'input' );
+      $( '.art-precioUni', $productRow ).trigger( 'input' );
     });
 
     $( '.transactions-list' ).on( 'click', '.row-product button[data-toggle=modal]', function(){
@@ -494,24 +673,23 @@ function gotoList(username){
 
         if(!allValid) return;
 
-        var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
+        $('#printConfig').modal({ backdrop: 'static', keyboard: false });
+        containerScroll(0);
+    });
 
-        $('#downloadFile').find('[name=data]').val(data);
-        $('#downloadFile').submit();
+    $('#printConfig .btn-primary').on('click', function(e){
+      e.preventDefault();
 
-        // $.ajax({
-        //         url: "../cotz/services/cotz.php",
-        //         data: { data: data, action: 'print_cot' },
-        //         type: "POST"
-        //     })
-        //     .done(function(data){
-        //        $('#downloadFile').attr('href', data);
-        //        $('#downloadFile').get(0).click();
-        //         console.log('data',data);
-        //       })
-        //     .fail(function(e){
-        //       console.log('fail',e);
-        //     });
+      var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
+      var printConfigData = $('#printConfig form').serialize();
+
+      if ( printConfigData ){
+        data += '&' + printConfigData;
+      }
+
+      $('#downloadFile').find('[name=data]').val(data);
+      $('#downloadFile').submit();
+
     });
 
     function validInputs(){
@@ -534,6 +712,59 @@ function gotoList(username){
     }
 
     var processingAction = false;
+
+    $('.btn-clone').on('click', function(e){
+      e.preventDefault();
+
+      var $modal = $('#confirmModal');
+
+        $modal.find('.modal-body').text('Seguro que desea clonar esta cotización?');
+        $modal.find('.btn-primary').text('Si').next().show();
+        $modal.find('.btn-primary').attr('data-dismiss', '');
+
+        containerScroll(0);
+
+        $modal.modal({ backdrop: 'static', keyboard: false })
+        .one('click', '.modal-footer .btn', function (e) {
+            e.preventDefault();
+
+            if( $(this).is('#action-exc') ){
+              var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON(),
+                  allValid = validInputs(),
+                  action = 'save_cot';
+
+            
+              if(allValid){
+                $.ajax({
+                  url: "../cotz/services/cotz.php",
+                  dataType: 'json',
+                  data: { data: data, action: action },
+                  type: "POST"
+                })
+                .done(function(data){
+                    if(data.id){
+                      $modal.find('.modal-body').html('Cotización clonada con éxito. <b>ID: ' + data.id + '</b>');
+                      $modal.find('.btn-primary').hide();
+                      $modal.find('.btn-primary').next().text('Ok');
+                    }
+                  })
+                .fail(function(e){
+                  $modal.find('.modal-body').text('Ocurrio un problema durante la clonación.');
+                })
+                .always(function(){
+                  $modal.find('.btn-primary').hide();
+                });
+              }
+          }
+
+        });
+
+        $modal.one('hide.bs.modal', function(){
+          $modal.find('.btn-primary').attr('data-dismiss', 'modal');
+          $modal.find('.btn-primary').show().next().text('Cancelar');
+        });
+    });
+
     $('.btn-save').on('click', function(e){
             e.preventDefault();
             if(processingAction) return;
@@ -573,7 +804,7 @@ function gotoList(username){
                 processingAction = false;
               });
             }
-    });        
+    });
 
     $('#tasaImpuestos').on('input', function(){
         updateAll();
@@ -639,6 +870,46 @@ function gotoList(username){
 
     $('.form-container.is-update .art-cantidad').trigger('input');
 
+
+    $('.custom-tablesearch').on('input', function(){
+      var fields = $(this).data('fields').split(' ');
+      var term = $.trim($(this).val() );
+      var minLength = 2;
+
+      if(!fields) return;
+
+      var $table = $(this).closest('div').find('table:eq(0)');
+
+      if(!term){
+        $table.find('tbody tr').show();
+        return;
+      }
+
+      if( term.length < minLength ){
+        return;
+      }
+
+      var termRegex = RegExp(term, 'i');
+      
+
+      $table.find('tbody tr').hide().filter(function(){
+        return !!$(this).find('a').filter(function(){
+          var vals = [];
+          var $this = $(this);
+
+          fields.forEach(function(elem){
+             vals.push(  $this.data(elem) );
+          });
+
+          vals = vals.join(' ');
+          
+          return termRegex.test(vals);
+        }).length;
+
+      }).show();
+
+    });
+
   });
 
 function getContactsByAccount(acc_id, cb){
@@ -689,6 +960,10 @@ $('.add_compania').on('click', function(e){
 
 $("#companiaInput").autocomplete({
         minLength: 2,
+        delay: 800,
+        classes:{
+          'ui-autocomplete': 'companiaAutocomplete'
+        },
         source: function(request, response) {
             $.ajax({
                 url: "../cotz/services/cotz.php",
@@ -698,7 +973,7 @@ $("#companiaInput").autocomplete({
                 success: function(data){
                   //console.log(data);
                    var result = $.map(data, function(item){
-                    console.log(item);
+                  // console.log(item);
                   return {
                             label: item.name,
                             value: item.name,
@@ -719,12 +994,15 @@ $("#companiaInput").autocomplete({
         }
     })
   .autocomplete( "instance" )._renderItem = function( ul, item ) {
-    console.log(item);
+    // console.log(item);
       var desc = (item.desc==null || item.desc == '') ? "-" : item.desc;
       return $( "<li>" )
         .append( "<div>" + item.label + "<br> Descripcion: " + desc + "<br> Telefono: " + item.phone + "</div>" )
         .appendTo( ul );
     };
+
+  $($("#companiaInput").autocomplete('instance').bindings[1]).off('mouseenter mouseout');
+
 
 
     $(window).on('resize', function(e){
