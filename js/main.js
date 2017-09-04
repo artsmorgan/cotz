@@ -68,7 +68,7 @@ function formatPrice(value){
       $(this).parent().find('.op-hidden-formated').val( $(this).text() );
     });
 
-    $('.art-precioUni').each(function(){
+    $('[data-name=precioUnitario]').each(function(){
       $priceFormated = $(this).parent().find('.op-hidden-formated');
 
       $(this).formatCurrency( $priceFormated, {
