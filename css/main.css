@@ -211,14 +211,13 @@ ul.ui-autocomplete{
   display: none;
 }
 
-.companiaAutocomplete{
+.customAutocomplete{
   max-height: 320px;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-.companiaAutocomplete .ui-menu-item-wrapper:hover{
-    border: 1px solid #003eff;
+.customAutocomplete .ui-menu-item-wrapper:hover{
     background: #007fff;
     font-weight: normal;
     color: #ffffff;
@@ -226,6 +225,10 @@ ul.ui-autocomplete{
 
 #RecentlyViewedView{
   display: none;
+}
+
+.select2{
+  font-size: 13px;
 }
 
 @media (min-width: 768px){

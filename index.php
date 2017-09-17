@@ -110,6 +110,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       <script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
       <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
       <script src="js/export-table.js"></script>
+      <script src="js/vendor/jquery.formatCurrency-1.4.0.min.js"></script>
       <script src="js/vendor/tableExport/tableExport.min.js"></script>
       <script type="text/javascript" src="js/vendor/tableExport/libs/FileSaver/FileSaver.min.js"></script>
       <script type="text/javascript" src="js/vendor/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
@@ -149,6 +150,13 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
           // }
            window.location.href = "cotz.php?u="+id;
           parent.iframeLoaded();
+        }
+
+        $.formatCurrency.regions[''].decimalSymbol = ',';
+        $.formatCurrency.regions[''].digitGroupSymbol = '.';
+
+        function formatPrice(value){
+          return $('<span>'+ value + '</span>').formatCurrency({symbol: ''}).html();
         }
 
       $(function () {

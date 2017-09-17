@@ -40,7 +40,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="css/select2.min.css">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/main.css?v=1.0.0">
         <script src="https://use.fontawesome.com/5b1d115124.js"></script>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
@@ -644,7 +644,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               <div class="row cols-middle">
                 <div class="col-sm-2 form-group">
                   <label for="codigoArticulo1">Código:</label>
-                  <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo1">
+                  <input type="text" data-name="codigoArticulo" class="form-control codAutocomple" id="codigoArticulo1">
                 </div>
                 <div class="col-sm-6 form-group">
                   <label for="nombreArticulo1">Nombre del artículo:</label>
@@ -707,7 +707,8 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-2 form-group border--full">
               <label for="precioUnitario1" class="hidden-sm">Precio unitario</label>
-              <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario1">
+              <input type="text" class="form-control art-precioUni format-currency" id="precioUnitario1">
+              <input type="hidden" data-name="precioUnitario" class="form-control" >
               <input type="hidden" data-name="precioUnitarioFormated" class="op-hidden-formated">
             </div>
             <div class="col-sm-1 form-group border--full">
@@ -746,7 +747,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
               <div class="row cols-middle">
                 <div class="col-sm-2 form-group">
                   <label for="codigoArticulo<?php echo $index + 1; ?>">Código:</label>
-                  <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo<?php echo $index + 1; ?>" value="<?php echo htmlentities($linea['codigo_articulo']); ?>" >
+                  <input type="text" data-name="codigoArticulo" class="form-control codAutocomple" id="codigoArticulo<?php echo $index + 1; ?>" value="<?php echo htmlentities($linea['codigo_articulo']); ?>" >
                 </div>
 
                 <div class="col-sm-6 form-group">
@@ -811,7 +812,8 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             </div>
             <div class="col-sm-2 form-group border--full">
               <label for="precioUnitario<?php echo $index + 1; ?>" class="hidden-sm">Precio unitario</label>
-              <input type="number" data-name="precioUnitario" class="form-control art-precioUni" id="precioUnitario<?php echo $index + 1; ?>" value="<?php echo $linea['precio']; ?>">
+              <input type="text" class="form-control art-precioUni format-currency" id="precioUnitario<?php echo $index + 1; ?>" value="<?php echo $linea['precio']; ?>">
+              <input type="hidden" data-name="precioUnitario" class="form-control" value="<?php echo $linea['precio']; ?>">
               <input type="hidden" data-name="precioUnitarioFormated" class="op-hidden-formated">
             </div>
             <div class="col-sm-1 form-group border--full">
@@ -1040,7 +1042,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
     <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
     <script src="js/vendor/select2.full.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=1.0.0"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

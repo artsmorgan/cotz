@@ -146,9 +146,9 @@ function formatPrice(value){
   }
 
   function updateTotal(){
-    var iva = Number( $('.op-total-iva').text() ),
-        subtotal = Number( $('.op-total-subtotal').text() ),
-        descuento = Number( $('.op-total-descuento').text() ),
+    var iva = Number( $('.op-hidden-iva').val() ),
+        subtotal = Number( $('.op-hidden-subtotal').val() ),
+        descuento = Number( $('.op-hidden-descuento').text() ),
         total = subtotal - descuento + iva;
 
     total = applyRoundFactor(total, 'total_final');
@@ -326,13 +326,19 @@ function formatPrice(value){
 
         var inputElem = $(this).get(0),
             caretPos = doGetCaretPosition( inputElem ),
-            valLength = $(this).val().length;
+            val = $.trim($(this).val()),
+            valLength = val.length,
+            lastDigit = val.substr(-1);
 
-        if( $.trim($(this).val()).substr(-1) !== ','){
+        if( lastDigit !== ','){
           $(this).val($(this).asNumber()).formatCurrency({symbol: '', roundToDecimalPlace: -1});
         }
 
         $(this).parent().find('[type=hidden]:not(.op-hidden-formated)').val( $(this).asNumber() );
+
+        if( val.indexOf('.') !== -1 && lastDigit === '0' ){
+              $(this).val( val );
+        }
 
         if( $(this).val().length > valLength ){
           caretPos++;
@@ -365,25 +371,82 @@ function formatPrice(value){
     parentIframeLoaded(true);
     //$( '.fixed-table-toolbar' ).prepend(createCotBtn);
 
-    var bootstrapTableOpt = {
-      url: SERVER_PROD+'/cotz/api/inv.json',
-      onLoadSuccess: function(){
-        parentIframeLoaded(true);
+    var inv = null;
+
+    $.ajax({
+        url: SERVER_PROD+'/cotz/api/inv.json',
+        dataType: 'json',
+        success: function(response){
+           inv = response;
+           initInvTable();
+           initCodAutocomplete();
+        }
+    });
+
+  function initInvTable(){
+      var bootstrapTableOpt = {
+        data: inv,
+        onLoadSuccess: function(){
+          parentIframeLoaded(true);
+        },
+        onAll: function(name, args){
+          parentIframeLoaded(true);
+        },
+        exportDataType: 'all'
+      };
+
+      $( '#table' ).bootstrapTable(bootstrapTableOpt);
+
+      // $('#toolbar').find('select').change(function () {
+      //     console.log('change');
+      //     bootstrapTableOpt['exportDataType'] =  $(this).val();
+
+      //     $( '#table' ).bootstrapTable('destroy').bootstrapTable(bootstrapTableOpt);
+      // });
+  }
+
+  function initCodAutocomplete(){
+    var $codInput = $( ".codAutocomple:not(.auto)").addClass('auto');
+
+    $codInput.autocomplete({
+      minLength: 4,
+      classes:{
+          'ui-autocomplete': 'customAutocomplete'
       },
-      onAll: function(name, args){
-         parentIframeLoaded(true);
+      source: function(request, response){
+        var term = $.ui.autocomplete.escapeRegex(request.term),
+            termRegExp = RegExp( '^' + term, 'i'),
+            result = $.grep(inv, function(o){
+              return termRegExp.test(o.Codigo);
+            });
+
+        response( $.map(result, function(o){
+            return $.extend(o, {
+              label: o.Codigo,
+              value: o.Codigo
+            });
+          })
+        );
       },
-      exportDataType: 'all'
+      select: function( event, ui ) {
+          var $productRow = $(event.target).closest('.row-product');
+
+          $( '[data-name=codigoArticulo]', $productRow ).val( ui.item.Codigo );
+          $( '[data-name=nombreArticulo]', $productRow ).val( ui.item.NombreDelArticulo );
+          $( '.art-precioUni', $productRow ).val( ui.item.Precio );
+          $( '[data-name=descripcionArticulo]', $productRow ).val( ui.item.DetallesDelArticulo );
+          $( '[data-name=cantidad]', $productRow ).val(1);
+
+          $( '.art-precioUni', $productRow ).trigger( 'input' );
+      }
+    }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<div>" +item.Codigo + "<br>" + item.NombreDelArticulo + "</div>")
+        .appendTo( ul );
     };
 
-   $( '#table' ).bootstrapTable(bootstrapTableOpt);
-
-    $('#toolbar').find('select').change(function () {
-        console.log('change');
-        bootstrapTableOpt['exportDataType'] =  $(this).val();
-
-        $( '#table' ).bootstrapTable('destroy').bootstrapTable(bootstrapTableOpt);
-    });
+    $($codInput.autocomplete('instance').bindings[1]).off('mouseenter mouseout');
+  }
 
   $('.cl-select2').select2();
 
@@ -546,6 +609,7 @@ function formatPrice(value){
 
       $(this).closest( '.row-foot' ).before($newProduct);
       $newProduct.slideDown( 400, function(){ parentIframeLoaded() });
+      initCodAutocomplete();
     });
 
     $( '.transactions-list' ).on( 'click', '.btns-collapse a', function(e){
@@ -729,11 +793,17 @@ function formatPrice(value){
             e.preventDefault();
 
             if( $(this).is('#action-exc') ){
-              var data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON(),
-                  allValid = validInputs(),
-                  action = 'save_cot';
+              var allValid = validInputs(),
+                  today = new Date(),
+                  originalDate = $('#altFechaCotizacion').val(),
+                  currentDate = $.datepicker.formatDate( "yy-mm-dd", today ) + " " + ( "0" + today.getHours() ).slice(-2) + ":" + ( "0" + today.getMinutes() ).slice(-2) + ":" + ( "0" + today.getSeconds() ).slice(-2);
+                  action = 'save_cot',
+                  data = null;
 
-            
+              $('#altFechaCotizacion').val(currentDate);
+
+              data = $('.form-container').serialize() + '&lineas=' + getProdcutDataJSON();
+              
               if(allValid){
                 $.ajax({
                   url: "../cotz/services/cotz.php",
@@ -752,6 +822,7 @@ function formatPrice(value){
                   $modal.find('.modal-body').text('Ocurrio un problema durante la clonación.');
                 })
                 .always(function(){
+                  $('#altFechaCotizacion').val(originalDate);
                   $modal.find('.btn-primary').hide();
                 });
               }
@@ -962,7 +1033,7 @@ $("#companiaInput").autocomplete({
         minLength: 2,
         delay: 800,
         classes:{
-          'ui-autocomplete': 'companiaAutocomplete'
+          'ui-autocomplete': 'customAutocomplete'
         },
         source: function(request, response) {
             $.ajax({
