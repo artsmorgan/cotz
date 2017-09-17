@@ -42,7 +42,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/select2.min.css">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/main.css?v=1.0.0">
         <script src="https://use.fontawesome.com/5b1d115124.js"></script>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
@@ -547,7 +547,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <div class="row cols-middle">
                 <div class="col-sm-2 form-group">
                   <label for="codigoArticulo1">Código:</label>
-                  <input type="text" data-name="codigoArticulo" class="form-control" id="codigoArticulo1">
+                  <input type="text" data-name="codigoArticulo" class="form-control codAutocomple" id="codigoArticulo1">
                 </div>
                 <div class="col-sm-6 form-group">
                   <label for="nombreArticulo1">Nombre del artículo:</label>
@@ -610,8 +610,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             </div>
             <div class="col-sm-2 form-group border--full">
               <label for="precioUnitario1" class="hidden-sm">Precio unitario</label>
-              <input type="text" class="form-control art-precioUni format-currency" >
-              <input type="hidden" data-name="precioUnitario" class="form-control" id="precioUnitario1">
+              <input type="text" class="form-control art-precioUni format-currency" id="precioUnitario1">
+              <input type="hidden" data-name="precioUnitario" class="form-control">
               <input type="hidden" data-name="precioUnitarioFormated" class="op-hidden-formated">
             </div>
             <div class="col-sm-1 form-group border--full">
@@ -866,7 +866,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
     <script src="js/vendor/jquery-ui.min.js"></script>
     <script src="js/vendor/select2.full.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=1.0.0"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
