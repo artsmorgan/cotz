@@ -105,6 +105,34 @@
 				
 				echo json_encode($cot_id);
 			break;	
+		case 'update_cot_batch':
+				$data = $_REQUEST['data'];
+				$params = array();
+				parse_str($data, $params);
+
+				$ids 			 	 = $params['cotsId'];
+				$vendedor_id		 = $params['userid'];
+
+				$cots_id = array();
+
+				foreach($ids as $id ){
+					if( dbAdmin::getInstancia()->updateHeaderBatch($vendedor_id, $id) ){
+						$cots_id[] = $id;
+					}
+				}
+
+				$response = array();
+
+				if( count($cots_id) === count( $ids  ) ){
+					$response['success'] = true;
+					
+				}
+
+				$response['ids'] = $ids;
+				$response['ids_count'] = count($cots_id);
+				
+				echo json_encode($response);
+			break;	
 		case 'list_cotz':
 				return json_encode(array("test"=>"yes"));
 			break;

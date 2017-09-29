@@ -438,11 +438,13 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                             'Sus instalaciones.',
                             'Su oficina.',
                             'A convenir.',
-                            'Vía encomienda.'
+                            'Vía encomienda.',
+                            'Nuestras bodegas',
+                            'Nuestras instalaciones'
                         );
                         $optSelected = false;
                     ?>
-                    <?php for($i = 0, $l = count($options) - 1; $i < $l; $i++ ): ?>
+                    <?php for($i = 0, $l = count($options); $i < $l; $i++ ): ?>
                         <?php 
                             if( $options[$i] == $cot[0]['lugar_entrega']  )  {
                                 $optSelected = true;
@@ -1042,7 +1044,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
     <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
     <script src="js/vendor/select2.full.min.js"></script>
-    <script src="js/main.js?v=1.0.0"></script>
+    <script src="js/main.js?v=1.0.1"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

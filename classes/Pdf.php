@@ -87,6 +87,16 @@ class PDF {
             vertical-align: top;
         }
 
+        .border--left{
+            border-left: solid 1px #d0d0d0;
+            
+        }
+
+        .border--right{
+            border-right: solid 1px #d0d0d0;
+            
+        }
+
         .cot_lines{
             padding-top: 12px;
             font-size: 12px;
@@ -98,7 +108,7 @@ class PDF {
             text-align: center;
         }
 
-        .cot_hline_no{
+        .cot_hline_no, .cot_line_no{
             width: 6%;
             text-align: center;
         }
@@ -112,29 +122,40 @@ class PDF {
             font-weight: 400;
         }
 
-        .cot_hline_amount, .cot_hline_measure{
+        .cot_hline_amount, .cot_hline_measure, .cot_line_amount, .cot_line_measure{
             width: 6%;
         }
 
-        .cot_hline_uprice, .cot_hline_tprice{
+        .cot_hline_uprice, .cot_hline_tprice, .cot_line_uprice, .cot_line_tprice{
             width: 12%;
+            font-size: 12px;
         }
 
         .cot_line_content td{
             padding: 6px 2px;
-            border-bottom: 1px solid #d0d0d0;
             /*height: 158px;*/
             vertical-align: top;
             font-size: 12px;  
         }
 
+        .no_padding{
+            padding: 0;
+            margin: 0;
+        }
+
+        .no_padding td, .no_padding .cot_line_desc{ 
+            padding: 0 2px;
+            margin: 0;
+            line-height: 12px;
+        }
+    
         .cot_line_codigo{
             padding-bottom: 10px;
         }
 
         h2.section_content{
             border-top: 2px solid #808080;
-            margin-top: 30px;
+            margin-top: 15px;
         }
 
         p.section_content{
@@ -165,7 +186,11 @@ class PDF {
         }
 
         .mrg-top{
-            margin-top: 30px;
+            margin-top: 15px;
+        }
+
+        .table_content, .table_content td, .table_content tr{
+            width: 100%;
         }
         </style>
         <page style="font-size: 13px" backleft="8mm" backtop="5mm" backright="8mm" backbottom="5mm">
@@ -210,8 +235,47 @@ class PDF {
                     </tr>
                 </thead>
             <?php for($i = 0, $count = count($lineas);  $i < $count ;$i++ ): ?>
+                <?php 
+                    $str = preg_replace( "/\n|\r/", " <br> ", $lineas[$i]['descripcionArticulo'] ); 
+                    $matches = array();
+                    preg_match_all('/[^ ]+/', $str, $matches);
+                    $paragraph_lines = array();
+                    $current_line = 0;
+                    $MAX_LENGTH = 54;
+                    
+                    if( !empty($matches) ){
+                        foreach( $matches[0] as $word ){
+                            if(empty($paragraph_lines[$current_line])){
+                                $paragraph_lines[$current_line] = '';
+                            }
+
+                            $paragraph_line_length = strlen( $paragraph_lines[$current_line] );
+                            $word_length = strlen( $word );
+
+                            if( $word == "<br>" ){
+                                $paragraph_lines[$current_line] .= $word;
+                                $current_line++;
+                            }
+                            else if( $paragraph_line_length + $word_length < $MAX_LENGTH ){
+                                $paragraph_lines[$current_line] .= $word . ' ';
+                            }
+                            else{
+                                $current_line++;
+                                $paragraph_lines[$current_line] = $word . ' ';
+
+                                if( $word_length >= $MAX_LENGTH ){
+                                    $current_line++;
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        $paragraph_lines[0] = '';
+                    }
+               ?>
+
                 <tr class="cot_line_content">
-                    <td class="text_center">
+                    <td class="text_center border--left">
                         <b><?php  echo $i +1; ?></b>
                     </td>
                     <td class="cot_line_desc">
@@ -219,7 +283,6 @@ class PDF {
                         <b><?php echo $lineas[$i]['nombreArticulo']; ?></b>
                         <br>
                         <br>
-                        <?php echo preg_replace( "/\r|\n/", "<br>", $lineas[$i]['descripcionArticulo'] ); ?>
                     </td>
                     <td class="text_center">
                         <p><?php echo $lineas[$i]['cantidad']; ?></p>
@@ -230,60 +293,64 @@ class PDF {
                      <td>
                         <p><?php echo $lineas[$i]['precioUnitarioFormated']; ?></p>
                     </td>
-                     <td>
+                     <td class="border--right">
                         <p><?php echo $lineas[$i]['montoFormated']; ?></p>
                     </td>
                 </tr>
+
+                <?php for( $p = 0, $p_length = count( $paragraph_lines ); $p < $p_length; $p++ ): ?>
+                    <?php $last_p_line = ( $p == $p_length -1 );  ?>
+                    <tr class="cot_line_content no_padding <?php echo ( $last_p_line ? "border_bottom" : ""); ?>">
+                        <td class="border--left"></td>
+                        <td class="cot_line_desc">
+                            <?php echo $paragraph_lines[$p]; ?>
+                            <?php if ( $last_p_line  )  echo "<br>"; ?>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="border--right"></td>
+                    </tr>
+                <?php endfor; ?>
+
             <?php endfor; ?>
+            </table>
+            <div style="page-break-inside: avoid;">
+            <table >
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <p>Sub-total</p>
-                        </td>
-                        <td>
-                            <p><?php echo $subtotalFormated; ?></p>
-                        </td>
+                        <td class="cot_line_no border--left"></td>
+                        <td class="cot_line_desc"></td>
+                        <td class="cot_line_amount"></td>
+                        <td class="cot_line_measure"></td>
+                        <td class="cot_line_uprice"><p>Sub-total</p></td>
+                        <td class="cot_line_tprice border--right"><p><?php echo $subtotalFormated; ?></p></td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <p>Descuento</p>
-                        </td>
-                        <td>
-                            <p><?php echo $totalDescuentoFormated; ?></p>
-                        </td>
+                        <td class="cot_line_no border--left"></td>
+                        <td class="cot_line_desc"></td>
+                        <td class="cot_line_amount"></td>
+                        <td class="cot_line_measure"></td>
+                        <td class="cot_line_uprice"><p>Descuento</p></td>
+                        <td class="cot_line_tprice border--right"><p><?php echo $totalDescuentoFormated; ?></p></td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <p>I.V.</p>
-                        </td>
-                        <td class="border_bottom">
-                            <p><?php echo $totalIvaFormated; ?></p>
-                        </td>
+                        <td class="cot_line_no border--left"></td>
+                        <td class="cot_line_desc"></td>
+                        <td class="cot_line_amount"></td>
+                        <td class="cot_line_measure"></td>
+                        <td class="cot_line_uprice"><p>I.V.</p></td>
+                        <td class="cot_line_tprice border_bottom border--right"><p><?php echo $totalIvaFormated; ?></p></td>
                     </tr>
                     <tr class="border_bottom">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <p>Total</p>
-                        </td>
-                        <td>
-                            <p><?php echo $totalFormated; ?></p>
-                        </td>
+                        <td class="cot_line_no border--left"></td>
+                        <td class="cot_line_desc"></td>
+                        <td class="cot_line_amount"></td>
+                        <td class="cot_line_measure"></td>
+                        <td class="cot_line_uprice"><p>Total</p></td>
+                        <td class="cot_line_tprice border--right"><p><?php echo $totalFormated; ?></p></td>
                     </tr>
             </table> <!-- lines end  -->
+            </div>
             <?php if( !empty($notasCotizacion) ) :?>
                 <h2 class="section_content">Notas</h2>
                 <?php $notasCotizacion = preg_replace( "/\r|\n/", "<br>", $notasCotizacion ); ?>

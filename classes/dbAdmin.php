@@ -427,6 +427,34 @@ class dbAdmin {
 
     }
 
+    public function updateHeaderBatch($vendedor_id, $id){
+        
+        $args = array(
+            'id' => $id
+        );
+
+        if( !empty( $vendedor_id ) ){
+            $args['vendedor_id'] = $vendedor_id;
+        }
+
+        if( count($args) == 1 ){
+            return false;
+        }
+
+        // $sql = 'UPDATE cotz_header SET vendedor_id = "?", fecha_cotizacion = "?", fecha_vencimiento = ?, tasa_impuestos = ?, 
+        // -- moneda = ?, factor_redondeo = ?, no_solicitud = ?, no_cotizacion = ?, account_id = ?, contact_id = ?, tiempo_entrega + ?,
+        // -- lugar_entrega = ?, forma_pago = ?, marca = ?, fase = ?, notas = ?, notas_crm = ?, subtotal = ?, descuento = ?, impuesto = ?,
+        // -- total = ?, tasa_cambio = ?, modificado_por = ?, fecha_modificacion = now() WHERE id = ?';
+
+        $this->getConnection();
+        $this->_adoconn->Execute("SET NAMES 'utf8';");
+        $rs = $this->_adoconn->Replace( 'cotz_header', $args, 'id', true );
+        $this->_adoconn->Replace( 'cotz_header', array('fecha_modificacion' => 'now()', 'id' => $id), 'id' );
+        $this->closeConnection();
+       
+        return true;
+    }
+
 
     public function updateHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
                                 $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
@@ -624,7 +652,6 @@ class dbAdmin {
             //         inner join contact co on c.contact_id = co.id
             //         inner join person p on   co.person_id = p.id limit 100 ;';
 
-
             $sql ="select c.id, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, 
                     CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, 
                     c.tasa_cambio, c.fecha_cotizacion, c.no_cotizacion, u.username, p.firstname, p.lastname, a.name 
@@ -634,7 +661,7 @@ class dbAdmin {
                     left join contact co on c.contact_id = co.id
                     left join person p on co.person_id = p.id
                     ORDER BY DATE(c.fecha_cotizacion) DESC, c.fecha_cotizacion DESC";
-           $this->getConnection();
+            $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
             
@@ -738,15 +765,15 @@ class dbAdmin {
        
     }
 
-    public function changeCharset($data, $charsetFrom = 'latin1', $charsetTo = 'utf-8' ){
-if(is_array($data)){
+    public function changeCharset($data, $charsetFrom = 'latin1', $charsetTo = 'utf-8//TRANSLIT' ){
+        if(is_array($data)){
             array_walk_recursive($data, function(&$value, $key) use ($charsetFrom, $charsetTo) {
                 if (is_string($value) ) {
                     $value = iconv($charsetFrom, $charsetTo, $value);
                 }
             });
         }
-			else if(is_string($data)){
+        else if(is_string($data)){
             $data = iconv($charsetFrom, $charsetTo, $data);
         }
         

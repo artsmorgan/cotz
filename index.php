@@ -53,9 +53,19 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
     <div class="filter-by-data">
       <p><h3>Filtros </h3> Desde: <input type="text" id="datepicker_from"> Hasta: <input type="text" id="datepicker_to"> <a href="#" class="btn btn-default">Filtrar</a></p>
     </div>
-    <div id="toolbar" style="text-align: right;">
-      <label for="export_all">Exportar todas</label>
+    <div id="toolbar" class="row" >
+      <div class="col-sm-6">
+        <select id="batch-processing" disabled>
+            <option value="">Acciones en lote</option>
+            <option value="edit">Editar</option>
+        </select>
+      </div>
+
+      <div class="col-sm-6" style="text-align: right;">
+        <label for="export_all">Exportar todas</label>
         <input type="checkbox" value="all" id="export_all">
+      </div>
+      
     </div>
     <br>
 
@@ -68,7 +78,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                         data-page-size="50" data-page-list="[10,25,50,100]">
       <thead>
       <tr>  
-        <th data-field="id" data-sortable="true">Cot #</th>
+        <th data-field="id" data-sortable="true" data-formatter="addCheckbox">Cot #</th>
         <th data-field="no_cotizacion" data-sortable="true">No. cotización</th>
         <th data-field="name" data-sortable="true">Cliente</th>
         <th data-field="username" data-sortable="true">Vendedor</th>
@@ -102,6 +112,72 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         </div>
       </div>
 
+      <div class="modal fade" id="vendedoresModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 1000;">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Seleccionar Vendedor</h4>
+              </div>
+              <div class="modal-body">
+                <input type="text" placeholder="Buscar" class="pull-right custom-tablesearch" data-fields="username">
+                <table id="user-table" class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <?php for($i = 0; $i < count($userlist);$i++ ){?>                      
+                      <tr>
+                        <td><?php  echo $userlist[$i]['firstname'].' '. $userlist[$i]['lastname'];  ?></td>
+                        <td>
+                          <a href="#" class="add-vendedor btn btn-primary" 
+                                          data-id="<?php  echo $userlist[$i]['userID']; ?>" 
+                                          data-username="<?php  echo $userlist[$i]['firstname'].' '. $userlist[$i]['lastname'];  ?>">
+                            <i class="fa fa-user-plus" aria-hidden="true"></i> Agregar
+                          </a>
+                        </td>
+                      </tr>
+                      <?php } ?>
+                    </tbody>
+                </table>
+              </div>             
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="editBatchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 900;">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Editar cotizaciones: <span></span></h4>
+              </div>
+              <div class="modal-body company-modal-body">
+                 <br>
+                 <form class="editBatchForm">
+                    <div class="form-group">
+                      <label for="vendedor">Vendedor:</label>
+                      <input type="text"  class="form-control" id="vendedor" />
+                      <input type="hidden" name="userid" id="userid" value="" />
+                    </div>
+                  </form>
+                  <div class="msg">
+                  </div>
+              </div>
+              <div class="modal-footer default">
+                <a href="#" type="button" class="btn btn-primary">Guardar</a>
+                <a href="#" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</a>
+              </div>
+              <div class="modal-footer ok">
+                <a href="#" type="button" class="btn btn-primary btn-ok" data-dismiss="modal">Ok</a>
+              </div>      
+            </div>
+          </div>
+        </div>
+
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -129,7 +205,11 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             window.location.href = "cotz_update.php?u="+username+"&cotId="+value;
         }
 
-        var editBtn = function (value) { 
+        function addCheckbox(value){
+          return '<label class="batch-processing">' + value + '<br> <input type="checkbox" value="' + value +  '"></label>';
+        }
+
+        var editBtn = function (value) {       
              return '<a href="#" class="edit edit-cot" onclick="updateCot('+value+')" data="$id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
         };
 
@@ -189,6 +269,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                   var cotID = row['id'];
                 },
                 onLoadSuccess: function(){
+                  $table.find('.batch-processing').closest('td').off('click dbclick');
+
                   jsonData = $table.bootstrapTable('getData');
                   bootstrapTableOpt['data'] = jsonData;
                   delete bootstrapTableOpt.url;
@@ -344,6 +426,123 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             });
           
         });
+
+        $('#table').on('click', '.batch-processing', function(e){
+          e.stopImmediatePropagation();
+
+          var atLeastOne = $('.batch-processing input:checked').length;
+
+          $('#batch-processing').prop('disabled', !atLeastOne);
+          $('#batch-processing').val('');
+        });
+
+        $('#vendedor').on('click', function(e){
+          $('#vendedoresModal').modal({ backdrop: 'static', keyboard: false });
+        });
+
+        $('#batch-processing').on('change', function(){
+          var action = $(this).val(),
+              $modal = $('#editBatchModal');
+
+          switch(action){
+            case 'edit':
+
+                $modal.find('.editBatchForm [name="cotsId[]"]').remove();
+
+                var cotzId = $.map($('#table .batch-processing input:checked'), function(item){
+                      var value = $(item).val();
+                      $modal.find('.editBatchForm').append( '<input type="hidden" name="cotsId[]" value="' + value  + '" >' );
+                      return value
+                  });
+
+                $modal.find('h4 span').text(cotzId.join(' - '));
+                $modal.find('.modal-footer.default').show();
+                $modal.find('.modal-footer.ok').hide();
+                $modal.find('.modal-body .msg').text('');
+                $modal.modal({ backdrop: 'static', keyboard: false });
+            break;
+          }
+        });
+
+        $('#editBatchModal .btn-ok').on('click', function(){
+            window.location.reload();
+        });
+
+        $('#editBatchModal .btn-primary').on('click', function(){
+
+            var $modal = $('#editBatchModal'),
+                data = $('.editBatchForm').serialize();
+
+            $.ajax({
+                url: "../cotz/services/cotz.php",
+                dataType: 'json',
+                data: { data: data, action: 'update_cot_batch' },
+                type: "POST"
+              })
+              .done(function(data){
+                  if(data.success){
+                    $modal.find('.modal-body .msg').html('<b>Cotizaciones actualizadas con éxito</b>');
+                    $modal.find('.modal-footer.default').hide();
+                    $modal.find('.modal-footer.ok').show();
+                  }
+                })
+              .fail(function(e){
+                $modal.find('.modal-body .msg').text('Ocurrio un problema durante la actualización.');
+              });
+        });
+
+        $('.custom-tablesearch').on('input', function(){
+          var fields = $(this).data('fields').split(' ');
+          var term = $.trim($(this).val() );
+          var minLength = 2;
+
+          if(!fields) return;
+
+          var $table = $(this).closest('div').find('table:eq(0)');
+
+          if(!term){
+            $table.find('tbody tr').show();
+            return;
+          }
+
+          if( term.length < minLength ){
+            return;
+          }
+
+          var termRegex = RegExp(term, 'i');
+          
+
+          $table.find('tbody tr').hide().filter(function(){
+            return !!$(this).find('a').filter(function(){
+              var vals = [];
+              var $this = $(this);
+
+              fields.forEach(function(elem){
+                vals.push(  $this.data(elem) );
+              });
+
+              vals = vals.join(' ');
+              
+              return termRegex.test(vals);
+            }).length;
+
+          }).show();
+
+        });
+
+        function setNewVendedor(username, id){
+          $('#vendedor').val(username);
+          $('#userid').val(id);
+        }
+
+        $('.add-vendedor').on('click', function(e){
+          e.preventDefault();
+          var name = $(this).data('username');
+          var id =  $(this).data('id');
+          setNewVendedor(name, id);
+          // console.log('name: %d - id: %d', name, id)
+          $('#vendedoresModal').modal('hide');
+      });
           
       });
 

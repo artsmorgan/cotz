@@ -148,7 +148,7 @@ function formatPrice(value){
   function updateTotal(){
     var iva = Number( $('.op-hidden-iva').val() ),
         subtotal = Number( $('.op-hidden-subtotal').val() ),
-        descuento = Number( $('.op-hidden-descuento').text() ),
+        descuento = Number( $('.op-hidden-descuento').val() ),
         total = subtotal - descuento + iva;
 
     total = applyRoundFactor(total, 'total_final');
@@ -273,21 +273,27 @@ function formatPrice(value){
 
   $( document ).ready(function(){
 
-    $('.format-currency').formatCurrency({symbol: '', roundToDecimalPlace: -1});
+    $('.format-currency').formatCurrency({symbol: ''});
 
-    // var deletingInput = false;
-
-    // $('.format-currency').on('keydown', function(e){
-    //   deletingInput = e.keyCode == 8;
-    // });
+    var deletingDecimalSymbol= false;
+    
+    $('.transactions-list').on('keydown', '.format-currency', function(e){
+        var inputElem = $(this).get(0),
+            caretPos = doGetCaretPosition( inputElem )
+            decimalSymbol = ',',
+            val = $(this).val();
+      
+          deletingDecimalSymbol = ( e.keyCode == 8 ) && val[caretPos - 1] == decimalSymbol;
+    });
 
     $('.transactions-list').on('keypress', '.format-currency', function(e){
-            
-        var str = String.fromCharCode(e.which);
-
-        if( !/\d/.test(str) || str == ','  ){
+      var str = String.fromCharCode(e.which),
+          val = $(this).val(),
+          decimalSymbol = ',';
+    
+        if( !/\d/.test(str) || str == decimalSymbol ){
             if( str == ',' ){
-                var indexDot = $(this).val().indexOf(str);
+                var indexDot = val.indexOf(str);
 
                 if(indexDot == -1){
                   return true;
@@ -301,44 +307,34 @@ function formatPrice(value){
         }
     });
 
-    // $('.format-currency').on('blur', function(e){
-    //   $(this).trigger('input');
-    // });
-
     $('.transactions-list').on('input', '.format-currency', function(e){
-        // if(deletingInput) {
-        //   deletingInput = false;
-        //   return;
-        // }
-
-        // var inputElem = $(this).get(0),
-        //     inputLength = inputElem.value.length, 
-        //     caretPos = doGetCaretPosition( inputElem ),
-        //     minLength = 1;
-
-        // if( inputLength <  minLength){
-        //     inputLength = minLength;
-        // }
-
-        // inputElem.value = inputElem.value.replace( /,\d+/ , function(match){
-        //     return match.substr(0,3);
-        // });
-
         var inputElem = $(this).get(0),
             caretPos = doGetCaretPosition( inputElem ),
             val = $.trim($(this).val()),
+            indexDot = val.indexOf(','),
             valLength = val.length,
-            lastDigit = val.substr(-1);
+            lastDigit = val.substr(-1),
+            decimalSymbol = ',';
 
-        if( lastDigit !== ','){
-          $(this).val($(this).asNumber()).formatCurrency({symbol: '', roundToDecimalPlace: -1});
+        if( deletingDecimalSymbol ){
+          deletingDecimalSymbol = false;
+          val = val.substr(0, valLength - 2) + decimalSymbol + val.substr( valLength - 2 );
+          $(this).val(val);
+          caretPos += 1;
+          valLength += 1;
         }
 
+        if( indexDot !== -1 ){
+          valLength = val.substr(0, indexDot).length + 3;
+        }
+        else{
+          valLength += 3;
+        }
+
+        val = val.substr(0, valLength);
+        $(this).val(val);
+        $(this).val($(this).asNumber()).formatCurrency({symbol: ''});
         $(this).parent().find('[type=hidden]:not(.op-hidden-formated)').val( $(this).asNumber() );
-
-        if( val.indexOf('.') !== -1 && lastDigit === '0' ){
-              $(this).val( val );
-        }
 
         if( $(this).val().length > valLength ){
           caretPos++;
@@ -346,13 +342,6 @@ function formatPrice(value){
         else if( $(this).val().length < valLength ){
           caretPos--;
         }
-
-        // inputLength = inputElem.value.length - inputLength;
-        // caretPos += inputLength;
-
-        // if( caretPos > inputElem.value.indexOf(',') ){
-        //     caretPos++;
-        // }
 
         setCaretPosition(inputElem, caretPos );
 

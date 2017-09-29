@@ -392,6 +392,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                     <option value="Su oficina.">Su oficina.</option>
                     <option value="A convenir.">A convenir.</option>
                     <option value="Vía encomienda.">Vía encomienda.</option>
+                    <option value="Nuestras bodegas">Nuestras bodegas</option>
+                    <option value="Nuestras instalaciones">Nuestras instalaciones</option>
                     <option data-other>Otro</option>
                 </select>
               </div>
@@ -866,7 +868,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
     <script src="js/vendor/jquery-ui.min.js"></script>
     <script src="js/vendor/select2.full.min.js"></script>
-    <script src="js/main.js?v=1.0.0"></script>
+    <script src="js/main.js?v=1.0.1"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
