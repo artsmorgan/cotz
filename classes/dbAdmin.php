@@ -165,6 +165,35 @@ class dbAdmin {
        
     }
 
+    public function getContactList($term_name, $term_email, $term_company) {
+        
+            $sql = "SELECT c.id as id , a.name as companyname, e.emailaddress as email,
+            concat( p.firstname, ' ', p.lastname) as name, CONCAT_WS( ' / ', IF( p.officephone = '', NULL, p.officephone ), IF( p.mobilephone = '', NULL, p.mobilephone ) ) as phones
+            FROM accountcontactaffiliation ac 
+            inner join account a on ac.accountaffiliation_account_id = a.id
+            inner join contact c on ac.contactaffiliation_contact_id = c.id
+            inner join person p on c.person_id = p.id
+            inner join email e on p.primaryemail_email_id = e.id
+            where concat( p.firstname, ' ', p.lastname) like ? and e.emailaddress like ? and a.name like ?";
+
+            // echo $sql;
+
+            $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
+
+            $term_name = "%$term_name%";
+            $term_email = "%$term_email%";
+            $term_company = "%$term_company%";
+
+            $rs = $this->_adoconn->Execute($sql, array($term_name, $term_email, $term_company) );
+            
+            
+            $result = $rs->getRows();
+
+            return $result;
+        
+    }
+
 
     public function getCompanyContactsByCompany($id) {
 

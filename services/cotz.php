@@ -152,7 +152,18 @@
 				$search = dbAdmin::getInstancia()->getCompanyList($term);
 
 				echo json_encode($search);
-			break;		
+			break;
+			
+		case 'term_contact':
+			
+			$term_name = $_REQUEST['termName'];
+			$term_email = $_REQUEST['termEmail'];
+			$term_company = $_REQUEST['termCompany'];
+
+			$search = dbAdmin::getInstancia()->getContactList($term_name, $term_email, $term_company);
+
+			echo json_encode($search);
+		break;
 
 		case 'account_has_contacts':
 				

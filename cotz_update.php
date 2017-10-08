@@ -51,40 +51,40 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 
         <!-- Modal -->
         <div class="modal fade" id="inventarioModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Consultar Inventario</h4>
-              </div>
-              <div class="modal-body">
-                <table id="table" data-pagination="true"
-                        data-search="true" data-search-on-enter-key="true"  data-smart-display="true"
-                        data-page-size="6" data-page-list="[10,25,50,100]">
-                    <thead>
-                    <tr>
-                      <th data-radio="true"></th>
-                      <th data-field="Apellidos" data-sortable="true">Apellidos</th>
-                      <th data-field="Bodega" data-sortable="true">Bodega</th>
-                      <th data-field="Codigo" data-sortable="true">Codigo</th>
-                      <th data-field="NombreDelArticulo" data-sortable="true">Nombre Del Articulo</th>
-                      <th data-field="NoDeParte" data-sortable="true">No De Parte</th>
-                      <th data-field="Unidad">Unidad</th>
-                      <th data-field="CantidadDisponible" >Cantidad Disponible</th>
-                      <th data-field="Precio" >Precio</th>
-                      <th data-field="Provedor" >Provedor</th>
-                      <th data-field="DetallesDelArticulo" > Detalles Del Articulo</th>
-                    </tr>
-                    </thead>
-                </table>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" disabled>Agregar</button>
-              </div>
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Consultar Inventario</h4>
+            </div>
+            <div class="modal-body">
+              <table id="table" data-pagination="true"
+                      data-search="true" data-search-on-enter-key="true"  data-smart-display="true"
+                      data-page-size="6" data-page-list="[10,25,50,100]">
+                  <thead>
+                  <tr>
+                    <th data-radio="true"></th>
+                    <!--<th data-field="Apellidos" data-sortable="true">Apellidos</th>-->
+                    <th data-field="Bodega" data-sortable="true">Bodega</th>
+                    <th data-field="Codigo" data-sortable="true">Código</th>
+                    <th data-field="NombreDelArticulo" data-sortable="true">Artículo</th>
+                    <th data-field="NoDeParte" data-sortable="true">N/P</th>
+                    <th data-field="Unidad">U.M.</th>
+                    <th data-field="CantidadDisponible" >Cant.</th>
+                    <th data-field="Precio" data-formatter="formatPrice">Precio Unit.</th>
+                    <th data-field="Provedor" >Provedor</th>
+                    <th data-field="DetallesDelArticulo" > Especificación</th>
+                  </tr>
+                  </thead>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" disabled>Agregar</button>
             </div>
           </div>
         </div>
+      </div>
 
 
          <!-- Modal user lists -->
@@ -129,31 +129,76 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 
 
          <!-- Modal user lists -->
-        <div class="modal fade" id="clientesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Seleccionar contacto</h4>
-              </div>
-              <div class="modal-body">
-                <div class="alert alert-danger select_client_alert" role="alert"><strong>Precaucion</strong> Debe seleccionar una compania primero</div>
-                <input type="text" placeholder="Buscar" class="pull-right custom-tablesearch" data-fields="acc_name acc_email acc_officephone">
-                <table id="user-table" class="table table-striped">
-                    <thead>
-                    <tr>
-                      <th>Nombre</th>
-                      <th>email</th>
-                      <th>Telefono</th>
-                      <th></th>
-                    </tr>
-                    </thead>
-                    <tbody class="account_list_by_company"> </tbody>
-                </table>
-              </div>             
-            </div>
-          </div>
-        </div>
+         <div class="modal fade" id="clientesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+         <div class="modal-dialog" role="document">
+           <div class="modal-content">
+             <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               <h4 class="modal-title" id="myModalLabel">Seleccionar contacto</h4>
+             </div>
+             <div class="modal-body company-modal-body">
+                <br>
+                <div class="auto-complete">
+                  <div class="form-group">
+                     <label for="exampleInputEmail1">Buscar contacto:</label>
+                       <div class="row">
+                         <div class="col-sm-4">
+                           <input type="text" id="contactNameInput" placeholder="Nombre">
+                         </div>
+                         <div class="col-sm-4">
+                           <input type="text" id="contactEmailInput" placeholder="Email">
+                         </div>
+                         <div class="col-sm-4">
+                           <input type="text" id="contactCompanyInput" placeholder="Compañia">
+                         </div>
+                       </div>
+
+                     <input type="text" class="form-control" id="contactInput" style="height: 0; visibility: hidden;" value="buscar">
+                     <div class="ui-widget" style="margin-top:2em; font-family:Arial">
+                         Seleccionado:
+                         <div id="log" class="ui-widget-content">
+                             <table class="table">
+                               <thead>
+                                 <tr>
+                                   <th>Nombre</th>
+                                   <th>Email</th>
+                                   <th>Teléfono</th>
+                                 </tr>
+                               </thead>
+                               <tbody>
+                                 <tr>
+                                  <td class="nombre_contacto"></td>
+                                   <td class="email_contacto"></td>
+                                   <td class="telefono_contacto"></td>
+                                 </tr>
+                               </tbody>
+                             </table>
+
+                             <table class="table">
+                               <thead>
+                                 <tr>
+                                   <th>Compañia</th>
+                                 </tr>
+                               </thead>
+                               <tbody>
+                                 <tr>
+                                   <td class="company_name"></td>
+                                 </tr>
+                               </tbody>
+                             </table>
+                             
+                         </div>
+                       </div>
+                       <br>
+                       <p style="text-align: center;">
+                               <a href="#" class="add_contacto btn btn-primary disabled">Agregar</a>
+                         </p>
+                   </div>
+                </div>
+             </div>             
+           </div>
+         </div>
+       </div>
 
 
         <!-- End clientesModal-->
@@ -410,7 +455,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                         );
                         $optSelected = false;
                     ?>
-                    <?php for($i = 0, $l = count($options) - 1; $i < $l; $i++ ): ?>
+                    <?php for($i = 0, $l = count($options); $i < $l; $i++ ): ?>
                         <?php 
                             if( $options[$i] == $cot[0]['tiempo_entrega']  )  {
                                 $optSelected = true;
@@ -649,7 +694,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                   <input type="text" data-name="codigoArticulo" class="form-control codAutocomple" id="codigoArticulo1">
                 </div>
                 <div class="col-sm-6 form-group">
-                  <label for="nombreArticulo1">Nombre del artículo:</label>
+                  <label for="nombreArticulo1">Descripción:</label>
                   <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo1">
                 </div>
                 <div class="col-sm-4 form-group">
@@ -753,7 +798,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                 </div>
 
                 <div class="col-sm-6 form-group">
-                  <label for="nombreArticulo<?php echo $index + 1; ?>">Nombre del artículo:</label>
+                  <label for="nombreArticulo<?php echo $index + 1; ?>">Descripción:</label>
                   <input type="text" data-name="nombreArticulo" class="form-control" id="nombreArticulo<?php echo $index + 1; ?>" value="<?php echo htmlentities($linea['nombre_articulo']); ?>">
                 </div>
 
