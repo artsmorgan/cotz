@@ -912,7 +912,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
     <script src="js/vendor/jquery-ui.min.js"></script>
     <script src="js/vendor/select2.full.min.js"></script>
-    <script src="js/main.js?v=1.0.1"></script>
+    <script src="js/main.js?v=1.0.2"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
