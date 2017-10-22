@@ -424,6 +424,7 @@ function formatPrice(value){
           $( '[data-name=nombreArticulo]', $productRow ).val( ui.item.NombreDelArticulo );
           $( '.art-precioUni', $productRow ).val( ui.item.Precio );
           $( '[data-name=descripcionArticulo]', $productRow ).val( ui.item.DetallesDelArticulo );
+          $( '[data-name=unidadMedida]', $productRow ).val( ui.item.Unidad );
           $( '[data-name=cantidad]', $productRow ).val(1);
 
           $( '.art-precioUni', $productRow ).trigger( 'input' );
@@ -502,14 +503,19 @@ function formatPrice(value){
 
   $('#clienteNombreAux').on('click', function(e){
      // console.log('holap');
-     $('#clientesModal').modal({ backdrop: 'static', keyboard: false });
-
      addContactAutocomplete();
-
+     $('#clientesModal').modal({ backdrop: 'static', keyboard: false });
   });
 
-   $('#clientesModal').on('hidden.bs.modal', function (e) {
-    $('.select_client_alert').hide();
+  $('#clientesModal').on('shown.bs.modal', function(e){
+    if( !!$('#contactCompanyIdInput').val() ){
+      $("#contactInput").autocomplete( "search", "search" );
+    }
+  });
+
+   $('#clientesModal').on('show.bs.modal', function (e) {
+    $('#contactCompanyInput').val( $('#cuentaNombreAux').val() );
+    $('#contactCompanyIdInput').val( $('#company_id').val() );
    });
 
 
@@ -537,6 +543,7 @@ function formatPrice(value){
       $( '[data-name=nombreArticulo]', $productRow ).val( productData.NombreDelArticulo );
       $( '.art-precioUni', $productRow ).val( productData.Precio );
       $( '[data-name=descripcionArticulo]', $productRow ).val( productData.DetallesDelArticulo );
+      $( '[data-name=unidadMedida]', $productRow ).val( productData.Unidad );
       $( '[data-name=cantidad]', $productRow ).val(1);
 
       $( '.art-precioUni', $productRow ).trigger( 'input' );
@@ -675,14 +682,9 @@ function formatPrice(value){
       updateFormatCurrency();
     });
 
-    $('[required]').on('input blur', function(){
+    $('[required]').on('input blur change', function(){
       var $this = $(this);
-      if ( !$this.val() ){
-        $this.closest('.form-group').addClass('hasErrors');
-      }
-      else {
-        $this.closest('.form-group').removeClass('hasErrors');
-      }
+      $this.closest('.form-group').toggleClass('hasErrors', !$this.val());
     });
 
     $('.btn-print').on('click', function(e){
@@ -829,6 +831,9 @@ function formatPrice(value){
                 processingAction = false;
               });
             }
+            else{
+              processingAction = false;
+            }
     });
 
     $('#tasaImpuestos').on('input', function(){
@@ -950,7 +955,6 @@ function getContactsByAccount(acc_id, cb){
 }
 
 function log_compania( ui ) {
-  console.log(ui);
   var ui = ui.item;
       var desc = (ui.desc==null || ui.desc == '') ? "-" : ui.desc;
       var website = (ui.website==null || ui.website == '') ? "-" : ui.website;
@@ -959,6 +963,8 @@ function log_compania( ui ) {
       $( ".website_compania" ).text( website );
       $( ".description_company" ).text( desc );
       $('.add_compania').removeClass('disabled');
+      $('#contactCompanyInput').val(ui.label);
+      $('#contactCompanyIdInput').val(ui.id);
       $('.id_compania').text(ui.id);
       
     }
@@ -995,6 +1001,8 @@ $('.add_contacto').on('click', function(e){
   var contact = $('#clientesModal').data('contactInfo');
   $('#clienteNombreAux').val(contact.label);
   $('#contact_id').val(contact.id);
+  $('#cuentaNombreAux').val(contact.company);
+  $('#company_id').val(contact.companyid);
   $('#clientesModal').modal('hide');
 });
 
@@ -1027,7 +1035,8 @@ var delaySearchContactId = null;
 $('#contactNameInput,#contactEmailInput,#contactCompanyInput').on('input', function(){
   window.clearTimeout(delaySearchContactId);
 
-  var doSearch = false;
+  var doSearch = false,
+      $this = $(this);
 
   $('#contactNameInput,#contactEmailInput,#contactCompanyInput').each(function(){
     doSearch = $.trim( $(this).val() ).length > 2;
@@ -1036,6 +1045,10 @@ $('#contactNameInput,#contactEmailInput,#contactCompanyInput').on('input', funct
 
   if ( doSearch ){
     delaySearchContactId = window.setTimeout(function(){
+      if( $this.is('#contactCompanyInput') ){
+        $('#contactCompanyIdInput').val('');
+      }
+
       $("#contactInput").autocomplete( "search", "search" );
     }, 800);
   }
@@ -1052,11 +1065,12 @@ function addContactAutocomplete(){
     source: function(request, response) {
         var termName = $.trim( $('#contactNameInput').val() ),
             termEmail = $.trim( $('#contactEmailInput').val() ),
-            termCompany= $.trim( $('#contactCompanyInput').val() );
+            termCompany= $.trim( $('#contactCompanyInput').val() ),
+            termCompanyId = $.trim( $('#contactCompanyIdInput').val() );
   
         $.ajax({
             url: "../cotz/services/cotz.php",
-            data: { termName: termName, termEmail: termEmail, termCompany: termCompany, action: 'term_contact' },
+            data: { termName: termName, termEmail: termEmail, termCompany: termCompany, termCompanyId: termCompanyId, action: 'term_contact' },
             dataType: "json",
             type: "POST",
             success: function(data){
@@ -1069,7 +1083,8 @@ function addContactAutocomplete(){
                         id: item.id,
                         email: item.email,
                         phone: item.phones,
-                        company: item.companyname
+                        company: item.companyname,
+                        companyid: item.companyid
                     }
                 });
                 response(result);

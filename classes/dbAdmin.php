@@ -46,10 +46,17 @@ class dbAdmin {
         return trim($y) . "-" . trim($m) . "-" . trim($d);
     }
 
-    public function getAllFromUser(){
+    public function getAllFromUser( $isActive = null ){
         // var_dump($this->_adoconn);die();
+        
         try {
-            $sql ='SELECT u.id as userID, u.username, u.role_id, p.* FROM _user u inner join person p where u.person_id = p.id;';
+            $condition = '';
+
+            if( isset($isActive) && is_bool( $isActive ) ){
+                $condition = ' and u.isactive = ' . ( (int) $isActive ) . ' ';
+            }
+
+            $sql ="SELECT u.id as userID, u.username, u.role_id, p.* FROM _user u inner join person p where u.person_id = p.id $condition;";
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);
@@ -165,28 +172,53 @@ class dbAdmin {
        
     }
 
-    public function getContactList($term_name, $term_email, $term_company) {
-        
-            $sql = "SELECT c.id as id , a.name as companyname, e.emailaddress as email,
+    public function getContactList($term_name, $term_email, $term_company, $term_company_id) {
+            
+            $arrTerms = array();
+            $arrConditions = array();
+            $strConditions = '';
+
+            if( isset( $term_name ) && ! empty($term_name) ){
+                $arrConditions[] = "concat( p.firstname, ' ', p.lastname) like ?";
+                $arrTerms[] = "%$term_name%";
+            }
+
+            if( isset( $term_email ) && ! empty($term_email) ){
+                $arrConditions[] = "e.emailaddress like ?";
+                $arrTerms[] = "%$term_email%";
+            }
+
+            if( isset( $term_company ) && ! empty($term_company) ){
+                $arrConditions[] = "a.name like ?";
+                $arrTerms[] = "%$term_company%";
+            }
+            
+            if( isset( $term_company_id ) && ! empty($term_company_id) ){
+                $arrConditions[] = "a.id = ?";
+                $arrTerms[] = $term_company_id;
+            }
+
+            if( !empty($arrConditions) ){
+                $strConditions = ' where ' . join($arrConditions, ' and ') . ' ';
+            }
+
+
+            $sql = "SELECT c.id as id , a.name as companyname, a.id as companyid, e.emailaddress as email,
             concat( p.firstname, ' ', p.lastname) as name, CONCAT_WS( ' / ', IF( p.officephone = '', NULL, p.officephone ), IF( p.mobilephone = '', NULL, p.mobilephone ) ) as phones
             FROM accountcontactaffiliation ac 
             inner join account a on ac.accountaffiliation_account_id = a.id
             inner join contact c on ac.contactaffiliation_contact_id = c.id
             inner join person p on c.person_id = p.id
             inner join email e on p.primaryemail_email_id = e.id
-            where concat( p.firstname, ' ', p.lastname) like ? and e.emailaddress like ? and a.name like ?";
+            $strConditions";
 
             // echo $sql;
 
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
 
-            $term_name = "%$term_name%";
-            $term_email = "%$term_email%";
-            $term_company = "%$term_company%";
 
-            $rs = $this->_adoconn->Execute($sql, array($term_name, $term_email, $term_company) );
-            
+            $rs = $this->_adoconn->Execute($sql, $arrTerms );
             
             $result = $rs->getRows();
 
@@ -491,7 +523,7 @@ class dbAdmin {
         
         $args = array(
             'vendedor_id' => $vendedor_id,
-            'fecha_cotizacion' => $fecha_cotizacion,
+            //'fecha_cotizacion' => $fecha_cotizacion,
             'fecha_vencimiento' => $fecha_vencimiento,
             'tasa_impuestos' => $tasa_impuestos,
             'moneda' => $moneda,
@@ -594,14 +626,14 @@ class dbAdmin {
 
             $result = 0;
 
-            $sql ='select cot.*, acc.name as account_name, concat(contactp.firstname, " ", contactp.lastname ) as contact_name, 
-                    concat( salesp.firstname, " ", salesp.lastname ) as vendedor_nombre 
+            $sql ="select cot.*, CONVERT_TZ( cot.fecha_modificacion, '+00:00', '-06:00' ) as fecha_modificacion , acc.name as account_name, concat(contactp.firstname, ' ', contactp.lastname ) as contact_name, 
+                    concat( salesp.firstname, ' ', salesp.lastname ) as vendedor_nombre 
                     from  cotz_header as cot 
                     left join account as acc on cot.account_id = acc.id 
                     left join contact as con on cot.contact_id = con.id 
                     left join person as contactp on con.person_id = contactp.id 
                     left join _user u on  cot.vendedor_id = u.id
-                    left join person as salesp on u.person_id = salesp.id where cot.id = ?;';
+                    left join person as salesp on u.person_id = salesp.id where cot.id = ?;";
 
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
@@ -683,13 +715,13 @@ class dbAdmin {
 
             $sql ="select c.id, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, 
                     CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, 
-                    c.tasa_cambio, c.fecha_cotizacion, c.no_cotizacion, u.username, p.firstname, p.lastname, a.name 
+                    c.tasa_cambio, CONVERT_TZ( c.fecha_modificacion, '+00:00', '-06:00' ) as fecha_cotizacion, c.no_cotizacion, u.username, p.firstname, p.lastname, a.name 
                     from cotz_header c 
                     left join _user u on c.vendedor_id = u.id
                     left join account a on c.account_id = a.id 
                     left join contact co on c.contact_id = co.id
                     left join person p on co.person_id = p.id
-                    ORDER BY DATE(c.fecha_cotizacion) DESC, c.fecha_cotizacion DESC";
+                    ORDER BY DATE(c.fecha_modificacion) DESC, c.fecha_modificacion DESC";
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");
             $rs = $this->_adoconn->Execute($sql);

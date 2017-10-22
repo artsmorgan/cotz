@@ -8,7 +8,7 @@ $username = $_GET['u'];
 
 // echo 'username ' .$username;
 
-$userlist = dbAdmin::getInstancia()->getAllFromUser();
+$userlist = dbAdmin::getInstancia()->getAllFromUser(true);
 
 $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 
@@ -152,6 +152,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                           </div>
                           <div class="col-sm-4">
                             <input type="text" id="contactCompanyInput" placeholder="Compañia">
+                            <input type="hidden" id="contactCompanyIdInput" >
                           </div>
                         </div>
 
@@ -912,7 +913,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
     <script src="js/vendor/jquery-ui.min.js"></script>
     <script src="js/vendor/select2.full.min.js"></script>
-    <script src="js/main.js?v=1.0.2"></script>
+    <script src="js/main.js?v=1.0.4"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

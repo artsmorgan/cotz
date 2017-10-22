@@ -45,7 +45,7 @@ class PDF {
         ?>
         <style type="text/Css">
         body {
-            font-family: Tahoma, Geneva, sans-serif;
+            font-size: 12px;
         }
 
         h2{
@@ -401,6 +401,7 @@ class PDF {
         try
         {
             $html2pdf = new HTML2PDF($orientation, array(216, 279), $lang);
+            $html2pdf->setDefaultFont('tahoma');
             $html2pdf->WriteHTML($content);
             $html2pdf->Output( $filename, 'D');
         }

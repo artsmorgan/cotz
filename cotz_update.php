@@ -150,6 +150,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                          </div>
                          <div class="col-sm-4">
                            <input type="text" id="contactCompanyInput" placeholder="Compañia">
+                           <input type="hidden" id="contactCompanyIdInput" >
                          </div>
                        </div>
 
@@ -329,7 +330,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <div class="col-sm-3 form-group">
               <label for="fechaCotizacion">Fecha de cotización:</label>
               <input type="text" placeholder="yy-mm-dd" disabled class="form-control datepicker" id="fechaCotizacion" value="<?php echo $cot[0]['fecha_cotizacion']; ?>">
-              <input type="hidden" name="fechaCotizacion"  id="altFechaCotizacion" value="<?php echo $cot[0]['fecha_cotizacion']; ?>">
+              <input type="hidden" name="fechaCotizacion"  id="altFechaCotizacion" value="<?php echo $cot[0]['fecha_modificacion']; ?>">
             </div>
             <div class="col-sm-3 form-group">
               <label for="fechaVencimiento">Fecha de vencimiento:</label>
@@ -522,7 +523,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                         );
                         $optSelected = false;
                     ?>
-                    <?php for($i = 0, $l = count($options) - 1; $i < $l; $i++ ): ?>
+                    <?php for($i = 0, $l = count($options); $i < $l; $i++ ): ?>
                         <?php 
                             if( $options[$i] == $cot[0]['forma_pago']  )  {
                                 $optSelected = true;
@@ -1089,7 +1090,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
     <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
     <script src="js/vendor/select2.full.min.js"></script>
-    <script src="js/main.js?v=1.0.2"></script>
+    <script src="js/main.js?v=1.0.4"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

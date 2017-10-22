@@ -159,8 +159,9 @@
 			$term_name = $_REQUEST['termName'];
 			$term_email = $_REQUEST['termEmail'];
 			$term_company = $_REQUEST['termCompany'];
+			$term_company_id = $_REQUEST['termCompanyId'];
 
-			$search = dbAdmin::getInstancia()->getContactList($term_name, $term_email, $term_company);
+			$search = dbAdmin::getInstancia()->getContactList($term_name, $term_email, $term_company, $term_company_id);
 
 			echo json_encode($search);
 		break;
