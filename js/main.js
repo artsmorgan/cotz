@@ -31,18 +31,6 @@ function formatPrice(value){
     }
   };
 
-  // console.log('updating main.js')
-  $.ajax({
-        url: SERVER_PROD+'/cotz/api/inv.json',
-        dataType: 'json',
-        success: function(response){
-          console.log('here')
-           inv = response;
-           initInvTable();
-           initCodAutocomplete();
-        }
-    });
-
   function updateConsecutiveAttr( consecutive, $item){
     $('.form-control, label, :checkbox, :radio', $item).each(function(){
       var $this = $(this),
@@ -374,7 +362,16 @@ function formatPrice(value){
 
     var inv = null;
 
-
+    $.ajax({
+        url: SERVER_PROD+'/cotz/api/inv.json',
+        dataType: 'json',
+        success: function(response){
+          console.log('here')
+           inv = response;
+           initInvTable();
+           initCodAutocomplete();
+        }
+    });
 
   function initInvTable(){
       var bootstrapTableOpt = {
