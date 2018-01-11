@@ -359,9 +359,9 @@ function formatPrice(value){
     updateFormatCurrency();
     parentIframeLoaded(true);
     //$( '.fixed-table-toolbar' ).prepend(createCotBtn);
-
+    var randVer = Math.floor(Math.random() * 100);
     var inv = null;
-    var url_inv = SERVER_PROD+'/cotz/api/inv.json';
+    var url_inv = SERVER_PROD+'/cotz/api/inv.json?ver='+randVer;
     $.ajax({
         url: url_inv,
         dataType: 'json',
