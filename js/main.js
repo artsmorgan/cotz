@@ -361,12 +361,12 @@ function formatPrice(value){
     //$( '.fixed-table-toolbar' ).prepend(createCotBtn);
 
     var inv = null;
-
+    var url_inv = SERVER_PROD+'/cotz/api/inv.json';
     $.ajax({
-        url: SERVER_PROD+'/cotz/api/inv.json',
+        url: url_inv,
         dataType: 'json',
         success: function(response){
-          console.log('here')
+          console.log('here', url_inv)
            inv = response;
            initInvTable();
            initCodAutocomplete();
