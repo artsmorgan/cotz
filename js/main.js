@@ -366,6 +366,7 @@ function formatPrice(value){
         url: SERVER_PROD+'/cotz/api/inv.json',
         dataType: 'json',
         success: function(response){
+          console.log('here')
            inv = response;
            initInvTable();
            initCodAutocomplete();
