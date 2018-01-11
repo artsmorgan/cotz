@@ -133,7 +133,7 @@ class HTML2PDF
 
         // create the  HTML2PDF_myPdf object
         $this->pdf = new HTML2PDF_myPdf($orientation, 'mm', $format, $unicode, $encoding);
-
+        $this->pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
         // init the CSS parsing object
         $this->parsingCss = new HTML2PDF_parsingCss($this->pdf);
         $this->parsingCss->fontSet();
@@ -835,6 +835,12 @@ class HTML2PDF
 
         $this->_parsePos = $oldParsePos;
         $this->parsingHtml->code = $oldParseCode;
+
+        $margin = 7;
+        $width = $this->pdf->getPageWidth()  - $margin * 2;
+        $height = $this->pdf->getPageHeight()  - $margin * 2;
+        $borderStyle = array( 'all' => array( 'width' => 0.6, 'color' => array(232,232,232) ) );
+        $this->pdf->Rect($margin, $margin, $width, $height, null, $borderStyle);
     }
 
     /**

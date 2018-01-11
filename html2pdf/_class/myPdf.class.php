@@ -77,6 +77,19 @@ class HTML2PDF_myPdf extends TCPDF
         $this->_footerParam = array('page' => $page, 'date' => $date, 'hour' => $hour, 'form' => $form);
     }
 
+    public function Header(){
+
+        $margin = 20;
+        $width = $this->getPageWidth() - $margin;
+        $height = $this->getPageHeight() - $margin;
+        $borderStyle = array( 'all' => array( 'width' => 2, 'color' => array(0,0,0) ) );
+        $this->Rect($margin, $margin, $width, $height, null, $borderStyle);
+
+        // $this->SetLineStyle( array( 'width' => 15, 'color' => array(0,0,0)));
+        // $this->Rect(0, 0, 400, 400);
+        // $this->Rect(0, 0, 2000, 20,'F',array(),array(20, 255, 100));
+    }
+
     /**
      * This function is call automatically by TCPDF at the end of a page
      * It takes no parameters

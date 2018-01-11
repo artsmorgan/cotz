@@ -194,6 +194,7 @@ class PDF {
         }
         </style>
         <page style="font-size: 13px" backleft="8mm" backtop="5mm" backright="8mm" backbottom="5mm">
+            <page_header></page_header>
             <table class="cot_header">
                 <tr>
                     <td>
@@ -364,6 +365,8 @@ class PDF {
                 <p class="section_content">1. Toda anulación de pedido con trámite de importación directa, tiene un cargo de 25% sobre el valor total de la orden de compra si el pedido ya se encuentra procesado en fábrica o está listo para despacharse.</p>
                 <p class="section_content">2. Cantidades sujetas a las existencias en bodega al momento de realizar la compra.</p>
                 <p class="section_content">3. Precios válidos por las cantidades e ítems indicados en esta cotización.</p>
+                <p class="section_content">4. Los precios cotizados son calculados por paquete, a no ser que se indique lo contrario.</p>
+                <p class="section_content">5. Los tiempos de entrega cotizados no contemplan feriados y periodos vacacionales de las Fábricas ni de TecnoSagot.</p>
             <?php endif; ?>
 
             <h2 class="section_content">Términos y condiciones</h2>
@@ -378,7 +381,7 @@ class PDF {
                 <tr>
                     <td>
                         <p class="mrg-top section_content">Esperamos que esta propuesta sea de su agrado. No dude en contactarnos para cualquier consulta adicional</p>
-                        <p class="txt_center mrg-top section_content">Cordialmente</p>
+                        <p class="txt_center mrg-top section_content">Cordialmente,</p>
                         <?php if( $salesperson_info['signature_img_path'] && file_exists( AS_PATH . $salesperson_info['signature_img_path'] ) ): ?>
                             <p class="txt_center section_content"><img class="signature" src="<?php echo AS_PATH . $salesperson_info['signature_img_path']; ?>"></p>
                         <?php endif; ?>

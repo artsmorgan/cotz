@@ -307,19 +307,25 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               if( fromDate && toDate){
                 grepFunc = function(item){
                   itemDate = getDate( item.fecha_cotizacion );
-                  return fromDate.getTime() <= itemDate.getTime() && toDate.getTime() >= itemDate.getTime();
+                  if( itemDate )
+                    return fromDate.getTime() <= itemDate.getTime() && toDate.getTime() >= itemDate.getTime();
+                  return false;
                 }
               }
               else if(fromDate){
                 grepFunc = function(item){
                   itemDate = getDate( item.fecha_cotizacion );
-                  return fromDate.getTime() <= itemDate.getTime();
+                  if( itemDate )
+                    return fromDate.getTime() <= itemDate.getTime();
+                  return false;
                 }
               }
               else if(toDate){
                 grepFunc = function(item){
                   itemDate = getDate( item.fecha_cotizacion );
-                  return toDate.getTime() >= itemDate.getTime();
+                  if ( itemDate )
+                    return toDate.getTime() >= itemDate.getTime();
+                  return false;
                 }
               }
               else{
@@ -330,7 +336,6 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             },
             searchFilter = function(){
                 var grepFunc,
-                    jsonData = $table.bootstrapTable('getData'),
                     inputValue = $.trim($('.bootstrap-table .search input').val());
 
                 if(inputValue){

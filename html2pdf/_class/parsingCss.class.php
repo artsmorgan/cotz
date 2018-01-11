@@ -156,6 +156,8 @@ class HTML2PDF_parsingCss
         $this->value['list-style-type']  = '';
         $this->value['list-style-image'] = '';
 
+        $this->value['page-break-inside'] = null;
+
         $this->value['xc'] = null;
         $this->value['yc'] = null;
     }
