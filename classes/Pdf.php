@@ -1,6 +1,6 @@
 <?php
 require_once AS_PATH . '/html2pdf/vendor/autoload.php';
-
+date_default_timezone_set('America/Costa_Rica');
 class PDF {
     public static function generateHtml($data){
         $fechaCotizacion	        = $data['fechaCotizacion'];
@@ -114,7 +114,7 @@ class PDF {
         }
 
         .cot_hline_desc, .cot_line_desc{
-            width: 58%;
+            width: 80%;
             padding-right: 8px;
         }
 
@@ -303,13 +303,10 @@ class PDF {
                     <?php $last_p_line = ( $p == $p_length -1 );  ?>
                     <tr class="cot_line_content no_padding <?php echo ( $last_p_line ? "border_bottom" : ""); ?>">
                         <td class="border--left"></td>
-                        <td class="cot_line_desc">
+                        <td class="cot_line_desc" colspan="5">
                             <?php echo $paragraph_lines[$p]; ?>
                             <?php if ( $last_p_line  )  echo "<br>"; ?>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                         <td class="border--right"></td>
                     </tr>
                 <?php endfor; ?>

@@ -1,5 +1,5 @@
 var SERVER_PROD = 'http://tecnosagot.united-crm.com';
-var SERVER_DEV = 'http://crm.local/';
+var SERVER_DEV = 'http://tecnosagot.crm.local/';
 
 function gotoList(username){
     window.location.href = "index.php?u="+username;

@@ -78,7 +78,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                         data-page-size="50" data-page-list="[10,25,50,100]">
       <thead>
       <tr>  
-        <th data-field="id" data-sortable="true" data-formatter="addCheckbox">Cot #</th>
+        <th data-field="id" data-events="edit" data-formatter="editBtn"></th>
+        <th data-field="id_sort" data-sortable="true">Cot #</th>
         <th data-field="no_cotizacion" data-sortable="true">No. cotización</th>
         <th data-field="name" data-sortable="true">Cliente</th>
         <th data-field="username" data-sortable="true">Vendedor</th>
@@ -88,8 +89,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <th data-field="moneda" data-sortable="true" title="Moneda">Moneda</th>
         <th data-field="total" data-sortable="true" data-formatter="formatPrice">Monto</th>
         <!-- <th data-field="description" data-sortable="true">Descripcion</th> -->
-        <th data-field="fecha_cotizacion" data-sortable="true">Fecha de<br> Cotizacón</th>
-        <th data-field="id" data-events="edit" data-formatter="editBtn"></th>
+        <th data-field="fecha_cotizacion" data-sortable="true">Fecha de<br> modificación</th>
+        <th data-field="fecha_creacion" data-sortable="true">Fecha de<br> creación</th>        
         <?php if( !empty($userdata[0]) && $userdata[0]['role_id'] == '1'  ): ?>
         <th data-field="id" data-events="edit" data-formatter="deletetBtn"></th>
         <?php endif; ?>
@@ -272,6 +273,9 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                   $table.find('.batch-processing').closest('td').off('click dbclick');
 
                   jsonData = $table.bootstrapTable('getData');
+
+                  console.log('jsonData',jsonData);
+
                   bootstrapTableOpt['data'] = jsonData;
                   delete bootstrapTableOpt.url;
 
