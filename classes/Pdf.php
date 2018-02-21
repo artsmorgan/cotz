@@ -114,7 +114,7 @@ class PDF {
         }
 
         .cot_hline_desc, .cot_line_desc{
-            width: 80%;
+            width: 58%;
             padding-right: 8px;
         }
 
@@ -303,10 +303,13 @@ class PDF {
                     <?php $last_p_line = ( $p == $p_length -1 );  ?>
                     <tr class="cot_line_content no_padding <?php echo ( $last_p_line ? "border_bottom" : ""); ?>">
                         <td class="border--left"></td>
-                        <td class="cot_line_desc" colspan="5">
+                        <td class="cot_line_desc">
                             <?php echo $paragraph_lines[$p]; ?>
                             <?php if ( $last_p_line  )  echo "<br>"; ?>
                         </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td class="border--right"></td>
                     </tr>
                 <?php endfor; ?>
