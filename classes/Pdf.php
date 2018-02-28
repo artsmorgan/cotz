@@ -367,6 +367,9 @@ class PDF {
                 <p class="section_content">3. Precios válidos por las cantidades e ítems indicados en esta cotización.</p>
                 <p class="section_content">4. Los precios cotizados son calculados por paquete, a no ser que se indique lo contrario.</p>
                 <p class="section_content">5. Los tiempos de entrega cotizados no contemplan feriados y periodos vacacionales de las Fábricas ni de TecnoSagot.</p>
+                <p class="section_content">
+                    6. Toda visita técnica para diagnóstico y reparación de equipos tienen un recargo de $75/hr; en caso de que la falla se atienda como garantía, no tiene costo adicional. No proceden como garantía fallas ocasionadas por el incorrecto uso o mala instalación de los equipos.
+                </p>
             <?php endif; ?>
 
             <h2 class="section_content">Términos y condiciones</h2>
