@@ -126,10 +126,20 @@ class PDF {
             width: 6%;
         }
 
-        .cot_hline_uprice, .cot_hline_tprice, .cot_line_uprice, .cot_line_tprice{
+        .cot_hline_uprice, .cot_hline_tprice{
             width: 12%;
             font-size: 12px;
         }
+
+        .cot_line_uprice{
+            width: 11%;
+            font-size: 12px;
+        }
+
+        .cot_line_tprice{
+            width: 13%;
+            font-size: 12px;
+        }        
 
         .cot_line_content td{
             padding: 6px 2px;
