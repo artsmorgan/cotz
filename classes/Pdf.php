@@ -137,7 +137,7 @@ class PDF {
         }
 
         .cot_line_tprice{
-            width: 13%;
+            width: 14%;
             font-size: 12px;
         }        
 
