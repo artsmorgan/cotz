@@ -264,13 +264,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             <button type="button" class="btn btn-default btn-backToList" onclick="gotoList('<?php echo $username; ?>')" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
             </button>
-            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Configurar Cotización">
-              <i class="fa fa-cogs" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn-default"  data-toggle="tooltip" data-placement="bottom" title="Datos del Cliente">
-              <i class="fa fa-user-plus" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn-default"  data-toggle="tooltip" data-placement="bottom" title="Imprimir">
+            <button type="button" class="btn btn-default btn-print"  data-toggle="tooltip" data-placement="bottom" title="Imprimir">
               <i class="fa fa-print" aria-hidden="true"></i>
             </button>
           </div>

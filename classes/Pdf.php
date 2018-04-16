@@ -132,7 +132,7 @@ class PDF {
         }
 
         .cot_line_uprice{
-            width: 11%;
+            width: 10.7%;
             font-size: 12px;
         }
 
@@ -252,7 +252,7 @@ class PDF {
                     preg_match_all('/[^ ]+/', $str, $matches);
                     $paragraph_lines = array();
                     $current_line = 0;
-                    $MAX_LENGTH = 54;
+                    $MAX_LENGTH = 68;
                     
                     if( !empty($matches) ){
                         foreach( $matches[0] as $word ){
