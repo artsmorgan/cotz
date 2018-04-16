@@ -241,20 +241,6 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                                   </tr>
                                 </tbody>
                               </table>
-
-                              <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th>Descripcion</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td class="description_company"></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                              
                           </div>
                         </div>
                         <br>

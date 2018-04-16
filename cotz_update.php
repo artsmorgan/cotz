@@ -263,21 +263,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                                     <td class="website_compania"></td>
                                   </tr>
                                 </tbody>
-                              </table>
-
-                              <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th>Descripcion</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td class="description_company"></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                              
+                              </table>    
                           </div>
                         </div>
                         <br>
