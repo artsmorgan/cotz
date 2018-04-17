@@ -132,7 +132,7 @@ class PDF {
         }
 
         .cot_line_uprice{
-            width: 10.7%;
+            width: 10%;
             font-size: 12px;
         }
 
