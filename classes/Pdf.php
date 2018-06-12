@@ -114,7 +114,7 @@ class PDF {
         }
 
         .cot_hline_desc, .cot_line_desc{
-            width: 58%;
+            width: 54%;
             padding-right: 8px;
         }
 
@@ -126,19 +126,14 @@ class PDF {
             width: 6%;
         }
 
-        .cot_hline_uprice, .cot_hline_tprice{
-            width: 12%;
+        .cot_hline_uprice, .cot_hline_tprice, .cot_line_uprice, .cot_line_tprice{
             font-size: 12px;
-        }
-
-        .cot_line_uprice{
-            width: 10%;
-            font-size: 12px;
+            width: 14%;
         }
 
         .cot_line_tprice{
-            width: 14%;
-            font-size: 12px;
+            text-align: right;
+            padding-right: 2px;
         }        
 
         .cot_line_content td{
@@ -182,6 +177,10 @@ class PDF {
 
         .txt_center{
             text-align: center;
+        }
+
+        .txt_right{
+            text-align: right;
         }
 
         .salesperson{
@@ -252,9 +251,9 @@ class PDF {
                     preg_match_all('/[^ ]+/', $str, $matches);
                     $paragraph_lines = array();
                     $current_line = 0;
-                    $MAX_LENGTH = 68;
-                    
-                    if( !empty($matches) ){
+                    $MAX_LENGTH = 70;
+
+                    if( !empty($matches[0]) ){
                         foreach( $matches[0] as $word ){
                             if(empty($paragraph_lines[$current_line])){
                                 $paragraph_lines[$current_line] = '';
@@ -285,6 +284,7 @@ class PDF {
                     }
                ?>
 
+
                 <tr class="cot_line_content">
                     <td class="text_center border--left">
                         <b><?php  echo $i +1; ?></b>
@@ -301,10 +301,10 @@ class PDF {
                     <td class="text_center">
                         <p><?php echo $lineas[$i]['unidadMedida']; ?></p>
                     </td>
-                     <td>
+                     <td class="txt_right">
                         <p><?php echo $lineas[$i]['precioUnitarioFormated']; ?></p>
                     </td>
-                     <td class="border--right">
+                     <td class="border--right txt_right">
                         <p><?php echo $lineas[$i]['montoFormated']; ?></p>
                     </td>
                 </tr>
@@ -315,7 +315,7 @@ class PDF {
                         <td class="border--left"></td>
                         <td class="cot_line_desc">
                             <?php echo $paragraph_lines[$p]; ?>
-                            <?php if ( $last_p_line  )  echo "<br>"; ?>
+                            <?php if ( $last_p_line  )  echo "<br><br>"; ?>
                         </td>
                         <td></td>
                         <td></td>
@@ -327,14 +327,14 @@ class PDF {
             <?php endfor; ?>
             </table>
             <div style="page-break-inside: avoid;">
-            <table >
+            <table style="width: 100%;">
                     <tr>
-                        <td class="cot_line_no border--left"></td>
-                        <td class="cot_line_desc"></td>
-                        <td class="cot_line_amount"></td>
-                        <td class="cot_line_measure"></td>
+                        <td class="cot_line_no border--left"> </td>
+                        <td class="cot_line_desc"> </td>
+                        <td class="cot_line_amount"> </td>
+                        <td class="cot_line_measure"> </td>
                         <td class="cot_line_uprice"><p>Sub-total</p></td>
-                        <td class="cot_line_tprice border--right"><p><?php echo $subtotalFormated; ?></p></td>
+                        <td class="cot_line_tprice border--right"><?php echo $subtotalFormated; ?></td>
                     </tr>
                     <tr>
                         <td class="cot_line_no border--left"></td>
