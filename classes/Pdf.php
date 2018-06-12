@@ -126,10 +126,20 @@ class PDF {
             width: 6%;
         }
 
-        .cot_hline_uprice, .cot_hline_tprice, .cot_line_uprice, .cot_line_tprice{
+        .cot_hline_uprice, .cot_hline_tprice{
             width: 12%;
             font-size: 12px;
         }
+
+        .cot_line_uprice{
+            width: 10%;
+            font-size: 12px;
+        }
+
+        .cot_line_tprice{
+            width: 14%;
+            font-size: 12px;
+        }        
 
         .cot_line_content td{
             padding: 6px 2px;
@@ -242,7 +252,7 @@ class PDF {
                     preg_match_all('/[^ ]+/', $str, $matches);
                     $paragraph_lines = array();
                     $current_line = 0;
-                    $MAX_LENGTH = 54;
+                    $MAX_LENGTH = 68;
                     
                     if( !empty($matches) ){
                         foreach( $matches[0] as $word ){

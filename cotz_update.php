@@ -263,21 +263,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
                                     <td class="website_compania"></td>
                                   </tr>
                                 </tbody>
-                              </table>
-
-                              <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th>Descripcion</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td class="description_company"></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                              
+                              </table>    
                           </div>
                         </div>
                         <br>
@@ -301,13 +287,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
             <button type="button" class="btn btn-default btn-backToList" onclick="gotoList('<?php echo $username; ?>')" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
             </button>
-            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Configurar Cotización">
-              <i class="fa fa-cogs" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn-default"  data-toggle="tooltip" data-placement="bottom" title="Datos del Cliente">
-              <i class="fa fa-user-plus" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn-default"  data-toggle="tooltip" data-placement="bottom" title="Imprimir">
+            <button type="button" class="btn btn-default btn-print"  data-toggle="tooltip" data-placement="bottom" title="Imprimir">
               <i class="fa fa-print" aria-hidden="true"></i>
             </button>
           </div>
@@ -1090,7 +1070,7 @@ $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
     <script src="bower_components/bootstrap-table/src/locale/bootstrap-table-es-CR.js"></script>
     <script src="js/vendor/tableExport/tableExport.min.js"></script>
     <script src="js/vendor/select2.full.min.js"></script>
-    <script src="js/main.js?v=1.0.4"></script>
+    <script src="js/main.js?v=<?php echo rand(0,99) ?>"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

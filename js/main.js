@@ -376,12 +376,6 @@ function formatPrice(value){
   function initInvTable(){
       var bootstrapTableOpt = {
         data: inv,
-        onLoadSuccess: function(){
-          parentIframeLoaded(true);
-        },
-        onAll: function(name, args){
-          parentIframeLoaded(true);
-        },
         exportDataType: 'all'
       };
 
@@ -551,6 +545,7 @@ function formatPrice(value){
     });
 
     $( '.transactions-list' ).on( 'click', '.row-product button[data-toggle=modal]', function(){
+      parentIframeLoaded(true);
       $productRow = $(this).closest( '.row-product' );
     });
 
