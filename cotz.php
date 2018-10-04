@@ -314,9 +314,9 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             <div class="col-sm-3 form-group">
               <label for="redondeo">Factor de redondeo:</label>
               <select name="redondeo" class="form-control" id="redondeo">
+                <option value="factor_3" selected>0,01</option>
                 <option value="factor_1">0,05</option>
-                <option value="factor_2">1,00</option>
-                <option value="factor_3">0,01</option>
+                <option value="factor_2">1,00</option>                
               </select>
             </div>
           </div>
