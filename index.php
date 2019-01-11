@@ -46,26 +46,51 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       
         <script src="https://use.fontawesome.com/5b1d115124.js"></script>
 
+        <style type="text/css">
+          tbody > tr > td{
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+              font-size: 12px;
+              color: #545454;
+          }
+          thead {
+              background-color: #f4f4f4;
+              background-repeat: repeat-x;
+              background-image: -ms-linear-gradient(top,#f9f9f9,#f4f4f4);
+              background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f9f9f9),color-stop(100%,#f4f4f4));
+              background-image: -webkit-linear-gradient(top,#f9f9f9,#f4f4f4);
+              background-image: -o-linear-gradient(top,#f9f9f9,#f4f4f4);
+              background-image: -moz-linear-gradient(top,#f9f9f9,#f4f4f4);
+              background-image: linear-gradient(top,#f9f9f9,#f4f4f4);
+          }
+          .fa-edit:before, .fa-pencil-square-o:before {
+              color: black;
+              content: "\f044";
+          }
+        </style>
+
     </head>
     <body>
 
+    <div class="header">
+      <div class="filter-by-data">
+        <div id="toolbar" class="row" >
+          <div class="col-sm-6">
+            <select id="batch-processing" disabled>
+                <option value="">Acciones en lote</option>
+                <option value="edit">Editar</option>
+            </select>
+          </div>
 
-    <div class="filter-by-data">
-      <p><h3>Filtros </h3> Desde: <input type="text" id="datepicker_from"> Hasta: <input type="text" id="datepicker_to"> <a href="#" class="btn btn-default">Filtrar</a></p>
-    </div>
-    <div id="toolbar" class="row" >
-      <div class="col-sm-6">
-        <select id="batch-processing" disabled>
-            <option value="">Acciones en lote</option>
-            <option value="edit">Editar</option>
-        </select>
+          <div class="col-sm-6" style="text-align: right;">
+            <label for="export_all">Exportar todas</label>
+            <input type="checkbox" value="all" id="export_all">
+          </div>
+
+          <p><h3>Filtros </h3> Desde: <input type="text" id="datepicker_from"> Hasta: <input type="text" id="datepicker_to"> <a href="#" class="btn btn-default">Filtrar</a></p>
       </div>
 
-      <div class="col-sm-6" style="text-align: right;">
-        <label for="export_all">Exportar todas</label>
-        <input type="checkbox" value="all" id="export_all">
+        
       </div>
-      
     </div>
     <br>
 
@@ -89,8 +114,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <th data-field="moneda" data-sortable="true" title="Moneda">Moneda</th>
         <th data-field="total" data-sortable="true" data-formatter="formatPrice">Monto</th>
         <!-- <th data-field="description" data-sortable="true">Descripcion</th> -->
-        <th data-field="fecha_cotizacion" data-sortable="true">Fecha de<br> modificación</th>
-        <th data-field="fecha_creacion" data-sortable="true">Fecha de<br> creación</th>        
+        <th data-field="fecha_cotizacion" data-sortable="true">Modificación</th>
+        <th data-field="fecha_creacion" data-sortable="true">Creación</th>        
         <?php if( !empty($userdata[0]) && $userdata[0]['role_id'] == '1'  ): ?>
         <th data-field="id" data-events="edit" data-formatter="deletetBtn"></th>
         <?php endif; ?>
