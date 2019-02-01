@@ -841,5 +841,99 @@ class dbAdmin {
         
         return $data;
     }
+
+
+    public function getCotizacionesByCustomFilter($params) {
+
+            
+            $no_cotizacion = $params['no_cotizacion'];
+            $vendedor = $params['vendedor'];
+            $fase = $params['fase'];
+            $marca = $params['marcas'];
+            $moneda = $params['moneda'];
+            $monto = $params['monto'];
+            $cliente = $params['cliente'];
+            $desde = $params['desde'];
+            $hasta = $params['hasta'];
+
+            $wheres=array();
+
+            if(isset($no_cotizacion) && $no_cotizacion != '')
+                $wheres['no_cotizacion'] = ' c.no_cotizacion = "'. $no_cotizacion .'"';
+
+            if(isset($vendedor) && $vendedor != '')
+                $wheres['vendedor'] = ' u.username = "'. $vendedor .'"';
+
+            if(isset($fase) && $fase != '')
+                $wheres['fase'] = ' c.fase = "'. $fase .'"';
+
+            if(isset($marca) && $marca != '')
+                $wheres['marca'] = ' c.marca = "'. $marca .'"';
+
+            if(isset($moneda) && $moneda != ''){
+
+                switch ($moneda) {
+                    case 'd':
+                        $moneda = 'dolares';
+                        break;
+                    case 'c':
+                        $moneda = 'colones';
+                        break;
+                    case 'e':
+                        $moneda = 'euro';
+                        break;
+                }
+
+                $wheres['moneda'] = ' c.moneda = "'. $moneda .'"';
+
+            }
+
+            if(isset($monto) && $monto != '')
+                $wheres['monto'] = ' c.total = "'. $monto .'"';
+
+            if(isset($cliente) && $cliente != '')
+                $wheres['cliente'] = ' a.name = "'. $cliente .'"';
+
+            if(isset($desde) && $desde != '')
+                $wheres['desde'] = ' c.fecha_cotizacion >= "'. $desde .'"';
+
+            if(isset($hasta) && $hasta != '')
+                $wheres['hasta'] = ' c.fecha_cotizacion <= "'. $hasta .'"';
+
+
+            //$query = 'SELECT * FROM '. join(',', $tables). ' WHERE '. join(' AND ', $wheres);
+
+            // $sql ='select c.id, c.marca, c.fase, c.total, c.fecha_cotizacion, 
+            //         u.username, p.firstname, p.lastname, a.name from cotz_header c 
+            //         inner join _user u on c.vendedor_id = u.id
+            //         inner join account a on c.account_id = a.id
+            //         inner join contact co on c.contact_id = co.id
+            //         inner join person p on   co.person_id = p.id limit 100 ;';
+
+            $sql ="select c.id, c.id as id_sort, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, 
+                    CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, 
+                    c.tasa_cambio, CONVERT_TZ( IFNULL( c.fecha_modificacion, c.fecha_cotizacion ), '+00:00', '-06:00' ) as fecha_cotizacion, c.no_cotizacion, u.username, p.firstname,
+                    CONVERT_TZ(  c.fecha_creacion , '+00:00', '-06:00' ) as fecha_creacion, p.lastname, a.name 
+                    from cotz_header c 
+                    left join _user u on c.vendedor_id = u.id
+                    left join account a on c.account_id = a.id 
+                    left join contact co on c.contact_id = co.id
+                    left join person p on co.person_id = p.id
+                    where ". join(' AND ', $wheres) .
+                    " ORDER BY DATE(c.fecha_modificacion) DESC, c.fecha_modificacion DESC";
+            // print_r($sql);
+            // die();
+
+            $this->getConnection();
+            $this->_adoconn->Execute("SET CHARSET 'utf8';");
+            $rs = $this->_adoconn->Execute($sql);
+            
+            $result = $rs->getRows();
+            $this->closeConnection();
+
+    
+            return $result;
+       
+    }
 }
 ?>

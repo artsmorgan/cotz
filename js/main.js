@@ -6,6 +6,11 @@ function gotoList(username){
     parent.iframeLoaded();
 }
 
+function gotoSearch(username){
+    window.location.href = "filtros-avanzados.php?u="+username;
+    parent.iframeLoaded();
+}
+
 function formatPrice(value){
   return $('<span>'+ value + '</span>').formatCurrency({symbol: ''}).html();
 }

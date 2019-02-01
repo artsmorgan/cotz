@@ -6,6 +6,7 @@ include_once (AS_PATH.'/classes/dbAdmin.php');
 $path = "'"."http://".$_SERVER['SERVER_NAME']."'";
 $username = $_GET['u'];
 
+
 // echo 'username ' .$username;
 
 $userlist = dbAdmin::getInstancia()->getAllFromUser(true);
@@ -260,10 +261,10 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 
 
         <div class="toolbar">
-          <div class="btn-group pull-right" role="group">
-            <button type="button" class="btn btn-default btn-backToList" onclick="gotoList('<?php echo $username; ?>')" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
+          <div class="btn-group pull-right" role="group">            
+              <button type="button" class="btn btn-default btn-backToList" onclick="gotoList('<?php echo $username; ?>')" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
-            </button>
+            </button>            
             <button type="button" class="btn btn-default btn-print"  data-toggle="tooltip" data-placement="bottom" title="Imprimir">
               <i class="fa fa-print" aria-hidden="true"></i>
             </button>
@@ -741,7 +742,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       </div>
 
       <footer>
-        <p>&copy; United Devs 2016</p>
+        <p>&copy; United Devs 2019</p>
       </footer>
       <div class="modal fade" id="confirmModal" role="dialog">
           <div class="modal-dialog">

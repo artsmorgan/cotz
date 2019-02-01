@@ -237,6 +237,12 @@
 
 			echo json_encode($response);	
 			break;
+
+		case 'custom_filter':
+			// print_r($_POST); die();
+			$results = dbAdmin::getInstancia()->getCotizacionesByCustomFilter($_POST);
+			echo json_encode($results);		
+			break;
 }
 
 
