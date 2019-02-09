@@ -108,6 +108,11 @@ $(document).ready(function(){
 		
 		$('#selectAll').attr('disabled',true);
 		$('#labelForSelectAll').addClass('muted');
+
+		$('#companyHidden').val('');
+		$('#newCompany').val('');
+		$('#newContact').html(' <option value="">-</option>').prop('disabled', true).select2();
+		$("#newVendedor").select2("val", "");
 		
 		var jqxhr = $.post( custom_url, data , function() {})
 		  .done(function(data) {	

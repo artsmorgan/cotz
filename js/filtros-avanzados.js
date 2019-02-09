@@ -82,8 +82,7 @@ $(document).ready(function(){
 		Cookies.remove('filters');
 		var data = $('#filters-form').serialize();
 		var formDataObj = deserializeData(data);
-
-		console.log('formDataObj',formDataObj)
+		
 
 		Cookies.set('filters', formDataObj);
 		
@@ -98,12 +97,21 @@ $(document).ready(function(){
 		  
 		})
 		  .done(function(data) {		    
-		    if(data)
-		    	data = JSON.parse(data);
-		    table.clear().draw();
-            table.rows.add(data).draw();
-            btn.html('Filtrar Cotizaciones');
-            $('#loadingModal').modal('hide');
+		    if(data){
+		    	try{
+		    		data = JSON.parse(data);
+		    		table.clear().draw();
+			        table.rows.add(data).draw();
+			        
+		    	}catch(e){
+		    		console.log('error filtros avanzados',e);
+		    		alert('debe seleccionar aunque sea un filtro')
+		    	}
+		    	btn.html('Filtrar Cotizaciones');
+		        $('#loadingModal').modal('hide');
+		    	
+		    }
+		    
             parent.iframeLoaded();
 		  })
 		  .fail(function(error) {

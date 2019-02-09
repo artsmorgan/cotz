@@ -358,7 +358,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <br>
               <div class="row">
                 <div class="col-md-12" style="text-align: right;">
-                  <button type="button" class="btn btn-inverse" id="filter-now">Filtrar Cotizaciones</button>
+                  <button type="button" class="btn btn-primary" id="filter-now">Filtrar Cotizaciones</button>
                 </div>                
               </div>
 
