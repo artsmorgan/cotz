@@ -43,6 +43,7 @@ function convertToList(obj){
 }
 
 $(document).ready(function(){
+	$('.cl-select2').select2();
 	parent.iframeLoaded();
 	
 	var table = $('#table').DataTable({
