@@ -1,5 +1,7 @@
 <?php
 	ini_set('memory_limit', '1024M');
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
 	include_once ('../conspath.php');
 	include_once (AS_PATH.'/classes/dbAdmin.php');
 
@@ -243,6 +245,24 @@
 			$results = dbAdmin::getInstancia()->getCotizacionesByCustomFilter($_POST);
 			echo json_encode($results);		
 			break;
+
+		case 'custom_filter_merge':
+			// print_r($_POST); die();
+			$results = dbAdmin::getInstancia()->getCotizacionesByCustomFilterMerge($_POST);
+			echo json_encode($results);		
+			break;	
+
+		case 'custom_filter_no_parent':
+			// print_r($_POST); die();
+			$results = dbAdmin::getInstancia()->getCotizacionesWithNoParentCompany();
+			echo json_encode($results);		
+			break;
+
+		case 'update_cotheader':
+			// print_r($_POST); die();
+			$results = dbAdmin::getInstancia()->updateCotHeaderByMergeCot($_POST);
+			echo json_encode($results);		
+			break;				
 }
 
 

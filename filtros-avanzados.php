@@ -52,7 +52,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <link rel="stylesheet" href="css/select2.min.css">
         <style type="text/css">
 
-          .filter .btn{
+          .body{
             color: #fff !important;
           }
           tbody > tr > td{
@@ -174,10 +174,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
             <div class="btn-group pull-right" role="group">
               <button type="button" class="btn btn-default btn-backToList" onclick="gotoList('<?php echo $username; ?>')" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
                   <i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar a cotizaciones
-              </button>              
-              <a type="button" class="btn btn-default btn-print"  data-toggle="tooltip" data-placement="bottom" title="Opciones Avanzadas">              
-                <i class="fa fa-cogs" aria-hidden="true"></i> Opciones
-              </a>
+              </button>                            
             </div>
         </div>
     
@@ -340,7 +337,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               <div class="row">
                 <div class="col-md-4">                  
                   <div class="input-prepend">
-                    <span class="add-on">Cliente</span>
+                    <span class="add-on">Compañia</span>
                     <input class="span2" id="companiaInput" type="text" name="cliente" placeholder="">
                   </div>
                 </div>

@@ -15,6 +15,15 @@ function deserializeData(data){
     return map;
 }
 
+function gotoList(username){
+    window.location.href = "index.php?u="+username;
+    parent.iframeLoaded();
+}
+
+function gotoMerge(username){
+    window.location.href = "merge.php?u="+username;
+    parent.iframeLoaded();
+}
 
 $(document).ready(function(){
 	$('#loadingModal').modal({backdrop: 'static', keyboard: false});
@@ -24,6 +33,7 @@ $(document).ready(function(){
 
 
     var table = $('#table').DataTable({
+    	paging: false,
     	data:[],
     	columns: [
                 { "data": "id_sort" ,
@@ -55,6 +65,7 @@ $(document).ready(function(){
 	});	
 
     $('body').on('click','.gotocot',function(e){
+    	parent.iframeLoaded();
     	e.preventDefault();
     	$('#message-load').html('Redireccionando, favor espere.')
     	$('#loadingModal').modal({backdrop: 'static', keyboard: false});
@@ -66,7 +77,7 @@ $(document).ready(function(){
 	
 
 	$('#filter-now').on('click', function(e){
-		// console.log('click')
+		parent.iframeLoaded();
 
 		Cookies.remove('filters');
 		var data = $('#filters-form').serialize();
@@ -86,14 +97,14 @@ $(document).ready(function(){
 		var jqxhr = $.post( custom_url, data , function() {
 		  
 		})
-		  .done(function(data) {
-		    // console.log('data',data)
+		  .done(function(data) {		    
 		    if(data)
 		    	data = JSON.parse(data);
 		    table.clear().draw();
             table.rows.add(data).draw();
             btn.html('Filtrar Cotizaciones');
             $('#loadingModal').modal('hide');
+            parent.iframeLoaded();
 		  })
 		  .fail(function(error) {
 		    console.log( "error", error );
@@ -102,7 +113,7 @@ $(document).ready(function(){
 	});
 
 	if(cookies){
-		// $('#').val()
+		parent.iframeLoaded();
 		if(cookies.cliente){
 			cookies.cliente = cookies.cliente.replace(/\+/g,' ')			
 		}
@@ -121,6 +132,7 @@ $(document).ready(function(){
 		$('#no_cotizacion').val(cookies.no_cotizacion);
 		
 		$('#filter-now').trigger("click");
+
 
 	}else{
 		$('#loadingModal').modal('hide');

@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include 'conspath.php';
 include_once (AS_PATH.'/classes/dbAdmin.php');
 
@@ -80,16 +82,13 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
     </head>
     <body>
       <div class="toolbar">
-          <div class="btn-group pull-right" role="group">
-            <button type="button" class="btn btn-default btn-backToList" onclick="gotoList('<?php echo $username; ?>')" data-toggle="tooltip" data-placement="bottom" title="Regresar al listado">
-                <i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar
-            </button>
+          <div class="btn-group pull-right" role="group">           
             <button type="button" id="gotofilters" class="btn btn-default btn-print"  data-toggle="tooltip" data-placement="bottom" title="Filtros Avanzados">              
               <i class="fa fa-filter" aria-hidden="true"></i> Filtros Avanzados
             </button>
-            <a type="button" class="btn btn-default btn-print"  data-toggle="tooltip" data-placement="bottom" title="Opciones Avanzadas">              
-              <i class="fa fa-cogs" aria-hidden="true"></i> Opciones
-            </a>
+            <button class="btn btn-default btn-print" onclick="gotoMerge('<?php echo $username; ?>')"   data-toggle="tooltip" data-placement="bottom" title="Opciones Avanzadas">              
+                <i class="fa fa-cogs" aria-hidden="true"></i> Unir Cotizaciones
+              </button>
           </div>
         </div>
     
@@ -165,6 +164,11 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       <script type="text/javascript">
 
         $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
+
+        function gotoMerge(username){
+            window.location.href = "merge.php?u="+username;
+            parent.iframeLoaded();
+        }
         
         var edit = { 
             'click .like': function (e, value, row, index) { 
@@ -244,38 +248,38 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 
          parent.iframeLoaded();
          
-         // var jsonData = null,
-         //      bootstrapTableOpt = {
-         //        url: <?php echo $path; ?>+'/cotz/services/cotz.php?action=get_cotizacionesAllMIN',
-         //        onDblClickRow: function(row, $element, field){
-         //          var cotID = row['id'];
-         //        },
-         //        onLoadSuccess: function(){
-         //          $table.find('.batch-processing').closest('td').off('click dbclick');
+         var jsonData = null,
+              bootstrapTableOpt = {
+                url: <?php echo $path; ?>+'/cotz/services/cotz.php?action=get_cotizacionesAllMIN',
+                onDblClickRow: function(row, $element, field){
+                  var cotID = row['id'];
+                },
+                onLoadSuccess: function(){
+                  $table.find('.batch-processing').closest('td').off('click dbclick');
 
-         //          jsonData = $table.bootstrapTable('getData');
+                  jsonData = $table.bootstrapTable('getData');
 
-         //          console.log('jsonData',jsonData);
+                  console.log('jsonData',jsonData);
 
-         //          bootstrapTableOpt['data'] = jsonData;
-         //          delete bootstrapTableOpt.url;
+                  bootstrapTableOpt['data'] = jsonData;
+                  delete bootstrapTableOpt.url;
 
-         //          (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
-         //        },
-         //        onAll: function(name, args){
-         //            (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
-         //        }
-         //      }, 
-         //    $table = $('#table').bootstrapTable(bootstrapTableOpt);
+                  (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
+                },
+                onAll: function(name, args){
+                    (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
+                }
+              }, 
+            $table = $('#table').bootstrapTable(bootstrapTableOpt);
 
-         //    $('#toolbar input').on('change', function(){
-         //      var value = $(this).is(':checked') ? $(this).val() : '';
-         //      bootstrapTableOpt['exportDataType'] = value;
+            $('#toolbar input').on('change', function(){
+              var value = $(this).is(':checked') ? $(this).val() : '';
+              bootstrapTableOpt['exportDataType'] = value;
 
-         //      $table.bootstrapTable('destroy').bootstrapTable(bootstrapTableOpt);
-         //      applyFilters();
-         //      $('.fixed-table-toolbar').prepend(createCotBtn);          
-         //    });
+              $table.bootstrapTable('destroy').bootstrapTable(bootstrapTableOpt);
+              applyFilters();
+              $('.fixed-table-toolbar').prepend(createCotBtn);          
+            });
 
 
           $('.fixed-table-toolbar').prepend(createCotBtn);
