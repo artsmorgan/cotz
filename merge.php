@@ -345,7 +345,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.min.js"></script>
     <script src="js/vendor/jquery-ui.min.js"></script>
     <script src="js/vendor/select2.full.min.js"></script>
-    <script src="js/main.js?v=<?php echo rand(0,99) ?>"></script>
+    <!-- <script src="js/main.js?v=<?php echo rand(0,99) ?>"></script> -->
     <script src="js/merge.js?v=<?php echo rand(0,99) ?>"></script>
 
    
