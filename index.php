@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include 'conspath.php';
 include_once (AS_PATH.'/classes/dbAdmin.php');
 
@@ -66,34 +68,55 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               color: black;
               content: "\f044";
           }
+          .header{
+            padding: 0 50px;
+          }
+          .fixed-table-toolbar{
+            padding: 0 0 0 30px;
+          }
+          #batch-processing{
+            margin-left: 10px;
+          }
         </style>
 
     </head>
     <body>
-
+      <div class="toolbar">
+          <div class="btn-group pull-right" role="group">           
+            <button type="button" id="gotofilters" class="btn btn-default btn-print"  data-toggle="tooltip" data-placement="bottom" title="Filtros Avanzados">              
+              <i class="fa fa-filter" aria-hidden="true"></i> Filtros Avanzados
+            </button>
+            <button class="btn btn-default btn-print" onclick="gotoMerge('<?php echo $username; ?>')"   data-toggle="tooltip" data-placement="bottom" title="Opciones Avanzadas">              
+                <i class="fa fa-cogs" aria-hidden="true"></i> Unir Cotizaciones
+              </button>
+          </div>
+        </div>
+    
     <div class="header">
-      <div class="filter-by-data">
-        <div id="toolbar" class="row" >
-          <div class="col-sm-6">
-            <select id="batch-processing" disabled>
-                <option value="">Acciones en lote</option>
-                <option value="edit">Editar</option>
-            </select>
-          </div>
-
-          <div class="col-sm-6" style="text-align: right;">
-            <label for="export_all">Exportar todas</label>
-            <input type="checkbox" value="all" id="export_all">
-          </div>
-
-          <p><h3>Filtros </h3> Desde: <input type="text" id="datepicker_from"> Hasta: <input type="text" id="datepicker_to"> <a href="#" class="btn btn-default">Filtrar</a></p>
-      </div>
-
+      
+      <div class="filter row">
         
+        Desde: <input type="text" id="datepicker_from"> Hasta: <input type="text" id="datepicker_to"> <a href="#" class="btn btn-default">Filtrar</a>
+          <select id="batch-processing" disabled>
+                  <option value="">Acciones en lote</option>
+                  <option value="edit">Editar</option>
+              </select>
+           
+              <label for="export_all">Exportar todas</label>
+              <input type="checkbox" value="all" id="export_all">
+            </div>
       </div>
-    </div>
-    <br>
+      
+      <div class="acciones-en-lote row">
+        <div class="col-md-6">
+              
+      </div>
+      <div class="acciones-en-lote"></div>
+    </div>  
 
+
+    <br>
+    <div class="wrapper">
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -122,87 +145,9 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       </tr>
       </thead>
       </table>
+    </div>  
 
-      <div class="modal fade" id="deleteModal" role="dialog">
-        <div class="modal-dialog">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-body">
-              <p>Seguro que desea eliminar esta cotización Cot# <strong></strong>?</p>
-            </div>
-            <div class="modal-footer">
-              <a href="#" type="button" data-dismiss="modal" class="btn btn-primary" id="action-exc">Eliminar</a>
-              <a href="#" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="vendedoresModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 1000;">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Seleccionar Vendedor</h4>
-              </div>
-              <div class="modal-body">
-                <input type="text" placeholder="Buscar" class="pull-right custom-tablesearch" data-fields="username">
-                <table id="user-table" class="table table-striped">
-                    <thead>
-                    <tr>
-                      <th>Nombre</th>
-                      <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                      <?php for($i = 0; $i < count($userlist);$i++ ){?>                      
-                      <tr>
-                        <td><?php  echo $userlist[$i]['firstname'].' '. $userlist[$i]['lastname'];  ?></td>
-                        <td>
-                          <a href="#" class="add-vendedor btn btn-primary" 
-                                          data-id="<?php  echo $userlist[$i]['userID']; ?>" 
-                                          data-username="<?php  echo $userlist[$i]['firstname'].' '. $userlist[$i]['lastname'];  ?>">
-                            <i class="fa fa-user-plus" aria-hidden="true"></i> Agregar
-                          </a>
-                        </td>
-                      </tr>
-                      <?php } ?>
-                    </tbody>
-                </table>
-              </div>             
-            </div>
-          </div>
-        </div>
-
-        <div class="modal fade" id="editBatchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 900;">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Editar cotizaciones: <span></span></h4>
-              </div>
-              <div class="modal-body company-modal-body">
-                 <br>
-                 <form class="editBatchForm">
-                    <div class="form-group">
-                      <label for="vendedor">Vendedor:</label>
-                      <input type="text"  class="form-control" id="vendedor" />
-                      <input type="hidden" name="userid" id="userid" value="" />
-                    </div>
-                  </form>
-                  <div class="msg">
-                  </div>
-              </div>
-              <div class="modal-footer default">
-                <a href="#" type="button" class="btn btn-primary">Guardar</a>
-                <a href="#" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</a>
-              </div>
-              <div class="modal-footer ok">
-                <a href="#" type="button" class="btn btn-primary btn-ok" data-dismiss="modal">Ok</a>
-              </div>      
-            </div>
-          </div>
-        </div>
+      
 
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
@@ -219,6 +164,11 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       <script type="text/javascript">
 
         $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-CR']);
+
+        function gotoMerge(username){
+            window.location.href = "merge.php?u="+username;
+            parent.iframeLoaded();
+        }
         
         var edit = { 
             'click .like': function (e, value, row, index) { 
@@ -266,7 +216,15 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         }
 
       $(function () {
+
+        
+
         var username = <?php echo "'$username';"; ?>
+
+        $('#gotofilters').on('click',function(e){
+            window.location.href = "filtros-avanzados.php?show=false&u="+username;
+            parent.iframeLoaded();
+        });
 
         var dateFormat = 'yy-mm-dd',
         $from = $( "#datepicker_from" ).datepicker({dateFormat: dateFormat}).on( "change", function() {
@@ -287,7 +245,9 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
           return date;
         }
 
+
          parent.iframeLoaded();
+         
          var jsonData = null,
               bootstrapTableOpt = {
                 url: <?php echo $path; ?>+'/cotz/services/cotz.php?action=get_cotizacionesAllMIN',
