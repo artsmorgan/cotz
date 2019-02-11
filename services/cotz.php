@@ -1,7 +1,7 @@
 <?php
 	ini_set('memory_limit', '1024M');
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
+	// error_reporting(E_ALL);
+	// ini_set('display_errors', 1);
 	include_once ('../conspath.php');
 	include_once (AS_PATH.'/classes/dbAdmin.php');
 
