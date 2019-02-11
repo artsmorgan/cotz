@@ -9,7 +9,7 @@ $userlist = dbAdmin::getInstancia()->getAllFromUser();
 $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
 $cot = dbAdmin::getInstancia()->getCotizacionById($cotid);
 
-$isSearch = $_GET['advancefilters'];
+$isSearch = (isset($_GET['advancefilters'])) ? $_GET['advancefilters'] : false;
 // print_all($cot);
 
 // print_all($userlist);
