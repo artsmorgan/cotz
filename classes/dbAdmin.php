@@ -861,7 +861,7 @@ class dbAdmin {
             $wheres=array();
 
             if(isset($no_cotizacion) && $no_cotizacion != '')
-                $wheres['no_cotizacion'] = ' c.no_cotizacion = "'. $no_cotizacion .'"';
+                $wheres['no_cotizacion'] = ' c.no_cotizacion LIKE "%'. $no_cotizacion .'%"';
 
             if(isset($vendedor) && $vendedor != '')
                 $wheres['vendedor'] = ' u.username = "'. $vendedor .'"';
@@ -900,7 +900,7 @@ class dbAdmin {
                 $wheres['desde'] = ' c.fecha_cotizacion >= "'. $desde .'"';
 
             if(isset($hasta) && $hasta != '')
-                $wheres['hasta'] = ' c.fecha_cotizacion <= "'. $hasta .'"';
+                $wheres['hasta'] = ' c.fecha_cotizacion <=  DATE_ADD("'. $hasta .'", INTERVAL 1 DAY)';
 
 
             //$query = 'SELECT * FROM '. join(',', $tables). ' WHERE '. join(' AND ', $wheres);
@@ -951,7 +951,7 @@ class dbAdmin {
             $wheres=array();
 
             if(isset($no_cotizacion) && $no_cotizacion != '')
-                $wheres['no_cotizacion'] = ' c.no_cotizacion = "'. $no_cotizacion .'"';
+                $wheres['no_cotizacion'] = ' c.no_cotizacion LIKE "%'. $no_cotizacion .'%"';
 
             if(isset($vendedor) && $vendedor != '')
                 $wheres['vendedor'] = ' u.username = "'. $vendedor .'"';
@@ -971,8 +971,7 @@ class dbAdmin {
                     left join person p on co.person_id = p.id
                     where ". join(' AND ', $wheres) .
                     " ORDER BY DATE(c.fecha_modificacion) DESC, c.fecha_modificacion DESC";
-            // print_r($sql);
-            // die();
+            
 
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");

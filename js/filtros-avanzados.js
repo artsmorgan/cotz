@@ -55,13 +55,18 @@ $(document).ready(function(){
                 { "data": "fecha_cotizacion" },
                 { "data": "fecha_creacion" }
 		    ],
-		    rowCallback: function (row, data) {},
-		    filter: false,
-		    info: false,
-		    ordering: false,
-		    processing: true,
-		    retrieve: true    ,
-		    bAutoWidth: false  , 
+	    rowCallback: function (row, data) {},
+	    // filter: false,
+	    info: false,
+	    searching: false,
+	    // ordering: false,
+	    processing: true,
+	    retrieve: true    ,
+	    bAutoWidth: false  , 
+	    dom: 'Bfrtip',
+        buttons: [
+            'csv', 'excel', 'pdf', 'print'
+        ]
 	});	
 
     $('body').on('click','.gotocot',function(e){

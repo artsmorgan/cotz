@@ -96,22 +96,24 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
       
       <div class="filter row">
         
-        Desde: <input type="text" id="datepicker_from"> Hasta: <input type="text" id="datepicker_to"> <a href="#" class="btn btn-default">Filtrar</a>
-          <select id="batch-processing" disabled>
-                  <option value="">Acciones en lote</option>
-                  <option value="edit">Editar</option>
-              </select>
+        <!-- Desde: <input type="text" id="datepicker_from"> 
+        Hasta: <input type="text" id="datepicker_to"> 
+        <a href="#" class="btn btn-default">Filtrar</a>
+        <select id="batch-processing" disabled>
+            <option value="">Acciones en lote</option>
+            <option value="edit">Editar</option>
+        </select> -->
            
-              <label for="export_all">Exportar todas</label>
-              <input type="checkbox" value="all" id="export_all">
+              <!-- <label for="export_all">Exportar todas</label>
+              <input type="checkbox" value="all" id="export_all"> -->
+              <h3>Cotizaciones Recientes.</h3>
             </div>
       </div>
       
       <div class="acciones-en-lote row">
-        <div class="col-md-6">
-              
-      </div>
+        <div class="col-md-6"></div>
       <div class="acciones-en-lote"></div>
+
     </div>  
 
 
