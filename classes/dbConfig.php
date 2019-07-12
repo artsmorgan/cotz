@@ -7,6 +7,9 @@
  */
 class dbConfig {
 
+	private $env;
+	private $dbAccess;
+
 	function __construct(){
 
 			$isLocal = false;
