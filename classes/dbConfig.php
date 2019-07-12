@@ -10,7 +10,7 @@ class dbConfig {
 	function __construct(){
 
 			$isLocal = false;
-		    $env = 'local';
+		    $this->$env = 'local';
 		    $svr = $_SERVER['SERVER_NAME'];
 
 		    $localKnownHosts = array(
@@ -26,13 +26,13 @@ class dbConfig {
 		    );
 		    if(in_array($svr, $localKnownHosts)){
 		        $isLocal = true;
-		        $env = 'local';
+		        $this->$env = 'local';
 		    }else if(in_array($svr, $stageKnownHosts)){
 		        $isLocal = false;
-		        $env = 'stage';
+		        $this->$env = 'stage';
 		    }else if(in_array($svr, $prodKnownHosts)){
 		        $isLocal = false;
-		        $env = 'prod';
+		        $this->$env = 'prod';
 		    }else{
 		        //Not known environmet
 		        die('not known environment');
@@ -52,8 +52,8 @@ class dbConfig {
 
     
     public static $db_conn_server = "localhost";
-    public static $db_conn_user = $this->$dbAccess[$env]['username'];
-    public static $db_conn_pass = $this->$dbAccess[$env]['password'];
+    public static $db_conn_user = $this->$dbAccess[$this->$env]['username'];
+    public static $db_conn_pass = $this->$dbAccess[$this->$env]['password'];
     public static $db_conn_database = "new_ts_4";
     public static $db_driver = 'mysqli';
 
