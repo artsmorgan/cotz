@@ -39,9 +39,6 @@ class dbConfig {
 		    }
 
 
-
-		    $hostInfo = 'http://'.$svr;
-
 		    $this->$dbAccess['prod']['username'] = 'root';
 		    $this->$dbAccess['prod']['password'] = 'rootatlocalhost';
 
