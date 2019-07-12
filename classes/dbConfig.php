@@ -7,51 +7,51 @@
  */
 class dbConfig {
 
-	$env = 'local';
-    $svr = $_SERVER['SERVER_NAME'];
+	$this->$env = 'local';
+    $this->$svr = $_SERVER['SERVER_NAME'];
 
-    $localKnownHosts = array(
+    $this->$localKnownHosts = array(
         'crm.local',
         'tecnosagot.crm.local'
     );
-    $stageKnownHosts = array(
+    $this->$stageKnownHosts = array(
         'zurmojames.com',
         'demo-ts.united-crm.com'
     );
-    $prodKnownHosts = array(
+    $this->$prodKnownHosts = array(
         'tecnosagot.united-crm.com'
     );
-    if(in_array($svr, $localKnownHosts)){
-        $isLocal = true;
-        $env = 'local';
-    }else if(in_array($svr, $stageKnownHosts)){
-        $isLocal = false;
-        $env = 'stage';
-    }else if(in_array($svr, $prodKnownHosts)){
-        $isLocal = false;
-        $env = 'prod';
+    if(in_array($this->$svr, $this->$localKnownHosts)){
+        $this->$isLocal = true;
+        $this->$env = 'local';
+    }else if(in_array($this->$svr, $this->$stageKnownHosts)){
+        $this->$isLocal = false;
+        $this->$env = 'stage';
+    }else if(in_array($this->$svr, $this->$prodKnownHosts)){
+        $this->$isLocal = false;
+        $this->$env = 'prod';
     }else{
         //Not known environmet
         die('not known environment');
     }
 
-    define('ENV', $env);
+    define('ENV', $this->$env);
 
 
-    $hostInfo = 'http://'.$svr;
+    $this->$hostInfo = 'http://'.$this->$svr;
 
-    $dbAccess['prod']['username'] = 'root';
-    $dbAccess['prod']['password'] = 'rootatlocalhost';
+    $this->$dbAccess['prod']['username'] = 'root';
+    $this->$dbAccess['prod']['password'] = 'rootatlocalhost';
 
-    $dbAccess['stage']['username'] = 'zurmouser';
-    $dbAccess['stage']['password'] = 'kalika@123';
+    $this->$dbAccess['stage']['username'] = 'zurmouser';
+    $this->$dbAccess['stage']['password'] = 'kalika@123';
 
-    $dbAccess['local']['username'] = 'root';
-    $dbAccess['local']['password'] = 'rootatlocalhost';
+    $this->$dbAccess['local']['username'] = 'root';
+    $this->$dbAccess['local']['password'] = 'rootatlocalhost';
     
     public static $db_conn_server = "localhost";
-    public static $db_conn_user = $dbAccess[$env]['username'];
-    public static $db_conn_pass = $dbAccess[$env]['password'];
+    public static $db_conn_user = $this->$dbAccess[$env]['username'];
+    public static $db_conn_pass = $this->$dbAccess[$env]['password'];
     public static $db_conn_database = "new_ts_4";
     public static $db_driver = 'mysqli';
 
