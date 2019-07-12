@@ -1,4 +1,4 @@
-var SERVER_PROD = 'http://tecnosagot.united-crm.com';
+var SERVER_PROD = 'http://'+window.location.hostname;
 var SERVER_DEV = 'http://tecnosagot.crm.local/';
 
 function gotoList(username){
