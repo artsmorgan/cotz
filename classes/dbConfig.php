@@ -53,10 +53,15 @@ class dbConfig {
 		}
 
 
-    
+    if($this->$env == 'stage'){
+    	public static $db_conn_user = 'zurmouser';
+    	public static $db_conn_pass = 'kalika@123';
+    }else{
+    	public static $db_conn_user = 'root';
+    	public static $db_conn_pass = 'rootatlocalhost';
+    }
     public static $db_conn_server = "localhost";
-    public static $db_conn_user = $this->$dbAccess[$this->$env]['username'];
-    public static $db_conn_pass = $this->$dbAccess[$this->$env]['password'];
+    
     public static $db_conn_database = "new_ts_4";
     public static $db_driver = 'mysqli';
 
