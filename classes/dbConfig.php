@@ -8,7 +8,7 @@
 class dbConfig {
 
 	function __construct(){
-		
+
 			$isLocal = false;
 		    $env = 'local';
 		    $svr = $_SERVER['SERVER_NAME'];
@@ -38,7 +38,6 @@ class dbConfig {
 		        die('not known environment');
 		    }
 
-		    define('ENV', $env);
 
 
 		    $hostInfo = 'http://'.$svr;
