@@ -344,7 +344,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
           <div class="row">
               <div class="col-sm-4 form-group">
                 <label for="tiempoEntrega">Tiempo de entrega:</label>
-                <select data-select-add-custom name="tiempoEntrega" class="form-control cl-select2" id="tiempoEntrega" >
+                <select data-select-add-custom name="tiempoEntrega" class="form-control cl-select2" id="tiempoEntrega" required>
+		  <option value="">Seleccione</option>
                   <option value="Inmediata, salvo previa venta, a partir de recibida la OC.">Inmediata, salvo previa venta, a partir de recibida la OC.</option>
                   <option value="1 día hábil, salvo previa venta, a partir de recibida la OC.">1 día hábil, salvo previa venta, a partir de recibida la OC.</option>
                   <option value="2 días hábiles, salvo previa venta, a partir de recibida la OC.">2 días hábiles, salvo previa venta, a partir de recibida la OC.</option>
@@ -412,7 +413,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               </div>
               <div class="col-sm-4 form-group">
                 <label for="lugarEntrega">Lugar de entrega:</label>
-                <select data-select-add-custom class="form-control cl-select2" name="lugarEntrega" id="lugarEntrega">
+                <select data-select-add-custom class="form-control cl-select2" name="lugarEntrega" id="lugarEntrega" required>
+		    <option value="">Seleccione</option>
                     <option value="Sus bodegas.">Sus bodegas.</option>
                     <option value="Sus instalaciones.">Sus instalaciones.</option>
                     <option value="Su oficina.">Su oficina.</option>
@@ -425,7 +427,8 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
               </div>
               <div class="col-sm-4 form-group">
                 <label for="formaPago">Forma de pago:</label>
-                <select name="formaPago" class="form-control cl-select2" id="formaPago" data-select-add-custom>
+                <select name="formaPago" class="form-control cl-select2" id="formaPago" data-select-add-custom required>
+		    <option value="">Seleccione</option>
                     <option value="Contado contra entrega.">Contado contra entrega.</option>
                     <option value="Contado contra orden de compra.">Contado contra orden de compra.</option>
                     <option value="Crédito a 30 días.">Crédito a 30 días.</option>
@@ -460,6 +463,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                 <option value="Ashcroft">Ashcroft</option>
                 <option value="Astm">Astm</option>
                 <option value="Atc">Atc</option>
+		<option value="BarSplice">BarSplice</option>
                 <option value="Bray">Bray</option>
                 <option value="Bushnell">Bushnell</option>
                 <option value="Cedazo">Cedazo</option>
@@ -490,6 +494,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                 <option value="Itt">Itt</option>
                 <option value="JordanValve">JordanValve</option>
                 <option value="Kryton">Kryton</option>
+		<option value="HermeticaSF">Hermetica SF </option>
                 <option value="La-Co">La-Co</option>
                 <option value="Laval">Laval</option>
                 <option value="Leser">Leser</option>
