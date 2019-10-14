@@ -646,6 +646,33 @@ $isSearch = (isset($_GET['advancefilters'])) ? $_GET['advancefilters'] : false;
             </div>
           </div>
         </div>
+        
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-3 form-group" style=" vertical-align: top;">
+              <label for="noSolicitud">Orden de compra:</label>
+              <input type="text" name="ordenCompra" class="form-control" id="ordenCompra" value="<?php echo htmlentities($cot[0]['orden_de_compra']); ?>">
+            </div>
+            <div class="col-sm-3 form-group" style=" vertical-align: top; margin-top:25px">
+              <label for="noCotizacion">Oferta Recibida:
+                <input type="checkbox" name="ofertaRecibida"  id="ofertaRecibida" <?php 
+                                                                                      if($cot[0]['oferta_recibida']==1){
+                                                                                          echo 'checked';
+                                                                                      } 
+                                                                                    ?> />
+              </label>
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="noSolicitud">Segumiento:</label>
+              <textarea name="seguimiento" class="form-control" rows="5"><?php echo htmlentities($cot[0]['seguimiento']); ?></textarea>
+            </div>
+            <div class="col-sm-3 form-group" style=" vertical-align: top;">
+              <label for="noSolicitud">Fecha limite entrega material:</label>
+              <input type="text" name="fechaLimite" placeholder="yy-mm-dd" class="form-control datepicker" id="fechaLimite" value="<?php echo htmlentities($cot[0]['fecha_entrega']); ?>">
+            </div>
+          </div>
+        </div>
+
       </div>
       <hr>
       <h4 class="f-section-title">Líneas de la transacción</h4>

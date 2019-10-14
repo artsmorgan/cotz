@@ -39,11 +39,21 @@
                 $total				 = $params['total'];
                 $tasa_cambio		 = $params['tasaCambio'];
                 $lineas				 = $params['lineas'];
-                $lineasObj			 = json_decode($lineas, true);
+				$lineasObj			 = json_decode($lineas, true);
+				$orden_de_compra 	 = $params['ordenCompra'];
+				$oferta_recibida	 = (isset($params['ofertaRecibida']) &&  $params['ofertaRecibida'] == 'on') ? 1 : 0; 
+				$seguimiento		 = $params['seguimiento'];
+				$fecha_entrega		 = $params['fechaLimite'];
+				
+				// print_r(array($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
+				// $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
+				// $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio,
+				// $orden_de_compra, $oferta_recibida, $seguimiento, $fecha_entrega));die();
 
                 $cot_id = dbAdmin::getInstancia()->insertHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
                                 $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
-                                $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio);
+								$forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio,
+								$orden_de_compra, $oferta_recibida, $seguimiento, $fecha_entrega);
                 
                 foreach ($lineasObj as $key => $val) {
 				    
@@ -89,11 +99,16 @@
                 $tasa_cambio		 = $params['tasaCambio'];
                 $lineas				 = $params['lineas'];
                 $id				 	= $params['cotId'];
-                $lineasObj			 = json_decode($lineas, true);
+				$lineasObj			 = json_decode($lineas, true);
+				$orden_de_compra 	 = $params['ordenCompra'];
+				$oferta_recibida	 = (isset($params['ofertaRecibida']) &&  $params['ofertaRecibida'] == 'on') ? 1 : 0; 
+				$seguimiento		 = $params['seguimiento'];
+				$fecha_entrega		 = $params['fechaLimite'];
 
                 $cot_id = dbAdmin::getInstancia()->updateHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
                                 $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
-                                $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio,$id);
+								$forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio,$id,
+								$orden_de_compra, $oferta_recibida, $seguimiento, $fecha_entrega);
                 
                 $deleteRows = dbAdmin::getInstancia()->deleteRows($id);
 

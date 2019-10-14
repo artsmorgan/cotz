@@ -437,22 +437,31 @@ class dbAdmin {
 
     public function insertHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
                                 $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
-                                $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio){
+                                $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio,
+                                $orden_de_compra, $oferta_recibida, $seguimiento, $fecha_entrega){
 
         $sql = 'insert INTO `cotz_header`
                 (`vendedor_id`,`fecha_cotizacion`,`fecha_vencimiento`,`tasa_impuestos`,`moneda`,
                 `factor_redondeo`,`no_solicitud`,`no_cotizacion`,`account_id`,`contact_id`,`tiempo_entrega`,
                 `lugar_entrega`,`forma_pago`,`marca`,`fase`,`notas`,`notas_crm`,`fecha_creacion`,
-                `fecha_modificacion`,`modificado_por`,`subtotal`,`descuento`,`impuesto`,`total`, `tasa_cambio`)
-                VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now(),"", ?, ?, ?, ?, ?);';
+                `fecha_modificacion`,`modificado_por`,`subtotal`,`descuento`,`impuesto`,`total`, `tasa_cambio`, 
+                `orden_de_compra`, `oferta_recibida`, `seguimiento`, `fecha_entrega`)
+                VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now(),null, ?, ?, ?, ?, ?,  ?,?,?,?);';
+         
 
-        $this->getConnection();
-        $this->_adoconn->Execute("SET NAMES 'utf8';");
-        $rs = $this->_adoconn->Execute($sql, func_get_args());
-        $id = $this->_adoconn->Insert_ID();
-        $this->closeConnection();
+        //  print_r(func_get_args());
+        //  die();    
+      
+            $this->getConnection();
+            $this->_adoconn->Execute("SET NAMES 'utf8';");
+            $rs = $this->_adoconn->Execute($sql, func_get_args());
+            // print_r($this->_adoconn);
+            $id = $this->_adoconn->Insert_ID();
+            $this->closeConnection();
+        
+            return $id;
        
-        return $id;        
+                
 
 
     }
@@ -521,7 +530,8 @@ class dbAdmin {
 
     public function updateHeader($vendedor_id,$fecha_cotizacion,$fecha_vencimiento,$tasa_impuestos,$moneda,$factor_redondeo,
                                 $no_solicitud,$no_cotizacion,$account_id,$contact_id,$tiempo_entrega,$lugar_entrega,
-                                $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio, $id){
+                                $forma_pago,$marca,$fase,$notas,$notas_crm,$subtotal,$descuento,$impuesto,$total,$tasa_cambio, $id,
+                                $orden_de_compra, $oferta_recibida, $seguimiento, $fecha_entrega){
         
         $args = array(
             'vendedor_id' => $vendedor_id,
@@ -547,8 +557,15 @@ class dbAdmin {
             'total' => $total,
             'tasa_cambio' => $tasa_cambio,
             'modificado_por' => $vendedor_id,
-            'id' => $id
+            'id' => $id,           
+            'seguimiento' => $seguimiento,
+            'fecha_entrega' => $fecha_entrega,
+            'orden_de_compra' => $orden_de_compra,
+            'oferta_recibida' => $oferta_recibida,
+            
         );
+
+        print_r($args);
 
         // $sql = 'UPDATE cotz_header SET vendedor_id = "?", fecha_cotizacion = "?", fecha_vencimiento = ?, tasa_impuestos = ?, 
         // -- moneda = ?, factor_redondeo = ?, no_solicitud = ?, no_cotizacion = ?, account_id = ?, contact_id = ?, tiempo_entrega + ?,
@@ -718,12 +735,16 @@ class dbAdmin {
             $sql ="select c.id, c.id as id_sort, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, 
                     CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, 
                     c.tasa_cambio, CONVERT_TZ( IFNULL( c.fecha_modificacion, c.fecha_cotizacion ), '+00:00', '-06:00' ) as fecha_cotizacion, c.no_cotizacion, u.username, p.firstname,
-                    CONVERT_TZ(  c.fecha_creacion , '+00:00', '-06:00' ) as fecha_creacion, p.lastname, a.name 
+                    CONVERT_TZ(  c.fecha_creacion , '+00:00', '-06:00' ) as fecha_creacion, p.lastname, a.name,
+                    concat(p.firstname, ' ', p.lastname) as contact,
+                    p.officephone as phone,
+                    e.emailaddress as email
                     from cotz_header c 
                     left join _user u on c.vendedor_id = u.id
                     left join account a on c.account_id = a.id 
                     left join contact co on c.contact_id = co.id
                     left join person p on co.person_id = p.id
+                    left join email e on p.primaryemail_email_id = e.id
                     ORDER BY DATE(c.fecha_modificacion) DESC, c.fecha_modificacion DESC limit 100";
             $this->getConnection();
             $this->_adoconn->Execute("SET CHARSET 'utf8';");

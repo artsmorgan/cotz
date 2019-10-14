@@ -29,3 +29,9 @@ ADD COLUMN `subtotal` VARCHAR(45) NULL AFTER `modificado_por`,
 ADD COLUMN `descuento` VARCHAR(45) NULL AFTER `subtotal`,
 ADD COLUMN `impuesto` VARCHAR(45) NULL AFTER `descuento`,
 ADD COLUMN `total` VARCHAR(45) NULL AFTER `impuesto`;
+
+ALTER TABLE `cotz_header` 
+ADD COLUMN `orden_de_compra` VARCHAR(55) NULL AFTER `version`,
+ADD COLUMN `oferta_recibida` INT NULL AFTER `orden_de_compra`,
+ADD COLUMN `seguimiento` VARCHAR(3000) NULL AFTER `oferta_recibida`,
+ADD COLUMN `fecha_entrega` VARCHAR(45) NULL AFTER `seguimiento`;

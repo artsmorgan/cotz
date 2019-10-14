@@ -650,6 +650,7 @@ function formatPrice(value){
           
           $('#altFechaCotizacion').val( todayDateFormated + ' ' + todayTimeFormated );
           $('#fechaCotizacion').datepicker('setDate', todayDateFormated);
+          $('#fechaLimite').datepicker('setDate', todayDateFormated);
     }
     else{
       $('#fechaCotizacion').datepicker('setDate', $('#fechaCotizacion').val() );

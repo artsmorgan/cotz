@@ -6,6 +6,9 @@ include_once (AS_PATH.'/classes/dbAdmin.php');
 
 // $path = "'".PATH."'";
 $path = "'"."http://".$_SERVER['SERVER_NAME']."'";
+
+// echo '$path ----> ' . $path; die();
+
 $username = $_GET['u'];
 $usernameToString = "'".$username."'";
 
@@ -132,6 +135,9 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <th data-field="id_sort" data-sortable="true">Cot #</th>
         <th data-field="no_cotizacion" data-sortable="true">No. cotización</th>
         <th data-field="name" data-sortable="true">Cliente</th>
+        <th data-field="contact" data-sortable="true">Contacto</th>
+        <th data-field="email" data-sortable="true">Email</th>
+        <th data-field="phone" data-sortable="true">Teléfono</th>
         <th data-field="username" data-sortable="true">Vendedor</th>
         <th data-field="marca" data-sortable="true">Marca</th>
         <th data-field="fase" data-sortable="true">Fase</th>
@@ -269,7 +275,7 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
                   (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
                 },
                 onAll: function(name, args){
-                    (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
+                     (typeof parent.iframeLoaded === 'function' ) && parent.iframeLoaded();
                 }
               }, 
             $table = $('#table').bootstrapTable(bootstrapTableOpt);
