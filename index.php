@@ -6,6 +6,9 @@ include_once (AS_PATH.'/classes/dbAdmin.php');
 
 // $path = "'".PATH."'";
 $path = "'"."http://".$_SERVER['SERVER_NAME']."'";
+
+// echo '$path ----> ' . $path; die();
+
 $username = $_GET['u'];
 $usernameToString = "'".$username."'";
 
