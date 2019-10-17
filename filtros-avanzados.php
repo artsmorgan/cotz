@@ -387,6 +387,9 @@ $userdata = dbAdmin::getInstancia()->getAllFromUserByUsername($username);
         <th data-field="id_sort" data-sortable="true">Cot #</th>
         <th data-field="no_cotizacion" data-sortable="true">No. cotización</th>
         <th data-field="name" data-sortable="true">Cliente</th>
+        <th data-field="contact" data-sortable="true">Contacto</th>
+        <th data-field="email" data-sortable="true">Email</th>
+        <th data-field="phone" data-sortable="true">Teléfono</th>
         <th data-field="username" data-sortable="true">Vendedor</th>
         <th data-field="marca" data-sortable="true">Marca</th>
         <th data-field="fase" data-sortable="true">Fase</th>
