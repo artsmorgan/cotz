@@ -936,12 +936,16 @@ class dbAdmin {
             $sql ="select c.id, c.id as id_sort, c.marca, c.fase, TRUNCATE( c.total, 2 ) AS total, 
                     CASE c.moneda WHEN 'colones' THEN '&#162;' WHEN 'dolares' THEN '&#036;' WHEN 'euro' THEN 'e' ELSE NULL END AS moneda, 
                     c.tasa_cambio, CONVERT_TZ( IFNULL( c.fecha_modificacion, c.fecha_cotizacion ), '+00:00', '-06:00' ) as fecha_cotizacion, c.no_cotizacion, u.username, p.firstname,
-                    CONVERT_TZ(  c.fecha_creacion , '+00:00', '-06:00' ) as fecha_creacion, p.lastname, a.name 
+                    CONVERT_TZ(  c.fecha_creacion , '+00:00', '-06:00' ) as fecha_creacion, p.lastname, a.name ,
+                    concat(p.firstname, ' ', p.lastname) as contact,
+                    p.officephone as phone,
+                    e.emailaddress as email
                     from cotz_header c 
                     left join _user u on c.vendedor_id = u.id
                     left join account a on c.account_id = a.id 
                     left join contact co on c.contact_id = co.id
                     left join person p on co.person_id = p.id
+                    left join email e on p.primaryemail_email_id = e.id
                     where ". join(' AND ', $wheres) .
                     " ORDER BY DATE(c.fecha_modificacion) DESC, c.fecha_modificacion DESC";
             // print_r($sql);
